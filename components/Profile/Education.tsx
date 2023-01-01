@@ -24,7 +24,6 @@ const LEVEL_OPTIONS = [
 ]
 
 export default function Education() {
-  const efffectRun = useRef(false)
   const [openForm, setOpenForm] = useState(false)
   const [loading, setLoading] = useState(false)
   const [educations, setEducations] = useState([])
@@ -43,23 +42,20 @@ export default function Education() {
   useEffect(() => {
     const controller = new AbortController()
 
-    if (efffectRun.current === true) {
-      const getUserEducations = async () => {
-        try {
-          setLoading(true)
-          const res = await axiosInstance.get("/profile/education", {
-            signal: controller.signal,
-          })
-          setEducations(res.data)
-        } finally {
-          setLoading(false)
-        }
+    const getUserEducations = async () => {
+      try {
+        setLoading(true)
+        const res = await axiosInstance.get("/profile/education", {
+          signal: controller.signal,
+        })
+        setEducations(res.data)
+      } finally {
+        setLoading(false)
       }
-      getUserEducations()
     }
+    getUserEducations()
 
     return () => {
-      efffectRun.current = true
       controller.abort()
     }
   }, [])

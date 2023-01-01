@@ -6,7 +6,6 @@ import axiosInstance from "../../axios/axios"
 import Spinner from "../Spinner"
 
 export default function Subjects() {
-  const efffectRun = useRef(false)
   const [openForm, setOpenForm] = useState(false)
   const [loading, setLoading] = useState(false)
   const [subjects, setSubjects] = useState([])
@@ -15,23 +14,20 @@ export default function Subjects() {
   useEffect(() => {
     const controller = new AbortController()
 
-    if (efffectRun.current === true) {
-      const getUserSubjects = async () => {
-        try {
-          setLoading(true)
-          const res = await axiosInstance.get("/profile/subject", {
-            signal: controller.signal,
-          })
-          setSubjects(res.data)
-        } finally {
-          setLoading(false)
-        }
+    const getUserSubjects = async () => {
+      try {
+        setLoading(true)
+        const res = await axiosInstance.get("/profile/subject", {
+          signal: controller.signal,
+        })
+        setSubjects(res.data)
+      } finally {
+        setLoading(false)
       }
-      getUserSubjects()
     }
+    getUserSubjects()
 
     return () => {
-      efffectRun.current = true
       controller.abort()
     }
   }, [])
