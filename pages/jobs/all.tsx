@@ -110,7 +110,7 @@ export default function All() {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context)
 
-  if (!session?.user) {
+  if (!session) {
     return {
       redirect: {
         destination: "/",
