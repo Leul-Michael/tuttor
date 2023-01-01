@@ -12,6 +12,7 @@
     background: linear-gradient(rgba(56, 139, 253, 0.15), rgba(56, 139, 253, 0.15));
     border-top: 1px solid var(--clr-select-accent);
     border-bottom: 1px solid var(--clr-select-accent);
+    padding: 0 2rem;
 }
 
 .toast-msg.show {

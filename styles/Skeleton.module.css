@@ -147,6 +147,13 @@
     width: 80px;
 }
 
+@media (max-width: 768px) {
+    .my-job__header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+}
 
 @keyframes dim {
     0% {

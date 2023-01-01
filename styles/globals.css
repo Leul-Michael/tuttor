@@ -225,6 +225,10 @@ button {
   margin-inline: 2rem;
 }
 
+.tip.inside {
+  margin: 0;
+}
+
 .caution {
   background-color: var(--clr-caution);
 }
@@ -282,10 +286,6 @@ button {
     margin-inline: 1.5rem;
     grid-template-columns: 25px 1fr;
 
-  }
-
-  .tip.inside {
-    margin: 0;
   }
 }
 
