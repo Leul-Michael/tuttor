@@ -1,0 +1,173 @@
+.container {
+    position: relative;
+    width: fit-content;
+    padding: .5rem .75rem;
+    border: 1px solid var(--clr-background-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.container.schedule {
+    max-width: 400px;
+}
+
+.container:hover,
+.container:focus {
+    color: var(--clr-accent);
+    background: var(--clr-btn-hover);
+    border-color: var(--clr-accent-secondary);
+}
+
+.container.schedule:hover,
+.container.schedule:focus {
+    color: var(--clr-font-light);
+    background: var(--clr-background);
+    border-color: var(--clr-select-accent);
+}
+
+.select-display {
+    display: inline-block;
+    font-size: .9rem;
+    font-weight: 500;
+}
+
+.arrow-down {
+    border: 5px solid transparent;
+    border-top-color: var(--clr-accent-secondary);
+    transform: translateY(5px);
+    margin-left: .5rem;
+    cursor: pointer;
+}
+
+.options,
+.dropdown-options {
+    position: absolute;
+    left: 0;
+    top: calc(100% + .25rem);
+    min-width: 100%;
+    background-color: var(--clr-background-light);
+    border-radius: inherit;
+    padding: .25rem 0.05rem;
+    z-index: 100;
+    cursor: default;
+    display: none;
+    flex-direction: column;
+}
+
+.options.show,
+.dropdown-options.show {
+    display: flex;
+}
+
+.options li {
+    display: flex;
+    align-items: center;
+    padding: .5rem 1rem;
+    cursor: pointer;
+    border-radius: 2px;
+}
+
+.options li input,
+.options li label {
+    pointer-events: none;
+    cursor: pointer;
+}
+
+.options li input {
+    width: 15px;
+    height: 15px;
+    border: 0;
+    border-radius: 5px;
+    accent-color: var(--clr-accent);
+    background-color: transparent;
+}
+
+.options li label {
+    padding-left: 1rem;
+}
+
+.dropdown-options li {
+    display: inline-block;
+    padding: .5rem 1rem;
+    cursor: pointer;
+    border-radius: 2px;
+    color: var(--clr-font-light);
+    min-width: max-content;
+}
+
+.dropdown-options li span {
+    display: inline-block;
+    width: 100%;
+}
+
+.dropdown-options li:focus,
+.dropdown-options li:hover {
+    background-color: var(--clr-select-accent);
+}
+
+.options li input:checked {
+    box-shadow: 0 0 8px 2px var(--clr-select-accent);
+}
+
+.container:not(.schedule):focus .options,
+.container:not(.schedule):hover .options {
+    background-color: var(--clr-background-light);
+    color: var(--clr-font);
+}
+
+/* Schedule select */
+.schedule {
+    margin-top: 1rem;
+}
+
+.schedule-display {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+    padding-right: 1rem;
+}
+
+.schedule-display button {
+    display: flex;
+    align-items: center;
+    padding: .5rem;
+    border: 1px solid var(--clr-background-light);
+    border-radius: 4px;
+    font-size: .8rem;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.schedule-display button span {
+    padding-left: .5rem;
+    color: var(--clr-font-light-secondary);
+    font-weight: normal;
+}
+
+.schedule-display button:hover,
+.schedule-display button:focus {
+    border-color: rgba(242, 32, 32, 0.4);
+}
+
+.schedule-display button:hover span,
+.schedule-display button:focus span {
+    color: rgba(242, 32, 32, 0.4);
+}
+
+.schedule .options li {
+    padding: .75rem 1rem;
+    font-weight: 600;
+}
+
+.schedule .options li.selected {
+    color: var(--clr-white);
+    background-color: var(--clr-logo);
+}
+
+.schedule .options li:hover {
+    color: var(--clr-white);
+    background-color: var(--clr-select-accent);
+}

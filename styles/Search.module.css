@@ -1,0 +1,101 @@
+.container {
+    padding: 3rem 0;
+}
+
+.container h1 {
+    font-weight: 400;
+    text-align: center;
+}
+
+.search-container {
+    padding: 2rem;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+
+.search-container button {
+    height: 45px;
+    padding: 0 1.5rem;
+}
+
+.input-box {
+    border: 1px solid var(--clr-border);
+    display: flex;
+    align-items: center;
+    padding-inline: 1rem;
+    border-radius: 8px;
+    flex-grow: 1;
+}
+
+.input-box input {
+    height: 45px;
+    min-width: 250px;
+    width: 100%;
+    color: var(--clr-font-light);
+    margin-inline: .5rem;
+}
+
+.input-box label {
+    font-size: .8rem;
+    font-weight: 500;
+    color: var(--clr-font-light-secondary);
+}
+
+.input-box .icon {
+    display: inline-block;
+    color: var(--clr-font-light-secondary);
+}
+
+.input-box:focus-within {
+    border-color: var(--clr-accent-secondary);
+}
+
+.input-box:focus-within .icon,
+.input-box:focus-within label {
+    color: var(--clr-font-light);
+}
+
+.filters {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+    .container h1 {
+        font-size: 2.5rem;
+    }
+
+    .container {
+        padding: 3rem 1.5rem;
+    }
+}
+
+@media (max-width: 500px) {
+    .container h1 {
+        font-size: 2rem;
+        line-height: 1;
+    }
+
+    .input-box input {
+        min-width: 230px;
+        margin: 0;
+    }
+
+    .input-box label {
+        font-size: .75rem;
+        display: none;
+    }
+
+    .search-container button {
+        height: 40px;
+        padding: 0 1rem;
+    }
+}

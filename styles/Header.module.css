@@ -1,0 +1,221 @@
+.header {
+    width: 100%;
+    height: min(11vh, 110px);
+    padding: 0 2rem;
+    border-bottom: 1px solid var(--clr-background-light);
+}
+
+.nav {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: inherit;
+}
+
+.nav-item {
+    display: flex;
+    height: 100%;
+    align-items: baseline;
+    gap: 2rem;
+}
+
+.mobile-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+}
+
+.menu {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    color: var(--clr-logo);
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.ul {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding-top: 1rem;
+}
+
+.link {
+    margin-inline: 1rem;
+    font-size: .9rem;
+    position: relative;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.link a {
+    padding: .25rem;
+}
+
+.link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0%;
+    height: 2px;
+    background-color: var(--clr-accent);
+    transition: all .3s ease-out;
+}
+
+.link.active::after {
+    width: 100%;
+}
+
+.profile {
+    display: flex;
+    position: relative;
+    align-items: center;
+}
+
+.profile-icon,
+.menu-icon {
+    cursor: pointer;
+    font-size: 1.5rem;
+    margin-left: 1rem;
+}
+
+.profile-ul {
+    z-index: 10;
+    position: absolute;
+    top: calc(100% + .5rem);
+    right: 0;
+    border: 1px solid var(--clr-border);
+    border-radius: 4px;
+    background-color: var(--clr-background);
+    min-width: 150px;
+    display: none;
+    flex-direction: column;
+    font-size: .9rem;
+    color: var(--clr-font-light);
+}
+
+.profile-ul.show {
+    display: flex;
+}
+
+.profile-ul ul {
+    padding: .25rem;
+}
+
+.ul-header {
+    position: relative;
+    border-bottom: 1px solid var(--clr-border);
+    padding: .5rem .85rem;
+    font-size: .6rem;
+}
+
+.ul-header span {
+    display: block;
+    font-size: .9rem;
+}
+
+.ul-link {
+    cursor: pointer;
+    padding: .5rem;
+    border-radius: 2px;
+}
+
+.ul-link:hover {
+    background-color: var(--clr-select-accent);
+}
+
+
+.menu-links {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    min-height: 100vh;
+    background-color: var(--clr-background);
+    padding: 2rem;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    transition: left .3s ease-out;
+}
+
+.menu-links.open {
+    left: 0;
+}
+
+.menu-links p {
+    font-size: 1.5rem;
+    font-weight: 300;
+    color: var(--clr-font-light-secondary);
+    padding-bottom: 1rem;
+}
+
+.theme {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 2rem;
+}
+
+.links {
+    display: flex;
+    flex-direction: column;
+    font-size: 1.5rem;
+    justify-content: flex-start;
+}
+
+.links .link {
+    font-size: 1rem;
+    font-weight: 300;
+    margin: 0;
+    padding-bottom: .25rem;
+    margin-bottom: .5rem;
+}
+
+.menu-close-icon {
+    font-size: 1.2rem;
+    border: 1px solid transparent;
+    padding: .5rem;
+    border-radius: 50%;
+    box-sizing: content-box;
+    align-self: flex-end;
+}
+
+.menu-close-icon:focus,
+.menu-close-icon:active {
+    border-color: var(--clr-background-light);
+}
+
+.menu-links .link.active::after {
+    width: 70%;
+}
+
+.btn,
+.link-btn {
+    padding: .35rem .75rem;
+    display: inline-block;
+    background-color: transparent;
+    border: 2px solid var(--clr-accent-secondary);
+    border-radius: 3px;
+    font-size: .8rem;
+    font-weight: 600;
+}
+
+.link-btn {
+    padding: .5rem 2rem;
+    margin: 1rem 0;
+}
+
+@media (max-width: 500px) {
+    .header {
+        padding: 0 1.5rem;
+    }
+}

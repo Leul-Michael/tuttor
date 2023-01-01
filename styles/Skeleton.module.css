@@ -1,0 +1,160 @@
+.job {
+    padding: 1.5rem;
+    border: 1px solid var(--clr-border);
+    max-width: var(--excerpt-width);
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.job.details {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 1rem;
+    padding: 1.5rem;
+    max-width: 500px;
+    width: 100%;
+    height: 100%;
+    max-height: calc(100vh - 2rem);
+}
+
+.job h1,
+.location,
+.type,
+.price-tag,
+.requirement p,
+.posted,
+.desc,
+.my-job h2,
+.btn {
+    background-color: var(--clr-background-light);
+    border-radius: 4px;
+    animation: dim .5s ease-out alternate infinite;
+}
+
+
+.job h1,
+.my-job h2 {
+    width: 80%;
+    height: 30px;
+}
+
+.text,
+.text-lg {
+    font-size: .9rem;
+    font-weight: 500;
+    color: var(--clr-font-light-secondary);
+}
+
+.text {
+    font-size: .8rem;
+}
+
+.location,
+.posted {
+    width: 40%;
+    height: 10px;
+    margin: .5rem 0;
+}
+
+.posted {
+    width: 30%;
+}
+
+.type {
+    width: 30%;
+    height: 20px;
+    margin: .5rem 0;
+}
+
+.price {
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    padding-bottom: 1rem;
+}
+
+.icon {
+    font-size: 1rem;
+    color: var(--clr-font-light-secondary);
+}
+
+.price-tag {
+    width: 30%;
+    height: 30px;
+    margin-bottom: 1rem;
+}
+
+
+.requirements {
+    display: flex;
+    flex-direction: column;
+}
+
+.requirements .text {
+    margin-bottom: .5rem;
+}
+
+.requirement {
+    display: grid;
+    grid-template-columns: 20px 1fr;
+    align-items: flex-start;
+    gap: .5rem;
+}
+
+.requirement p {
+    width: 90%;
+    height: 15px;
+    margin-bottom: .5rem;
+}
+
+.border-bottom {
+    border-bottom: 1px solid var(--clr-background-light);
+    margin-bottom: 1rem;
+}
+
+.descs {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 0;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--clr-background-light);
+}
+
+.desc {
+    width: 100%;
+    height: 10px;
+    margin-bottom: .5rem;
+}
+
+.my-job {
+    border-bottom: 1px solid var(--clr-background-light);
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+}
+
+.my-job__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn {
+    height: 40px;
+    width: 80px;
+}
+
+
+@keyframes dim {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: .5;
+    }
+
+}
