@@ -4,8 +4,8 @@
 
 :root {
   --clr-background: #fff;
-  --clr-background-light: #e8eaed;
-  --clr-border: #bbb;
+  --clr-background-light: #dbe3f0;
+  --clr-border: #aaa;
   --clr-font: #202124;
   --clr-font-light: #282828;
   --clr-font-light-secondary: #5f6368;
@@ -29,7 +29,7 @@
 
 .dark-theme {
   --clr-background: rgb(13, 17, 23);
-  --clr-background-light: rgb(22, 27, 34);
+  --clr-background-light: rgb(27, 34, 44);
   /* --clr-background: #202124; */
   /* --clr-background-light: #3c4043; */
   --clr-border: #5f6368;
