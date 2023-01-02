@@ -39,10 +39,11 @@
     width: 100%;
     color: var(--clr-font-light);
     margin-inline: .5rem;
+    font-size: 1rem;
 }
 
 .input-box label {
-    font-size: .8rem;
+    font-size: .9rem;
     font-weight: 500;
     color: var(--clr-font-light-secondary);
 }
