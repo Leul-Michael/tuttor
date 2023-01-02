@@ -194,12 +194,8 @@
     border-color: var(--clr-background-light);
 }
 
-.menu-links .link.active::after {
-    width: 70%;
-}
-
 .menu-links .link {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
 }
 
 .btn,
