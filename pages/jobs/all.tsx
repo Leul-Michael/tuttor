@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { GetServerSideProps } from "next"
 import { getSession } from "next-auth/react"
 import Link from "next/link"
@@ -15,20 +15,11 @@ import { JobType } from "../../types"
 export default function All() {
   const { addMessage } = useToast()
   const queryClient = useQueryClient()
-  const { data, isLoading } = useQuery({
+  const { data, isFetching, refetch } = useQuery({
     queryKey: ["MyJobs"],
     queryFn: async () => {
       const res = await axiosInstance.get("/jobs")
       return res.data
-    },
-  })
-
-  const mutation = useMutation({
-    mutationFn: (deleteJob: { id: string }) => {
-      return axiosInstance.delete(`/jobs/${deleteJob.id}`)
-    },
-    onSuccess(data, variables) {
-      queryClient.refetchQueries({ queryKey: ["MyJobs"] })
     },
   })
 
@@ -39,10 +30,10 @@ export default function All() {
     e.preventDefault()
     e.stopPropagation()
     try {
-      const res = await mutation.mutateAsync({ id: jobId })
+      const res = await axiosInstance.delete(`/jobs/${jobId}`)
       addMessage(res.data?.msg)
+      refetch()
     } catch (e: any) {
-      console.log(e)
       addMessage(e.response.data.msg || e.message)
     }
   }
@@ -60,7 +51,7 @@ export default function All() {
         </div>
 
         <ul className={Styles["all-jobs__list"]}>
-          {isLoading ? (
+          {isFetching ? (
             <>
               <MyJobSkeleton />
               <MyJobSkeleton />
@@ -82,7 +73,7 @@ export default function All() {
                       Proposals
                     </button>
                     <button
-                      disabled={mutation.isLoading}
+                      disabled={isFetching}
                       onClick={(e) => removeSelected(e, job._id)}
                       className={`btn  ${Styles.btn} ${Styles["btn-sm"]} ${Styles.delete}`}
                     >
