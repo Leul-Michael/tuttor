@@ -36,6 +36,7 @@ export default function All() {
     e: FormEvent<HTMLButtonElement>,
     jobId: string
   ) => {
+    e.stopPropagation()
     e.preventDefault()
     try {
       const res = await mutation.mutateAsync({ id: jobId })
