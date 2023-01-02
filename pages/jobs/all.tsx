@@ -25,7 +25,11 @@ export default function All() {
 
   const mutation = useMutation({
     mutationFn: (deleteJob: { id: string }) => {
-      return axiosInstance.delete(`/jobs/${deleteJob.id}`)
+      return axiosInstance.delete(`/jobs/${deleteJob.id}`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
     },
     onSuccess(data, variables) {
       queryClient.refetchQueries({ queryKey: ["MyJobs"] })
