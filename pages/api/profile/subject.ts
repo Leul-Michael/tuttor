@@ -48,7 +48,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       await user.save()
     }
 
-    return res.status(201).json(user.subjects)
+    return res.status(200).json(user.subjects)
   }
 }
 

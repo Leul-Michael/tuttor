@@ -59,7 +59,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     user.education = filterdEducation
     await user.save()
 
-    return res.status(201).json(user.education)
+    return res.status(200).json(user.education)
   }
 }
 

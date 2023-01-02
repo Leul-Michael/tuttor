@@ -24,7 +24,7 @@ const Theme = () => {
         <div
           onClick={() => setDarkTheme(false)}
           className="list-item"
-          aria-label="toggle dark theme"
+          aria-label="toggle light theme"
         >
           <HiSun /> Light
         </div>

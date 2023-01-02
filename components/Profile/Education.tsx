@@ -1,4 +1,4 @@
-import { useRef, useState, FormEvent, MouseEvent, useEffect } from "react"
+import { useState, FormEvent, MouseEvent } from "react"
 import ProfileStyles from "../../styles/Profile.module.css"
 import { FiPlusCircle } from "react-icons/fi"
 import { MdDeleteForever } from "react-icons/md"
@@ -6,6 +6,7 @@ import axiosInstance from "../../axios/axios"
 import { Option } from "../Select/SelectCheckbox"
 import SelectDropdown from "../Select/SelectDropdown"
 import Spinner from "../Spinner"
+import { useQuery } from "@tanstack/react-query"
 
 export interface EduProps {
   _id: string
@@ -24,9 +25,8 @@ const LEVEL_OPTIONS = [
 ]
 
 export default function Education() {
-  const [openForm, setOpenForm] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [educations, setEducations] = useState([])
+  const [openForm, setOpenForm] = useState(false)
   const [educationForm, setEducationForm] = useState({
     field: "",
     school: "",
@@ -39,47 +39,38 @@ export default function Education() {
     setlevel(o)
   }
 
-  useEffect(() => {
-    const controller = new AbortController()
+  const { data, isFetching, isRefetching, isLoading, refetch } = useQuery({
+    queryKey: ["educs"],
+    queryFn: async () => {
+      const res = await axiosInstance.get("/profile/education")
+      return res.data
+    },
+  })
 
-    const getUserEducations = async () => {
-      try {
-        setLoading(true)
-        const res = await axiosInstance.get("/profile/education", {
-          signal: controller.signal,
-        })
-        setEducations(res.data)
-      } finally {
-        setLoading(false)
-      }
-    }
-    getUserEducations()
-
-    return () => {
-      controller.abort()
-    }
-  }, [])
+  const checkLoading = isLoading || isRefetching || isFetching || loading
 
   const addEducation = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+
+    if (checkLoading) return
 
     if (!level.value || !educationForm.field || !educationForm.school) return
 
     try {
       setLoading(true)
-      const res = await axiosInstance.post("/profile/education", {
+      await axiosInstance.post("/profile/education", {
         level: level.value,
         field: educationForm.field,
         school: educationForm.school,
       })
 
-      setEducations(res.data)
       setEducationForm({
         field: "",
         school: "",
         sDate: "",
         eDate: "",
       })
+      refetch()
     } finally {
       setLoading(false)
     }
@@ -90,10 +81,10 @@ export default function Education() {
 
     try {
       setLoading(true)
-      const res = await axiosInstance.delete("/profile/education", {
+      await axiosInstance.delete("/profile/education", {
         data: { eduId: id },
       })
-      setEducations(res.data)
+      refetch()
     } finally {
       setLoading(false)
     }
@@ -102,31 +93,29 @@ export default function Education() {
   return (
     <div className={ProfileStyles.portion}>
       <p className={`font-serif ${ProfileStyles.title}`}>Education</p>
-      {educations.length ? (
-        <div
-          className={`p-relative n-left ${ProfileStyles["subjects-list"]} ${
-            loading ? ProfileStyles.loading : ""
-          }`}
-        >
-          {loading ? (
-            <Spinner />
-          ) : (
-            educations.map((edu: EduProps) => (
-              <div
-                key={edu?._id}
-                onClick={(e) => removeEducation(e, edu._id)}
-                className={ProfileStyles.subject}
-              >
-                <div className={ProfileStyles["subject-field"]}>
-                  <span>{edu.level}</span>
-                  <p>{edu.field}</p>
-                </div>
-                <MdDeleteForever className={ProfileStyles.delete} />
+      <div
+        className={`p-relative n-left ${ProfileStyles["subjects-list"]} ${
+          checkLoading ? ProfileStyles.loading : ""
+        }`}
+      >
+        {checkLoading ? (
+          <Spinner />
+        ) : (
+          data?.map((edu: EduProps) => (
+            <div
+              key={edu?._id}
+              onClick={(e) => removeEducation(e, edu._id)}
+              className={ProfileStyles.subject}
+            >
+              <div className={ProfileStyles["subject-field"]}>
+                <span>{edu.level}</span>
+                <p>{edu.field}</p>
               </div>
-            ))
-          )}
-        </div>
-      ) : null}
+              <MdDeleteForever className={ProfileStyles.delete} />
+            </div>
+          ))
+        )}
+      </div>
       <button
         onClick={() => setOpenForm((prev) => !prev)}
         className={ProfileStyles[`btn-profile`]}
@@ -171,11 +160,11 @@ export default function Education() {
           </div>
           <div className={ProfileStyles["buttons-flex"]}>
             <button
-              disabled={loading}
+              disabled={checkLoading}
               type="submit"
               className={`p-relative ${ProfileStyles.btn} ${ProfileStyles["btn-primary"]}`}
             >
-              {loading ? "loading..." : "Add education"}
+              {checkLoading ? "loading..." : "Add education"}
             </button>
             <button
               onClick={() => setOpenForm(false)}

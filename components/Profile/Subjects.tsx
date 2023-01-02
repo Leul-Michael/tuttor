@@ -1,36 +1,25 @@
-import { useState, FormEvent, useEffect, MouseEvent, useRef } from "react"
+import { useState, FormEvent, MouseEvent } from "react"
 import ProfileStyles from "../../styles/Profile.module.css"
 import { FiPlusCircle } from "react-icons/fi"
 import { MdDeleteForever } from "react-icons/md"
 import axiosInstance from "../../axios/axios"
 import Spinner from "../Spinner"
+import { useQuery } from "@tanstack/react-query"
 
 export default function Subjects() {
-  const [openForm, setOpenForm] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [subjects, setSubjects] = useState([])
+  const [openForm, setOpenForm] = useState(false)
   const [subject, setSubject] = useState("")
 
-  useEffect(() => {
-    const controller = new AbortController()
+  const { data, isFetching, isRefetching, isLoading, refetch } = useQuery({
+    queryKey: ["subjs"],
+    queryFn: async () => {
+      const res = await axiosInstance.get("/profile/subject")
+      return res.data
+    },
+  })
 
-    const getUserSubjects = async () => {
-      try {
-        setLoading(true)
-        const res = await axiosInstance.get("/profile/subject", {
-          signal: controller.signal,
-        })
-        setSubjects(res.data)
-      } finally {
-        setLoading(false)
-      }
-    }
-    getUserSubjects()
-
-    return () => {
-      controller.abort()
-    }
-  }, [])
+  const checkLoading = isLoading || isRefetching || isFetching || loading
 
   const removeSubject = async (
     e: MouseEvent<HTMLDivElement>,
@@ -40,10 +29,10 @@ export default function Subjects() {
 
     try {
       setLoading(true)
-      const res = await axiosInstance.delete("/profile/subject", {
+      await axiosInstance.delete("/profile/subject", {
         data: { subject: subject.toLowerCase() },
       })
-      setSubjects(res.data)
+      refetch()
     } finally {
       setLoading(false)
     }
@@ -52,16 +41,14 @@ export default function Subjects() {
   const addSubject = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    if (!subject) return
-
     try {
       setLoading(true)
-      const res = await axiosInstance.post("/profile/subject", {
+      await axiosInstance.post("/profile/subject", {
         subject: subject.toLowerCase(),
       })
 
       setSubject("")
-      setSubjects(res.data)
+      refetch()
     } finally {
       setLoading(false)
     }
@@ -72,27 +59,25 @@ export default function Subjects() {
       <p className={`font-serif ${ProfileStyles.title}`}>
         Subjects you prioritize.
       </p>
-      {subjects.length ? (
-        <div
-          className={`p-relative n-left ${ProfileStyles["subjects-list"]} ${
-            loading ? ProfileStyles.loading : ""
-          }`}
-        >
-          {loading ? (
-            <Spinner />
-          ) : (
-            subjects.map((subject, idx) => (
-              <div
-                key={idx}
-                onClick={(e) => removeSubject(e, subject)}
-                className={ProfileStyles.subject}
-              >
-                {subject} <MdDeleteForever className={ProfileStyles.delete} />
-              </div>
-            ))
-          )}
-        </div>
-      ) : null}
+      <div
+        className={`p-relative n-left ${ProfileStyles["subjects-list"]} ${
+          checkLoading ? ProfileStyles.loading : ""
+        }`}
+      >
+        {checkLoading ? (
+          <Spinner />
+        ) : (
+          data?.map((subject: string, idx: number) => (
+            <div
+              key={idx}
+              onClick={(e) => removeSubject(e, subject)}
+              className={ProfileStyles.subject}
+            >
+              {subject} <MdDeleteForever className={ProfileStyles.delete} />
+            </div>
+          ))
+        )}
+      </div>
       <button
         onClick={() => setOpenForm((prev) => !prev)}
         className={ProfileStyles[`btn-profile`]}
@@ -113,11 +98,11 @@ export default function Subjects() {
           </div>
           <div className={ProfileStyles["buttons-flex"]}>
             <button
-              disabled={loading}
+              disabled={checkLoading}
               type="submit"
               className={`${ProfileStyles.btn} ${ProfileStyles["btn-primary"]}`}
             >
-              {loading ? "loading..." : "Save"}
+              {checkLoading ? "loading..." : "Save"}
             </button>
             <button
               onClick={() => setOpenForm(false)}

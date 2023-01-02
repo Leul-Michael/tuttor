@@ -4,7 +4,7 @@
 
 :root {
   --clr-background: #fff;
-  --clr-background-light: #e8eaed;
+  --clr-background-light: #e4e2e0;
   --clr-border: #aaa;
   --clr-font: #202124;
   --clr-font-light: #282828;
@@ -61,6 +61,7 @@ body {
   background: var(--clr-background);
   font-family: 'Noto Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   transition: background-color .2s ease-out;
+  font-weight: 500;
 }
 
 a {
@@ -294,6 +295,10 @@ button {
 }
 
 @media (max-width: 500px) {
+  .list-item {
+    padding: .5rem 2rem .5rem 1rem;
+  }
+
   .pd {
     padding: 0 1.5rem;
   }
