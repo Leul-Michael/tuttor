@@ -25,11 +25,7 @@ export default function All() {
 
   const mutation = useMutation({
     mutationFn: (deleteJob: { id: string }) => {
-      return axiosInstance.delete(`/jobs/${deleteJob.id}`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
+      return axiosInstance.delete(`/jobs/${deleteJob.id}`)
     },
     onSuccess(data, variables) {
       queryClient.refetchQueries({ queryKey: ["MyJobs"] })
@@ -46,6 +42,7 @@ export default function All() {
       const res = await mutation.mutateAsync({ id: jobId })
       addMessage(res.data?.msg)
     } catch (e: any) {
+      console.log(e)
       addMessage(e.response.data.msg || e.message)
     }
   }
