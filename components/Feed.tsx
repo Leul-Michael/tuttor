@@ -14,8 +14,6 @@ export default function Feed() {
   const [width] = useWindowsWidth()
   const feedRef = useRef<HTMLDivElement>(null)
   const [tabIndex, setTabIndex] = useState(0)
-  // const efffectRun = useRef(false)
-  // const [loading, setLoading] = useState(false)
 
   const changeTabIndex = (x: number) => {
     setTabIndex(x)
@@ -29,30 +27,6 @@ export default function Feed() {
       return res.data
     },
   })
-
-  // useEffect(() => {
-  //   const controller = new AbortController()
-
-  //   if (efffectRun.current === true) {
-  //     const getRecommendedFeed = async () => {
-  //       try {
-  //         setLoading(true)
-  //         const res = await axiosInstance.get("/jobs/feed", {
-  //           signal: controller.signal,
-  //         })
-  //         setFeed(res.data)
-  //       } finally {
-  //         setLoading(false)
-  //       }
-  //     }
-  //     getRecommendedFeed()
-  //   }
-
-  //   return () => {
-  //     efffectRun.current = true
-  //     controller.abort()
-  //   }
-  // }, [])
 
   let content
   if (tabIndex === 0) {

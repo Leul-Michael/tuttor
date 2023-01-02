@@ -1,8 +1,26 @@
+import { useRouter } from "next/router"
+import { useState, MouseEvent } from "react"
 import { AiOutlineSearch } from "react-icons/ai"
 import { MdLocationOn } from "react-icons/md"
 import SearchStyles from "../../styles/Search.module.css"
 
 export default function HomeSearch() {
+  const router = useRouter()
+
+  const [title, setTitle] = useState("")
+  const [location, setLocation] = useState("")
+
+  const handleSearch = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    router.push({
+      pathname: "/search",
+      query: {
+        title,
+        location,
+      },
+    })
+  }
+
   return (
     <section className={SearchStyles.container}>
       <div className="container">
@@ -17,6 +35,8 @@ export default function HomeSearch() {
               placeholder="title, keywords"
               id="title"
               name="title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
             />
             <AiOutlineSearch className={SearchStyles.icon} />
           </div>
@@ -28,10 +48,14 @@ export default function HomeSearch() {
               id="location"
               name="location"
               autoComplete="off"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
             />
             <MdLocationOn className={SearchStyles.icon} />
           </div>
-          <button className={`btn btn-primary`}>Find job</button>
+          <button onClick={handleSearch} className={`btn btn-primary`}>
+            Find job
+          </button>
         </div>
       </div>
     </section>

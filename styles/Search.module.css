@@ -30,6 +30,7 @@
     padding-inline: 1rem;
     border-radius: 8px;
     flex-grow: 1;
+    max-width: 400px;
 }
 
 .input-box input {

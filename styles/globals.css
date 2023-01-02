@@ -101,6 +101,10 @@ button {
   width: min(100%, 900px);
 }
 
+.pd {
+  padding: 0 2rem;
+}
+
 .main-title {
   font-size: 3rem;
 }
@@ -290,6 +294,10 @@ button {
 }
 
 @media (max-width: 500px) {
+  .pd {
+    padding: 0 1.5rem;
+  }
+
   .tip {
     grid-template-columns: 1fr;
     gap: 1rem;
