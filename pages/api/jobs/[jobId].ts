@@ -29,21 +29,26 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     // Connect to DB
     await connectDB()
 
-    const job = await Job.findById(jobId).populate("user")
+    let job
+    try {
+      job = await Job.findById(jobId)
 
-    if (!job) {
-      return res.status(400).json({ msg: "Job not found." })
+      if (job.user.toString() !== id) {
+        return res
+          .status(401)
+          .json({ msg: "You're not allowed to perform this action." })
+      }
+
+      await job.remove()
+
+      return res.status(200).json({ msg: "Job deleted successfully." })
+    } catch (e) {
+      if (!job) {
+        return res.status(400).json({ msg: "Job not found." })
+      } else {
+        return res.status(500).json({ msg: "Something went wrong, try again." })
+      }
     }
-
-    if (job.user.id !== id) {
-      return res
-        .status(401)
-        .json({ msg: "You're not allowed to perform this action." })
-    }
-
-    await job.remove()
-
-    return res.status(200).json({ msg: "Job deleted successfully." })
   }
 }
 
