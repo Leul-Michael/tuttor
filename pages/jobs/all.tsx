@@ -27,8 +27,8 @@ export default function All() {
     e: MouseEvent<HTMLButtonElement>,
     jobId: string
   ) => {
-    e.preventDefault()
     e.stopPropagation()
+    e.preventDefault()
     try {
       const res = await axiosInstance.delete(`/jobs/${jobId}`)
       addMessage(res.data?.msg)
