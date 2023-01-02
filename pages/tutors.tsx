@@ -1,7 +1,7 @@
 import Head from "next/head"
 import TutorStyles from "../styles/Tutor.module.css"
 import TutorExcerpt from "../components/TutorExcerpt"
-import TutorSearch from "../components/TutorSearch"
+import TutorSearch from "../components/Search/TutorSearch"
 
 export default function tutors() {
   return (
@@ -16,11 +16,6 @@ export default function tutors() {
       <div className={`container ${TutorStyles.tuttors}`}>
         <p className={TutorStyles.results}>200 results found</p>
         <div className={`${TutorStyles["tutor-grid"]}`}>
-          <TutorExcerpt />
-          <TutorExcerpt />
-          <TutorExcerpt />
-          <TutorExcerpt />
-          <TutorExcerpt />
           <TutorExcerpt />
         </div>
       </div>
