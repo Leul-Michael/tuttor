@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { GetServerSideProps } from "next"
 import { getSession } from "next-auth/react"
 import Link from "next/link"
-import React, { FormEvent } from "react"
+import { MouseEvent } from "react"
 import { FiPlusCircle } from "react-icons/fi"
 import { TbPoint } from "react-icons/tb"
 import axiosInstance from "../../axios/axios"
@@ -33,7 +33,7 @@ export default function All() {
   })
 
   const removeSelected = async (
-    e: FormEvent<HTMLButtonElement>,
+    e: MouseEvent<HTMLButtonElement>,
     jobId: string
   ) => {
     e.stopPropagation()
