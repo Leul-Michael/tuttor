@@ -263,7 +263,7 @@
 .create-job__input-box label,
 .create-job__select label {
     color: var(--clr-font-light);
-    font-weight: 600;
+    font-weight: 500;
 }
 
 .create-job__input-box label span,
@@ -314,7 +314,7 @@
     padding: .7rem 1.25rem;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 1rem;
+    font-size: .8rem;
     color: var(--clr-font-light);
     align-self: flex-start;
 }
@@ -543,12 +543,12 @@
 .apply-job .desc-text {
     font-size: 1rem;
     padding-bottom: 2rem;
+    font-weight: 500;
 }
 
 .desc-text a {
     color: var(--clr-accent);
 }
-
 
 @media (max-width: 768px) {
 

@@ -57,6 +57,7 @@
 
 .link a {
     padding: .25rem;
+    font-weight: 500;
 }
 
 .link::after {
