@@ -61,7 +61,6 @@ body {
   background: var(--clr-background);
   font-family: 'Noto Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   transition: background-color .2s ease-out;
-  font-weight: 500;
 }
 
 a {
@@ -239,8 +238,7 @@ button {
 }
 
 .tip p {
-  font-size: 1rem;
-  font-weight: 400;
+  font-size: .9rem;
   color: var(--clr-font-light);
 }
 

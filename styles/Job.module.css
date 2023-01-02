@@ -35,7 +35,7 @@
 
 .desc {
     color: var(--clr-font-light-secondary);
-    font-size: .8rem;
+    font-size: .9rem;
 }
 
 .ptxt {
@@ -104,17 +104,17 @@
 .location,
 .posted {
     color: var(--clr-font-light-secondary);
-    font-size: .8rem;
+    font-size: .9rem;
     padding: .25rem 0;
 }
 
 .posted {
-    font-size: .75rem;
+    font-size: .85rem;
     padding-top: 1rem;
 }
 
 .type {
-    font-size: .9rem;
+    font-size: 1rem;
     font-weight: 500;
 }
 
@@ -139,9 +139,10 @@
     display: inline-block;
     padding: .5rem 1rem;
     background-color: var(--clr-background-light);
+    color: var(--clr-font-light);
     border-radius: 4px;
     align-self: flex-start;
-    font-size: .9rem;
+    font-size: 1rem;
 }
 
 .requirements {
@@ -168,7 +169,7 @@
 
 .requirement p {
     color: var(--clr-font-light-secondary);
-    font-size: .8rem;
+    font-size: .9rem;
     line-height: 1.2;
 }
 
@@ -215,7 +216,7 @@
     padding: 4rem;
     border-radius: 4px;
     margin: 0 auto;
-    font-size: .9rem;
+    font-size: 1rem;
     border: 1px solid var(--clr-background-light);
 }
 
@@ -272,7 +273,7 @@
 
 .create-job__input-box>span,
 .create-job__select span {
-    font-size: .8rem;
+    font-size: .85rem;
     color: var(--clr-font-light-secondary);
     font-weight: 500;
 }
@@ -282,7 +283,7 @@
     padding: 1rem 0.25rem;
     border-bottom: 1px solid var(--clr-background-light);
     border-radius: 3px;
-    font-size: .9rem;
+    font-size: 1rem;
 }
 
 .create-job__input-box textarea {
@@ -313,7 +314,7 @@
     padding: .7rem 1.25rem;
     border-radius: 4px;
     cursor: pointer;
-    font-size: .9rem;
+    font-size: 1rem;
     color: var(--clr-font-light);
     align-self: flex-start;
 }
