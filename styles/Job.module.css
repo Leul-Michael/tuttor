@@ -201,7 +201,6 @@
 /* New job post paage */
 .create-job {
     padding: 3rem 0;
-    background-color: var(--clr-background-light);
 }
 
 .create-job p {
@@ -217,7 +216,7 @@
     border-radius: 4px;
     margin: 0 auto;
     font-size: .9rem;
-    background-color: var(--clr-background);
+    border: 1px solid var(--clr-background-light);
 }
 
 .clr-accent {
@@ -527,7 +526,7 @@
 /* Apply Job Page */
 .apply-job {
     background-color: var(--clr-background);
-    padding: 5rem 0;
+    padding: 5rem 2rem;
 }
 
 .apply-job .create-job__container {
@@ -551,9 +550,6 @@
 
 
 @media (max-width: 768px) {
-    .create-job {
-        background-color: var(--clr-background);
-    }
 
     .view-job,
     .all-jobs__container,
@@ -567,6 +563,7 @@
 
     .create-job__form {
         padding: 2rem 0;
+        border: 0;
     }
 
     .create-job__input-box,
