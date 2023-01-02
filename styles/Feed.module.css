@@ -74,19 +74,19 @@
 }
 
 .result-p {
-    font-size: .8rem;
+    font-size: .9rem;
     color: var(--clr-font-light);
     text-align: center;
 }
 
 @media (max-width: 768px) {
     .flex-btns {
-        --btn-width: 150px;
+        --btn-width: 160px;
     }
 }
 
 @media (max-width: 500px) {
     .flex-btns button {
-        font-size: .9rem;
+        font-size: 1.1rem;
     }
 }
