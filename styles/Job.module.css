@@ -494,6 +494,9 @@
 
 .view-job p {
     font-size: .9rem;
+}
+
+.view-job .requirement .type {
     color: var(--clr-font-light);
 }
 
