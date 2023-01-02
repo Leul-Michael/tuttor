@@ -36,8 +36,8 @@ export default function All() {
     e: MouseEvent<HTMLButtonElement>,
     jobId: string
   ) => {
-    e.stopPropagation()
     e.preventDefault()
+    e.stopPropagation()
     try {
       const res = await mutation.mutateAsync({ id: jobId })
       addMessage(res.data?.msg)
