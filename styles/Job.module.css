@@ -602,6 +602,20 @@
         margin: 0;
     }
 
+    .add-form {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+
+    .add-form input {
+        min-width: 250px;
+    }
+
+    .buttons-flex {
+        padding-left: 0;
+    }
+
     .recent {
         width: 250px;
     }
