@@ -2,7 +2,7 @@ import { useState } from "react"
 import { AiOutlineSearch } from "react-icons/ai"
 import { MdLocationOn } from "react-icons/md"
 import SearchStyles from "../../styles/Search.module.css"
-import SelectCheckbox, { Option } from "../Select/SelectCheckbox"
+import SelectCheckbox, { Option } from "../../components/Select/SelectCheckbox"
 
 const CategoriyOptions = [
   { key: 1, value: "Home" },
@@ -21,7 +21,7 @@ const PriceOptions = [
   { key: 3, value: "500+/hr" },
 ]
 
-export default function MobileSearch() {
+export default function Search() {
   const [values, setValues] = useState<Option[]>(CategoriyOptions)
   const [levels, setLevels] = useState<Option[]>(LevelOptions)
   const [price, setPrice] = useState<Option[]>(PriceOptions)
@@ -60,9 +60,6 @@ export default function MobileSearch() {
   return (
     <section className={SearchStyles.container}>
       <div className="container">
-        <h1 className="font-serif main-title">
-          Find the best Tutoring Job for you.
-        </h1>
         <div className={SearchStyles["search-container"]}>
           <div className={SearchStyles["input-box"]}>
             <label htmlFor="title">What</label>
