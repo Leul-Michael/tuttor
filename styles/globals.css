@@ -239,7 +239,7 @@ button {
 }
 
 .tip p {
-  font-size: .8rem;
+  font-size: 1rem;
   font-weight: 400;
   color: var(--clr-font-light);
 }
