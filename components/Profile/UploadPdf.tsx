@@ -101,6 +101,10 @@ export default function UploadPdf({
 
   const selectPdf: ChangeEventHandler<HTMLInputElement> = (e) => {
     if (e.target.files == null) return
+
+    if (e.target.files[0].type !== "application/pdf")
+      return addMessage("Please select a pdf file!")
+
     const fileSizeInKb = Math.round(e.target.files[0].size / 1024)
 
     if (fileSizeInKb > 1024) {
