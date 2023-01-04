@@ -9,12 +9,14 @@ import axiosInstance from "../../axios/axios"
 import useToast from "../../context/ToastContext"
 import app from "../../configs/firebase"
 import { deleteObject, getStorage, ref } from "firebase/storage"
+import Spinner from "../Spinner"
 
 export default function Resume() {
   const storage = getStorage(app)
 
   const { addMessage } = useToast()
   const [openUpload, setOpenUpload] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const { data, isFetching, isRefetching, isLoading, refetch } = useQuery({
     queryKey: ["resume"],
@@ -32,6 +34,7 @@ export default function Resume() {
     const pdfRef = ref(storage, data)
     deleteObject(pdfRef)
       .then(async () => {
+        setLoading(true)
         try {
           const res = await axiosInstance.delete("/profile/resume")
           addMessage(res.data.msg)
@@ -44,7 +47,12 @@ export default function Resume() {
         console.log(e)
         addMessage("Failed to remove pdf, try again!")
       })
+      .finally(() => {
+        setLoading(false)
+      })
   }
+
+  const checkLoading = isLoading || isRefetching || isFetching || loading
 
   return (
     <div className={`${ProfileStyles.portion}`}>
@@ -52,46 +60,50 @@ export default function Resume() {
         <UploadPdf refetch={refetch} setOpenUpload={setOpenUpload} />
       )}
       <p className={`font-serif ${ProfileStyles.title}`}>Resume</p>
-      {data ? (
-        <>
-          <a
-            className={ProfileStyles["current-pdf"]}
-            target="_blank"
-            href={data}
-            rel="noopener noreferrer"
+      <div className={`p-relative n-left ${ProfileStyles["pdf-portion"]}`}>
+        {checkLoading ? (
+          <Spinner />
+        ) : data ? (
+          <>
+            <a
+              className={ProfileStyles["current-pdf"]}
+              target="_blank"
+              href={data}
+              rel="noopener noreferrer"
+            >
+              <VscFilePdf
+                title="your resume"
+                className={ProfileStyles["pdf-icon"]}
+              />
+            </a>
+            <div className={ProfileStyles["buttons-flex"]}>
+              <button
+                onClick={() => setOpenUpload((prev) => !prev)}
+                className={`${ProfileStyles[`btn-profile`]} ${
+                  ProfileStyles["btn-sm"]
+                }`}
+              >
+                <FiPlusCircle className={ProfileStyles.icon} />
+              </button>
+              <button
+                onClick={removeResume}
+                className={`${ProfileStyles[`btn-profile`]} ${
+                  ProfileStyles["btn-sm"]
+                } ${ProfileStyles["btn-danger"]}`}
+              >
+                <MdDeleteForever className={ProfileStyles.icon} />
+              </button>
+            </div>
+          </>
+        ) : (
+          <button
+            onClick={() => setOpenUpload((prev) => !prev)}
+            className={ProfileStyles[`btn-profile`]}
           >
-            <VscFilePdf
-              title="your resume"
-              className={ProfileStyles["pdf-icon"]}
-            />
-          </a>
-          <div className={ProfileStyles["buttons-flex"]}>
-            <button
-              onClick={() => setOpenUpload((prev) => !prev)}
-              className={`${ProfileStyles[`btn-profile`]} ${
-                ProfileStyles["btn-sm"]
-              }`}
-            >
-              <FiPlusCircle className={ProfileStyles.icon} />
-            </button>
-            <button
-              onClick={removeResume}
-              className={`${ProfileStyles[`btn-profile`]} ${
-                ProfileStyles["btn-sm"]
-              } ${ProfileStyles["btn-danger"]}`}
-            >
-              <MdDeleteForever className={ProfileStyles.icon} />
-            </button>
-          </div>
-        </>
-      ) : (
-        <button
-          onClick={() => setOpenUpload((prev) => !prev)}
-          className={ProfileStyles[`btn-profile`]}
-        >
-          <FiPlusCircle className={ProfileStyles.icon} /> Attach Resume
-        </button>
-      )}
+            <FiPlusCircle className={ProfileStyles.icon} /> Attach Resume
+          </button>
+        )}
+      </div>
     </div>
   )
 }

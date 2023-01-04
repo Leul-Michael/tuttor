@@ -385,6 +385,11 @@
     color: var(--clr-accent);
 }
 
+.pdf-portion {
+    height: 100%;
+    min-height: 50px;
+}
+
 @media (max-width: 768px) {
     .main {
         padding: 2rem;
