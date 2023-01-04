@@ -381,7 +381,7 @@
     margin-bottom: 1rem;
 }
 
-.pdf-icon {
+.current-pdf .pdf-icon {
     color: var(--clr-accent);
 }
 
@@ -413,6 +413,6 @@
 
 @media (max-width: 768px) {
     .resume {
-        border: none;
+        border-color: var(--clr-background-light);
     }
 }
