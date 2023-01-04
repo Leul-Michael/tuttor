@@ -51,7 +51,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
       await user.save()
 
-      return res.status(201).json({ msg: "Resume updated successfully!" })
+      return res.status(201).json({ msg: "Resume deleted successfully!" })
     } catch {
       return res.status(500).json({ msg: "Something went wrong!" })
     }
