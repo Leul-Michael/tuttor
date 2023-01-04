@@ -146,7 +146,8 @@
 }
 
 .btn:hover,
-.btn-profile:hover {
+.btn-profile:hover,
+.resume-input-box label button:hover {
     color: var(--clr-accent);
     background: var(--clr-btn-hover);
 }
@@ -159,6 +160,18 @@
 .icon {
     margin-right: 1rem;
     font-size: 1rem;
+}
+
+.btn-sm {
+    padding: .75rem 1.5rem;
+}
+
+.btn-sm .icon {
+    margin-right: 0;
+}
+
+.btn-danger {
+    border-color: var(--clr-red);
 }
 
 /* Subjects List */
@@ -241,7 +254,7 @@
 
 .resume-input-box {
     width: 100%;
-    height: 100px;
+    height: 120px;
     border: 1px dashed var(--clr-border);
     border-radius: 4px;
     margin: .5rem 0 .25rem;
@@ -260,10 +273,18 @@
     height: 100%;
 }
 
-.resume-input-box label span {
+.resume-input-box label button {
+    display: inline-block;
+    padding: .5rem .75rem;
+    border: 1px solid var(--clr-background-light);
+    border-radius: 2px;
     font-size: .8rem;
-    padding-top: .5rem;
-    color: var(--clr-accent);
+    margin-top: .5rem;
+    color: var(--clr-font);
+    cursor: pointer;
+    outline: none;
+    overflow-x: hidden;
+    max-width: 95%;
 }
 
 .pdf-icon {
@@ -275,12 +296,35 @@
     border-radius: 4px;
     margin: .5rem 0 .25rem;
     width: 100%;
+    opacity: 0;
+    height: 0px;
+    transition: all .3s ease-out;
+}
+
+
+.progress.show {
     height: 80px;
     padding: 1rem;
+    opacity: 1;
+}
+
+.progress.complete {
+    height: 48px;
 }
 
 .progress p {
     font-size: .7rem;
+}
+
+.progress .completed {
+    display: flex;
+    align-items: center;
+}
+
+.progress .completed svg {
+    font-size: 1.2rem;
+    margin-right: .5rem;
+    color: var(--clr-accent);
 }
 
 .progress-details {
@@ -291,11 +335,25 @@
 }
 
 .progess-bar {
+    position: relative;
     width: 100%;
     flex-grow: 1;
     height: 4px;
-    background-color: red;
+    background-color: var(--clr-btn-hover);
     border-radius: 100vw;
+    transition: all .3s ease-out;
+}
+
+.progess-bar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: var(--progess-width, 0);
+    height: 100%;
+    background-color: var(--clr-logo);
+    border-radius: inherit;
+    transition: all .3s ease-out;
 }
 
 .progress-buttons {
@@ -308,6 +366,23 @@
     font-size: 1.5rem;
     cursor: pointer;
     stroke-width: 1px;
+}
+
+.play {
+    color: var(--clr-select-accent);
+}
+
+.close {
+    color: var(--clr-red);
+}
+
+.current-pdf {
+    align-self: flex-start;
+    margin-bottom: 1rem;
+}
+
+.pdf-icon {
+    color: var(--clr-accent);
 }
 
 @media (max-width: 768px) {
