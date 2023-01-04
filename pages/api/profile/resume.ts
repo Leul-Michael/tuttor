@@ -26,13 +26,17 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     // Connect to DB
     await connectDB()
 
-    const user = await User.findById(session?.user.id).select("resume")
+    try {
+      const user = await User.findById(session?.user.id).select("resume")
 
-    user.resume = resume
+      user.resume = resume
 
-    await user.save()
+      await user.save()
 
-    return res.status(201).json({ msg: "Resume updated successfully!" })
+      return res.status(201).json({ msg: "Resume updated successfully!" })
+    } catch {
+      return res.status(500).json({ msg: "Something went wrong!" })
+    }
   }
 
   if (req.method === "DELETE") {
@@ -40,13 +44,17 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     // Connect to DB
     await connectDB()
 
-    const user = await User.findById(id).select("resume")
+    try {
+      const user = await User.findById(id).select("resume")
 
-    user.resume = ""
+      user.resume = ""
 
-    await user.save()
+      await user.save()
 
-    return res.status(200).json({ msg: "Resume removed successfully!" })
+      return res.status(201).json({ msg: "Resume updated successfully!" })
+    } catch {
+      return res.status(500).json({ msg: "Something went wrong!" })
+    }
   }
 }
 
