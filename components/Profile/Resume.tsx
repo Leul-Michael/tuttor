@@ -31,25 +31,20 @@ export default function Resume() {
 
     if (!data) return
 
-    const pdfRef = ref(storage, data)
-    deleteObject(pdfRef)
-      .then(async () => {
-        setLoading(true)
-        try {
-          const res = await axiosInstance.delete("/profile/resume")
-          addMessage(res.data.msg)
-          refetch()
-        } catch {
-          addMessage("Failed to remove pdf, try again!")
-        }
-      })
-      .catch((e) => {
-        console.log(e)
-        addMessage("Failed to remove pdf, try again!")
-      })
-      .finally(() => {
-        setLoading(false)
-      })
+    try {
+      setLoading(true)
+      const pdfRef = ref(storage, data)
+
+      await deleteObject(pdfRef)
+      const res = await axiosInstance.delete("/profile/resume")
+      addMessage(res.data.msg)
+      refetch()
+    } catch (e) {
+      console.log(e)
+      addMessage("Failed to remove pdf, try again!")
+    } finally {
+      setLoading(false)
+    }
   }
 
   const checkLoading = isLoading || isRefetching || isFetching || loading
