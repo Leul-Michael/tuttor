@@ -100,6 +100,7 @@ export default function ResetPasswordForm({
             id="currentPwd"
             value={currentPassword}
             onChange={(e) => setCurrentPassword(e.target.value)}
+            required
           />
         </div>
         <div className={ProfileStyles["input-box-flex"]}>
@@ -110,6 +111,7 @@ export default function ResetPasswordForm({
             id="newPwd"
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
+            required
           />
         </div>
         <div className={ProfileStyles["input-box-flex"]}>
@@ -120,6 +122,7 @@ export default function ResetPasswordForm({
             id="confirmPwd"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
+            required
           />
         </div>
         <button

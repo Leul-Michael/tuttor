@@ -133,6 +133,14 @@ button {
   opacity: .9;
 }
 
+.text-sm {
+  font-size: .9rem;
+}
+
+.text-light {
+  color: var(--clr-font-light-secondary);
+}
+
 .theme {
   position: relative;
   display: flex;
@@ -210,6 +218,10 @@ button {
   width: 20px;
   height: 20px;
   top: 30%;
+}
+
+.ld-center .loadingSpinner {
+  transform: translateX(-50%);
 }
 
 .n-left .loadingSpinner {

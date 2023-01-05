@@ -409,7 +409,8 @@
     transform: translate(-50%, 0%);
 }
 
-.change-password-modal .add-form label {
+.change-password-modal .add-form label,
+.resume .add-form label {
     font-size: .8rem;
 }
 
@@ -417,11 +418,13 @@
     padding-top: 1.25rem;
 }
 
-.reset-pwd-form .input-box-flex {
+.reset-pwd-form .input-box-flex,
+.delete-acc-form .input-box-flex {
     gap: 0;
 }
 
-.reset-pwd-form input {
+.reset-pwd-form input,
+.delete-acc-form input {
     height: 40px;
 }
 
@@ -430,7 +433,19 @@
     align-self: stretch;
     text-transform: uppercase;
     padding-block: 1rem;
+}
+
+.reset-pwd-form .btn,
+.buttons-sm {
     min-height: 50px;
+}
+
+.delete-acc-form .btn {
+    padding-block: .75rem;
+}
+
+.p-top {
+    padding-top: 1rem;
 }
 
 @media (max-width: 768px) {
