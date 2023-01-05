@@ -1,15 +1,17 @@
 import Image from "next/image"
-import { FaStar } from "react-icons/fa"
+import { IUser } from "../models/User"
 import TutorStyles from "../styles/Tutor.module.css"
 
-export default function TutorExcerpt() {
+export default function TutorExcerpt({ user }: { user: IUser }) {
   return (
     <article tabIndex={0} className={TutorStyles.tuttor}>
       <div className={TutorStyles.header}>
-        <h1 className="font-serif">Leul Michael</h1>
-        <div className={TutorStyles.price}>300 / hr</div>
+        <h1 className="font-serif">{user?.name}</h1>
+        <div className={TutorStyles.price}>{user?.price} / hr</div>
       </div>
-      <p className={TutorStyles.location}>Gerji, Addis Ababa</p>
+      <p className={TutorStyles.location}>
+        {user?.location ? user.location : "Unknown"}
+      </p>
       <p className={TutorStyles.reviews}>
         <Image
           className={TutorStyles.icon}
@@ -18,12 +20,10 @@ export default function TutorExcerpt() {
           width={16}
           height={14}
         />{" "}
-        9 reviews
+        N/A
       </p>
       <p className={TutorStyles.type}>
-        Were looking for cannabis professionals (e.g. dispensary / cultivation
-        staff) to create videos reviews of their favorite strains and products,
-        and answer common questions. No video editing experience required.
+        {user?.bio ? user.bio : "No description"}
       </p>
     </article>
   )

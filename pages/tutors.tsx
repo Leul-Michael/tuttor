@@ -2,8 +2,19 @@ import Head from "next/head"
 import TutorStyles from "../styles/Tutor.module.css"
 import TutorExcerpt from "../components/TutorExcerpt"
 import TutorSearch from "../components/Search/TutorSearch"
+import { useQuery } from "@tanstack/react-query"
+import axiosInstance from "../axios/axios"
+import { IUser } from "../models/User"
+import TutorExcerptSkeleton from "../components/Skeleton/TutorExcerptSkeleton"
 
-export default function tutors() {
+export default function Tutors() {
+  const { data, isLoading } = useQuery({
+    queryKey: ["tutors"],
+    queryFn: async () => {
+      const res = await axiosInstance.get("/tutor")
+      return res.data
+    },
+  })
   return (
     <>
       <Head>
@@ -14,9 +25,19 @@ export default function tutors() {
       </Head>
       <TutorSearch />
       <div className={`container ${TutorStyles.tuttors}`}>
-        <p className={TutorStyles.results}>200 results found</p>
+        <p className={TutorStyles.results}>{data?.length} results found</p>
         <div className={`${TutorStyles["tutor-grid"]}`}>
-          <TutorExcerpt />
+          {isLoading ? (
+            <>
+              <TutorExcerptSkeleton /> <TutorExcerptSkeleton />{" "}
+              <TutorExcerptSkeleton /> <TutorExcerptSkeleton />{" "}
+              <TutorExcerptSkeleton /> <TutorExcerptSkeleton />
+            </>
+          ) : (
+            data?.map((user: IUser) => (
+              <TutorExcerpt key={user._id} user={user} />
+            ))
+          )}
         </div>
       </div>
     </>
