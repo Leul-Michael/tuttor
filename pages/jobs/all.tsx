@@ -64,7 +64,7 @@ export default function All() {
               <MyJobSkeleton />
               <MyJobSkeleton />
             </>
-          ) : (
+          ) : data?.length ? (
             data?.map((job: JobType) => (
               <Link
                 href={`/jobs/[id]`}
@@ -101,6 +101,8 @@ export default function All() {
                 <TimeAgo timestamp={job.createdAt} />
               </Link>
             ))
+          ) : (
+            <p className="text-light">No available jobs to show here!</p>
           )}
         </ul>
       </div>
