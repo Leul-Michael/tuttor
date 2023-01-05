@@ -177,6 +177,7 @@
 
 .btn-danger {
     background-color: var(--clr-red);
+    color: var(--clr-white);
 }
 
 .btn-danger:hover {
