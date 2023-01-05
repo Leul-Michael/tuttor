@@ -2,9 +2,8 @@ import { createContext, ReactElement, useContext, useState } from "react"
 
 interface ToastContextProps {
   message: string
-  addMessage: (msg: string) => void
+  addMessage: (msg: string, link?: string) => void
   redirectLink?: string
-  addRedirectLink: (link: string) => void
 }
 
 const ToastContext = createContext({} as ToastContextProps)
@@ -17,17 +16,13 @@ export function ToastContextProvider({ children }: { children: ReactElement }) {
   const [message, setMessage] = useState("")
   const [redirectLink, setRedirectLink] = useState("")
 
-  function addMessage(msg: string) {
+  function addMessage(msg: string, link?: string) {
     setMessage(msg)
-  }
-  function addRedirectLink(link: string) {
-    setRedirectLink(link)
+    link ? setRedirectLink(link) : setRedirectLink("")
   }
 
   return (
-    <ToastContext.Provider
-      value={{ message, addMessage, redirectLink, addRedirectLink }}
-    >
+    <ToastContext.Provider value={{ message, addMessage, redirectLink }}>
       {children}
     </ToastContext.Provider>
   )

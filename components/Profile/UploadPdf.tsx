@@ -9,17 +9,14 @@ import {
 import ProfileStyles from "../../styles/Profile.module.css"
 import { BsFillFileEarmarkPdfFill } from "react-icons/bs"
 import { MdOutlineClose } from "react-icons/md"
-import {
-  AiOutlinePauseCircle,
-  AiOutlineCloseCircle,
-  AiOutlinePlayCircle,
-  AiOutlineCheckCircle,
-} from "react-icons/ai"
+import { AiOutlineCloseCircle, AiOutlineCheckCircle } from "react-icons/ai"
 import {
   getStorage,
   ref,
   uploadBytesResumable,
   getDownloadURL,
+  UploadTask,
+  deleteObject,
 } from "firebase/storage"
 import app from "../../configs/firebase"
 import axiosInstance from "../../axios/axios"
@@ -33,35 +30,46 @@ import {
 export default function UploadPdf({
   setOpenUpload,
   refetch,
+  data,
 }: {
   setOpenUpload: Dispatch<SetStateAction<boolean>>
   refetch: <TPageData>(
     options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined
   ) => Promise<QueryObserverResult<any, unknown>>
+  data: any
 }) {
   const storage = getStorage(app)
-  const { addMessage, addRedirectLink } = useToast()
+  const { addMessage } = useToast()
 
+  const uploadTaskRef = useRef<UploadTask>()
   const progressRef = useRef<HTMLDivElement>(null)
   const [progessPercent, setProgressPercent] = useState(0)
   const [isUpload, setIsUpload] = useState(false)
+  const [cancel, setCancel] = useState(false)
   const pdfFileRef = useRef<HTMLInputElement>(null)
   const [resume, setResume] = useState<File | null>()
 
-  const handleUpload = (e: MouseEvent<HTMLButtonElement>) => {
+  const handleUpload = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     e.stopPropagation()
 
     if (resume == null) return
 
     setIsUpload(true)
+
+    // Delete the current PDF if any
+    if (data) {
+      const pdfRef = ref(storage, data)
+      await deleteObject(pdfRef)
+    }
+
     const storageRef = ref(storage, `resumes/${resume?.name}`)
 
-    const uploadTask = uploadBytesResumable(storageRef, resume, {
+    uploadTaskRef.current = uploadBytesResumable(storageRef, resume, {
       contentType: resume.type,
     })
 
-    uploadTask.on(
+    uploadTaskRef.current.on(
       "state_changed",
       (snapshot) => {
         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
@@ -76,33 +84,54 @@ export default function UploadPdf({
           }
           setResume(null)
         }
+
+        switch (snapshot.state) {
+          case "canceled":
+            setCancel(true)
+            break
+          default:
+            setCancel(false)
+        }
       },
       (e) => {
-        console.error(e)
-        return
+        console.log(e.message)
+
+        switch (e.code) {
+          case "storage/canceled":
+            setCancel(true)
+            break
+          default:
+            setCancel(false)
+        }
       },
       () => {
-        getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
-          try {
-            const res = await axiosInstance.post("/profile/resume", {
-              resume: downloadURL,
-            })
-            addMessage(res.data.msg)
-            addRedirectLink(downloadURL)
-            refetch()
-          } catch (e) {
-            console.log(e)
-            addMessage("Resume update failed, try again!")
+        if (uploadTaskRef.current?.snapshot?.ref === undefined) return
+        getDownloadURL(uploadTaskRef.current.snapshot.ref).then(
+          async (downloadURL) => {
+            try {
+              const res = await axiosInstance.post("/profile/resume", {
+                resume: downloadURL,
+              })
+              addMessage(res.data.msg, downloadURL)
+              refetch()
+            } catch (e) {
+              console.log(e)
+              addMessage("Resume update failed, try again!")
+            }
           }
-        })
+        )
       }
     )
+  }
+
+  const onCancel = () => {
+    uploadTaskRef.current?.cancel()
   }
 
   const selectPdf: ChangeEventHandler<HTMLInputElement> = (e) => {
     if (e.target.files == null) return
 
-    if (e.target.files[0].type !== "application/pdf")
+    if (e.target.files[0]?.type !== "application/pdf")
       return addMessage("Please select a pdf file!")
 
     const fileSizeInKb = Math.round(e.target.files[0].size / 1024)
@@ -148,10 +177,10 @@ export default function UploadPdf({
       </div>
       <div
         className={`${ProfileStyles.progress} ${
-          isUpload ? ProfileStyles.show : ""
-        } ${progessPercent === 100 ? ProfileStyles.complete : ""}`}
+          isUpload && !cancel ? ProfileStyles.show : ""
+        } ${progessPercent === 100 && !cancel ? ProfileStyles.complete : ""}`}
       >
-        {progessPercent < 100 ? (
+        {progessPercent < 100 && !cancel ? (
           <>
             <p>Uploading...</p>
             <div className={ProfileStyles["progress-details"]}>
@@ -160,24 +189,20 @@ export default function UploadPdf({
                 className={ProfileStyles["progess-bar"]}
               ></div>
               <div className={ProfileStyles["progress-buttons"]}>
-                {/* <AiOutlinePlayCircle title="Play" className={ProfileStyles.play} /> */}
-                <AiOutlinePauseCircle
-                  title="Pause"
-                  className={ProfileStyles.play}
-                />
                 <AiOutlineCloseCircle
+                  onClick={onCancel}
                   title="Cancle"
                   className={ProfileStyles.close}
                 />
               </div>
             </div>
           </>
-        ) : (
+        ) : progessPercent === 100 && !cancel ? (
           <div className={ProfileStyles.completed}>
             <AiOutlineCheckCircle className={ProfileStyles.play} />{" "}
             <p>Completed</p>
           </div>
-        )}
+        ) : null}
       </div>
     </article>
   )

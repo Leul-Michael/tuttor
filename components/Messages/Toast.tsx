@@ -7,7 +7,7 @@ import { useRouter } from "next/router"
 
 export default function Toast() {
   const router = useRouter()
-  const { message, addMessage, redirectLink, addRedirectLink } = useToast()
+  const { message, addMessage, redirectLink } = useToast()
   const [isOpen, setIsOpen] = useState(false)
 
   useEffect(() => {
@@ -19,9 +19,6 @@ export default function Toast() {
   const resetTostState = () => {
     setIsOpen(false)
     addMessage("")
-    if (redirectLink) {
-      addRedirectLink("")
-    }
   }
 
   const onRedirect = () => {

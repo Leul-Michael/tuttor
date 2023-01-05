@@ -31,7 +31,7 @@ const TUTTOR_TYPE = [
 ]
 
 export default function Create({ user }: { user: IUser }) {
-  const { addMessage, addRedirectLink } = useToast()
+  const { addMessage } = useToast()
   const [loading, setLoading] = useState(false)
   const [numberOfStudents, setNumberOfStudents] = useState(
     NUMBER_OF_STUDENTS[0]
@@ -116,8 +116,7 @@ export default function Create({ user }: { user: IUser }) {
         schedule: days,
       })
 
-      addMessage(res.data.msg)
-      addRedirectLink(`/jobs/${res.data.id}`)
+      addMessage(res.data.msg, `/jobs/${res.data.id}`)
       resetFormValues()
     } catch (e: any) {
       console.log(e)

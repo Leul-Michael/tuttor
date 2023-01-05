@@ -52,7 +52,11 @@ export default function Resume() {
   return (
     <div className={`${ProfileStyles.portion}`}>
       {openUpload && (
-        <UploadPdf refetch={refetch} setOpenUpload={setOpenUpload} />
+        <UploadPdf
+          refetch={refetch}
+          setOpenUpload={setOpenUpload}
+          data={data}
+        />
       )}
       <p className={`font-serif ${ProfileStyles.title}`}>Resume</p>
       <div className={`p-relative n-left ${ProfileStyles["pdf-portion"]}`}>
