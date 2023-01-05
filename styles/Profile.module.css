@@ -170,8 +170,17 @@
     margin-right: 0;
 }
 
+.btn-danger-light,
 .btn-danger {
     border-color: var(--clr-red);
+}
+
+.btn-danger {
+    background-color: var(--clr-red);
+}
+
+.btn-danger:hover {
+    color: var(--clr-red);
 }
 
 /* Subjects List */
@@ -216,20 +225,24 @@
 }
 
 /* Resume Modal */
-.resume {
+.resume,
+.change-password-modal {
     position: fixed;
     width: 100%;
     min-width: 300px;
     max-width: 450px;
     height: auto;
     background-color: var(--clr-background);
-    border-radius: 8px;
-    z-index: 100;
-    left: 50%;
-    top: 50%;
     transform: translate(-50%, -50%);
     border: 1px solid var(--clr-border);
     padding: 1.5rem;
+    border-radius: 8px;
+    z-index: 100;
+}
+
+.resume {
+    left: 50%;
+    top: 50%;
 }
 
 .resume-header {
@@ -387,6 +400,36 @@
 
 .pdf-portion {
     height: 100%;
+    min-height: 50px;
+}
+
+.change-password-modal {
+    top: 15%;
+    left: 50%;
+    transform: translate(-50%, 0%);
+}
+
+.change-password-modal .add-form label {
+    font-size: .8rem;
+}
+
+.reset-pwd-form {
+    padding-top: 1rem;
+}
+
+.reset-pwd-form .input-box-flex {
+    gap: 0;
+}
+
+.reset-pwd-form input {
+    height: 40px;
+}
+
+.reset-pwd-form .btn {
+    margin-top: 1rem;
+    align-self: stretch;
+    text-transform: uppercase;
+    padding-block: 1rem;
     min-height: 50px;
 }
 

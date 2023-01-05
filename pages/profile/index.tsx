@@ -10,6 +10,8 @@ import Tip from "../../components/Messages/Tip"
 import { FormEvent, useState } from "react"
 import useToast from "../../context/ToastContext"
 import { ACCOUNT_TYPE } from "../../types"
+import ChangePassword from "../../components/Profile/ChangePassword"
+import Deactivate from "../../components/Profile/Deactivate"
 
 export default function Profile({ user }: { user: IUser }) {
   const { addMessage } = useToast()
@@ -165,6 +167,8 @@ export default function Profile({ user }: { user: IUser }) {
             <Education />
           </>
         )}
+        <ChangePassword />
+        <Deactivate />
       </div>
     </section>
   )

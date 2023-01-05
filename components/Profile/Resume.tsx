@@ -77,6 +77,7 @@ export default function Resume() {
             </a>
             <div className={ProfileStyles["buttons-flex"]}>
               <button
+                title="Update resume"
                 onClick={() => setOpenUpload((prev) => !prev)}
                 className={`${ProfileStyles[`btn-profile`]} ${
                   ProfileStyles["btn-sm"]
@@ -85,10 +86,11 @@ export default function Resume() {
                 <FiPlusCircle className={ProfileStyles.icon} />
               </button>
               <button
+                title="Delete resume"
                 onClick={removeResume}
                 className={`${ProfileStyles[`btn-profile`]} ${
                   ProfileStyles["btn-sm"]
-                } ${ProfileStyles["btn-danger"]}`}
+                } ${ProfileStyles["btn-danger-light"]}`}
               >
                 <MdDeleteForever className={ProfileStyles.icon} />
               </button>
