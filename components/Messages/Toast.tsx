@@ -2,7 +2,6 @@ import { useEffect, useState, useRef, MouseEvent } from "react"
 import ToastStyles from "../../styles/Toast.module.css"
 import { AiOutlineClose } from "react-icons/ai"
 import useToast from "../../context/ToastContext"
-import Link from "next/link"
 import { useRouter } from "next/router"
 
 export default function Toast() {
@@ -16,19 +15,19 @@ export default function Toast() {
     }
   }, [message])
 
-  const resetTostState = () => {
+  const resetToastState = () => {
     setIsOpen(false)
     addMessage("")
   }
 
   const onRedirect = () => {
     if (redirectLink) router.push(redirectLink)
-    resetTostState()
+    resetToastState()
   }
 
   const closeToast = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
-    resetTostState()
+    resetToastState()
   }
 
   return (
