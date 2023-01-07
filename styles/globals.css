@@ -3,6 +3,7 @@
 
 :root {
   --clr-background: #fff;
+  --clr-background-opac: rgb(250, 250, 250);
   --clr-background-light: #e4e2e0;
   --clr-border: #bbb;
   --clr-font: rgb(13, 17, 23);
@@ -29,6 +30,7 @@
 
 .dark-theme {
   --clr-background: rgb(13, 17, 23);
+  --clr-background-opac: rgba(22, 27, 34, 0.2);
   --clr-background-light: rgb(22, 27, 34);
   /* --clr-background: #202124; */
   /* --clr-background-light: #3c4043; */

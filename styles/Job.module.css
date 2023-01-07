@@ -154,7 +154,7 @@
 
 .edu-tag {
     margin-bottom: .5rem;
-    background-color: rgba(22, 27, 34, 0.2);
+    background-color: var(--clr-background-opac);
     font-size: .9rem;
 }
 
