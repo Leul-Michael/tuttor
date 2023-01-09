@@ -52,7 +52,7 @@ export default function JobExcerpt({ job }: { job: JobType }) {
           <p className={`j-desc ${styles.type}`}>
             <IoMdCheckmarkCircleOutline className="desc-icon" /> Requirements
           </p>
-          {job.requirements.map((req, idx) => (
+          {job.requirements.slice(0, 5).map((req, idx) => (
             <div key={idx} className={styles.requirement}>
               <TbPoint className={styles.icon} />
               <p>{req}</p>
