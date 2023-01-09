@@ -52,6 +52,7 @@ const JobSchema = new Schema<IJob>(
           ref: "User",
         },
         desc: String,
+        resume: String,
       },
     ],
   },

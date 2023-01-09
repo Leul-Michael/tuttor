@@ -10,8 +10,10 @@ import Caution from "../../../components/Messages/Caution"
 import { useMutation } from "@tanstack/react-query"
 import axiosInstance from "../../../axios/axios"
 import useToast from "../../../context/ToastContext"
+import { GetServerSideProps } from "next"
 
-export default function Apply() {
+export default function Apply({ resume }: { resume: string }) {
+  const router = useRouter()
   const { addMessage } = useToast()
   const { query, asPath } = useRouter()
   const jobId = query?.id
@@ -21,7 +23,11 @@ export default function Apply() {
   const [desc, setDesc] = useState("")
 
   const mutation = useMutation({
-    mutationFn: (addProposal: { jobId: string; desc: string }) => {
+    mutationFn: (addProposal: {
+      jobId: string
+      desc: string
+      resume: string
+    }) => {
       return axiosInstance.post(`/jobs/proposal/submit`, addProposal)
     },
   })
@@ -29,10 +35,15 @@ export default function Apply() {
   const submitProposal = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     try {
-      const res = await mutation.mutateAsync({ jobId: jobId!.toString(), desc })
+      const res = await mutation.mutateAsync({
+        jobId: jobId!.toString(),
+        desc,
+        resume,
+      })
 
       addMessage(res.data?.msg)
       setDesc("")
+      router.push(`/jobs/${jobId}`)
     } catch (e: any) {
       addMessage(e.response.data.msg || e.message)
     }
@@ -61,45 +72,57 @@ export default function Apply() {
       </>
     )
   } else if (session.data?.user.role === ACCOUNT_TYPE.TUTTOR) {
-    content = (
-      <>
-        <p className={ApplyJobStyles["desc-text"]}>
-          You&#39;re applying for this{" "}
-          <Link href={`/jobs/${jobId}`}>--Job</Link>{" "}
-        </p>
-        <Tip
-          tip="Your resume will be attached when you submit this form, if you would like to change it, go to your profile page."
-          link={{ to: "profile", path: "/profile" }}
-          inside
-        />
-        <div className={ApplyJobStyles["create-job__input-box"]}>
-          <label htmlFor="desc">
-            Description <span>*</span>
-          </label>
-          <span>Describe why you&#39;re the best candidate for the job.</span>
-          <textarea
-            name="desc"
-            id="desc"
-            placeholder="description..."
-            maxLength={300}
-            value={desc}
-            onChange={(e) => setDesc(e.target.value)}
-            required
-          ></textarea>
-        </div>
-        <button
-          disabled={mutation.isLoading}
-          type="submit"
-          className={`p-relative ${
-            mutation.isLoading
-              ? `${ApplyJobStyles["loading-btn"]} ${ApplyJobStyles["apply-btn"]}`
-              : ""
-          } ${ApplyJobStyles.btn} ${ApplyJobStyles["btn-primary"]}`}
-        >
-          {mutation.isLoading ? <Spinner /> : "Submit Proposal"}
-        </button>
-      </>
-    )
+    if (!resume) {
+      content = (
+        <>
+          <Caution
+            inside
+            caution="You need to attach your resume before applying for Jobs!"
+            link={{ path: "/profile", to: "profile" }}
+          />
+        </>
+      )
+    } else {
+      content = (
+        <>
+          <p className={ApplyJobStyles["desc-text"]}>
+            You&#39;re applying for this{" "}
+            <Link href={`/jobs/${jobId}`}>--Job</Link>{" "}
+          </p>
+          <Tip
+            tip="Your resume will be attached when you submit this form, if you would like to change it, go to your profile page."
+            link={{ to: "profile", path: "/profile" }}
+            inside
+          />
+          <div className={ApplyJobStyles["create-job__input-box"]}>
+            <label htmlFor="desc">
+              Description <span>*</span>
+            </label>
+            <span>Describe why you&#39;re the best candidate for the job.</span>
+            <textarea
+              name="desc"
+              id="desc"
+              placeholder="description..."
+              maxLength={300}
+              value={desc}
+              onChange={(e) => setDesc(e.target.value)}
+              required
+            ></textarea>
+          </div>
+          <button
+            disabled={mutation.isLoading}
+            type="submit"
+            className={`p-relative ${
+              mutation.isLoading
+                ? `${ApplyJobStyles["loading-btn"]} ${ApplyJobStyles["apply-btn"]}`
+                : ""
+            } ${ApplyJobStyles.btn} ${ApplyJobStyles["btn-primary"]}`}
+          >
+            {mutation.isLoading ? <Spinner /> : "Submit Proposal"}
+          </button>
+        </>
+      )
+    }
   } else {
     content = <p>Something went wrong!</p>
   }
@@ -113,4 +136,26 @@ export default function Apply() {
       </form>
     </section>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  try {
+    const res = await axiosInstance.get(`/profile/resume`, {
+      headers: {
+        cookie: context.req.headers.cookie || "",
+      },
+    })
+
+    return {
+      props: {
+        resume: res.data,
+      },
+    }
+  } catch (e: any) {
+    return {
+      props: {
+        resume: null,
+      },
+    }
+  }
 }
