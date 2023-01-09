@@ -1,6 +1,7 @@
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/router"
 import { TbPoint } from "react-icons/tb"
+import { IoMdCheckmarkCircleOutline } from "react-icons/io"
 import useJobContext from "../context/JobContext"
 import useWindowsWidth from "../hooks/useWindowsWidth"
 import styles from "../styles/Job.module.css"
@@ -47,7 +48,9 @@ export default function JobExcerpt({ job }: { job: JobType }) {
         <div className={styles["price-tag"]}>{job.budget} / hr</div>
       </div>
       <div className={styles.requirements}>
-        <p className={styles.type}>Requirements</p>
+        <p className={`j-desc ${styles.type}`}>
+          <IoMdCheckmarkCircleOutline className="desc-icon" /> Requirements
+        </p>
         {job.requirements.map((req, idx) => (
           <div key={idx} className={styles.requirement}>
             <TbPoint className={styles.icon} />

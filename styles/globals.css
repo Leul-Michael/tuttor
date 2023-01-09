@@ -299,6 +299,20 @@ button {
   background-color: rgb(212, 255, 233);
 }
 
+.j-desc {
+  display: flex;
+  align-items: center;
+}
+
+.desc-icon {
+  display: inline-block;
+  border-radius: 4px;
+  background-color: var(--clr-background-light);
+  padding: .4rem;
+  box-sizing: content-box;
+  margin-right: .5rem;
+}
+
 /* @media (prefers-color-scheme: dark) {
   :root {
     --clr-background: #202124;

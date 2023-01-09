@@ -1,6 +1,8 @@
 import { useQuery } from "@tanstack/react-query"
 import Link from "next/link"
 import { HiOutlineHeart } from "react-icons/hi"
+import { MdOutlineModeEdit } from "react-icons/md"
+import { IoMdCheckmarkCircleOutline } from "react-icons/io"
 import { TbPoint } from "react-icons/tb"
 import axiosInstance from "../axios/axios"
 import useJobContext from "../context/JobContext"
@@ -62,7 +64,9 @@ export default function JobDetails() {
         </div>
       </div>
       <div className={JobDetailStyles["job-details__body"]}>
-        <p className={JobDetailStyles.type}>Description</p>
+        <p className={`j-desc ${JobDetailStyles.type}`}>
+          <MdOutlineModeEdit className="desc-icon" /> Description
+        </p>
         <p className={JobDetailStyles.desc}>{data?.desc}</p>
         <div className={JobDetailStyles.price}>
           <div className={JobDetailStyles.requirement}>
@@ -76,7 +80,9 @@ export default function JobDetails() {
           </div>
         </div>
         <div className={JobDetailStyles.requirements}>
-          <p className={JobDetailStyles.type}>Requirements</p>
+          <p className={`j-desc ${JobDetailStyles.type}`}>
+            <IoMdCheckmarkCircleOutline className="desc-icon" /> Requirements
+          </p>
           {data?.requirements.map((req: string, idx: number) => {
             return (
               <div key={idx} className={JobDetailStyles.requirement}>

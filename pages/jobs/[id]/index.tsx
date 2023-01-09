@@ -3,6 +3,8 @@ import { useSession } from "next-auth/react"
 import Link from "next/link"
 import { useMemo } from "react"
 import { HiOutlineHeart } from "react-icons/hi"
+import { MdOutlineModeEdit } from "react-icons/md"
+import { IoMdCheckmarkCircleOutline } from "react-icons/io"
 import { TbPoint } from "react-icons/tb"
 import axiosInstance from "../../../axios/axios"
 import TimeAgo from "../../../components/TimeAgo"
@@ -70,7 +72,9 @@ export default function Index({ job }: { job: JobType }) {
                 ))}
               </div>
             </div>
-            <p className={ViewJobStyles.type}>Description</p>
+            <p className={`j-desc ${ViewJobStyles.type}`}>
+              <MdOutlineModeEdit className="desc-icon" /> Description
+            </p>
             <p className={ViewJobStyles.desc}>{job.desc}</p>
             <div className={ViewJobStyles.price}>
               <div className={ViewJobStyles.requirement}>
@@ -84,7 +88,10 @@ export default function Index({ job }: { job: JobType }) {
               </div>
             </div>
             <div className={ViewJobStyles.requirements}>
-              <p className={ViewJobStyles.type}>Requirements</p>
+              <p className={`j-desc ${ViewJobStyles.type}`}>
+                <IoMdCheckmarkCircleOutline className="desc-icon" />{" "}
+                Requirements
+              </p>
               {job.requirements.map((req, idx) => (
                 <div key={idx} className={ViewJobStyles.requirement}>
                   <TbPoint className={ViewJobStyles.icon} />
