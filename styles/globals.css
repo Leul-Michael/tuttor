@@ -283,7 +283,20 @@ button {
 
 .dark-theme .caution .icon {
   color: var(--clr-white);
+}
 
+.job-status {
+  display: inline-block;
+  font-size: .8rem;
+  padding: .5rem;
+  align-self: flex-start;
+  border-radius: 4px;
+  margin: 0 .5rem;
+}
+
+.job-status-good {
+  color: #1b6864;
+  background-color: rgb(212, 255, 233);
 }
 
 /* @media (prefers-color-scheme: dark) {

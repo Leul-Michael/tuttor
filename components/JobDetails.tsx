@@ -1,12 +1,10 @@
 import { useQuery } from "@tanstack/react-query"
 import Link from "next/link"
-import React from "react"
 import { HiOutlineHeart } from "react-icons/hi"
 import { TbPoint } from "react-icons/tb"
 import axiosInstance from "../axios/axios"
 import useJobContext from "../context/JobContext"
 import JobDetailStyles from "../styles/Job.module.css"
-import { JobType } from "../types"
 import JobDetailSkeleton from "./Skeleton/JobDetailSkeleton"
 import TimeAgo from "./TimeAgo"
 

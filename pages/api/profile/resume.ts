@@ -29,7 +29,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     try {
       const user = await User.findById(session?.user.id).select("resume")
 
-      user.resume = resume
+      user.resume = resume.toLowerCase()
 
       await user.save()
 

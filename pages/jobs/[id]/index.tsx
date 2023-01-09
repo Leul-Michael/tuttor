@@ -1,6 +1,7 @@
 import { GetServerSideProps } from "next"
+import { useSession } from "next-auth/react"
 import Link from "next/link"
-import React from "react"
+import { useMemo } from "react"
 import { HiOutlineHeart } from "react-icons/hi"
 import { TbPoint } from "react-icons/tb"
 import axiosInstance from "../../../axios/axios"
@@ -8,13 +9,27 @@ import TimeAgo from "../../../components/TimeAgo"
 import ViewJobStyles from "../../../styles/Job.module.css"
 import { JobType } from "../../../types"
 
-export default function index({ job }: { job: JobType }) {
+export default function Index({ job }: { job: JobType }) {
+  const session = useSession()
+
+  const isApplied = useMemo(() => {
+    if (!session.data?.user.id) return
+    return job?.proposals.some((job: any) => {
+      return job.user.toString() === session.data?.user.id
+    })
+  }, [job?.proposals, session.data?.user.id])
+
   return (
     <section className={ViewJobStyles["view-job"]}>
       <div className="container-md">
         <article className={`${ViewJobStyles["no-p"]}`}>
           <div className={ViewJobStyles["job-details__header"]}>
-            <h1 className="font-serif">{job.title}</h1>
+            <h1 className="font-serif">
+              {job.title}{" "}
+              {isApplied ? (
+                <span className="job-status job-status-good">Applied</span>
+              ) : null}
+            </h1>
             <p className={ViewJobStyles.location}>{job.location}</p>
             <p className={ViewJobStyles.type}>
               {job.tutorType === "Both"

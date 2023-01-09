@@ -1,3 +1,4 @@
+import { useSession } from "next-auth/react"
 import { useRouter } from "next/router"
 import { TbPoint } from "react-icons/tb"
 import useJobContext from "../context/JobContext"
@@ -5,11 +6,20 @@ import useWindowsWidth from "../hooks/useWindowsWidth"
 import styles from "../styles/Job.module.css"
 import { JobType } from "../types"
 import TimeAgo from "./TimeAgo"
+import { useMemo } from "react"
 
 export default function JobExcerpt({ job }: { job: JobType }) {
+  const session = useSession()
   const router = useRouter()
   const [width] = useWindowsWidth()
   const { viewJob } = useJobContext()
+
+  const isApplied = useMemo(() => {
+    if (!session.data?.user.id) return
+    return job?.proposals.some((job: any) => {
+      return job.user.toString() === session.data?.user.id
+    })
+  }, [job?.proposals, session.data?.user.id])
 
   return (
     <article
@@ -19,7 +29,12 @@ export default function JobExcerpt({ job }: { job: JobType }) {
       tabIndex={0}
       className={styles.job}
     >
-      <h1 className="font-serif">{job.title}</h1>
+      <h1 className="font-serif">
+        {job.title}{" "}
+        {isApplied ? (
+          <span className="job-status job-status-good">Applied</span>
+        ) : null}
+      </h1>
       <p className={styles.location}>{job.location}</p>
       <p className={styles.type}>
         {job.tutorType === "Both" ? "Both In Person and Online" : job.tutorType}
