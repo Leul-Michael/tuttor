@@ -67,15 +67,16 @@
 .save-icon,
 .resume-icon {
     font-size: 1.5rem;
-    padding: .5rem;
+    padding: .4rem;
     box-sizing: content-box;
     border-radius: 4px;
     cursor: pointer;
-    color: var(--clr-font-light);
+    color: var(--clr-font-light-secondary);
+    border: 1px solid var(--clr-border);
 }
 
 .resume-icon {
-    padding: 0.25rem;
+    padding: 0.35rem;
 }
 
 .save-icon:hover,

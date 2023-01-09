@@ -102,7 +102,7 @@ export default function Index({ job }: { job: JobType }) {
               ) : (
                 <div className={ViewJobStyles.requirement}>
                   <TbPoint className={ViewJobStyles.icon} />
-                  <p>No requiremet</p>
+                  <p>No requirement</p>
                 </div>
               )}
             </div>

@@ -34,9 +34,9 @@ export default function index({ user }: { user: IUser }) {
                     className={ViewJobStyles["resume-icon"]}
                     src="/resume.png"
                     alt="resume icon"
-                    width={35}
-                    height={35}
-                  />{" "}
+                    width={25}
+                    height={25}
+                  />
                   {/* <AiFillContainer className={ViewJobStyles["save-icon"]} /> */}
                 </a>
               ) : null}

@@ -95,7 +95,7 @@ export default function JobDetails() {
           ) : (
             <div className={JobDetailStyles.requirement}>
               <TbPoint className={JobDetailStyles.icon} />
-              <p>No requiremet</p>
+              <p>No requirement</p>
             </div>
           )}
         </div>
