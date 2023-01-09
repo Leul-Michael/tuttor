@@ -92,12 +92,19 @@ export default function Index({ job }: { job: JobType }) {
                 <IoMdCheckmarkCircleOutline className="desc-icon" />{" "}
                 Requirements
               </p>
-              {job.requirements.map((req, idx) => (
-                <div key={idx} className={ViewJobStyles.requirement}>
+              {job.requirements?.length ? (
+                job.requirements.map((req, idx) => (
+                  <div key={idx} className={ViewJobStyles.requirement}>
+                    <TbPoint className={ViewJobStyles.icon} />
+                    <p>{req}</p>
+                  </div>
+                ))
+              ) : (
+                <div className={ViewJobStyles.requirement}>
                   <TbPoint className={ViewJobStyles.icon} />
-                  <p>{req}</p>
+                  <p>No requiremet</p>
                 </div>
-              ))}
+              )}
             </div>
           </div>
           <TimeAgo timestamp={job.createdAt} />

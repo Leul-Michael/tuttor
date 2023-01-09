@@ -47,17 +47,19 @@ export default function JobExcerpt({ job }: { job: JobType }) {
         </div>
         <div className={styles["price-tag"]}>{job.budget} / hr</div>
       </div>
-      <div className={styles.requirements}>
-        <p className={`j-desc ${styles.type}`}>
-          <IoMdCheckmarkCircleOutline className="desc-icon" /> Requirements
-        </p>
-        {job.requirements.map((req, idx) => (
-          <div key={idx} className={styles.requirement}>
-            <TbPoint className={styles.icon} />
-            <p>{req}</p>
-          </div>
-        ))}
-      </div>
+      {job.requirements?.length ? (
+        <div className={styles.requirements}>
+          <p className={`j-desc ${styles.type}`}>
+            <IoMdCheckmarkCircleOutline className="desc-icon" /> Requirements
+          </p>
+          {job.requirements.map((req, idx) => (
+            <div key={idx} className={styles.requirement}>
+              <TbPoint className={styles.icon} />
+              <p>{req}</p>
+            </div>
+          ))}
+        </div>
+      ) : null}
       <TimeAgo timestamp={job.createdAt} />
     </article>
   )

@@ -83,14 +83,21 @@ export default function JobDetails() {
           <p className={`j-desc ${JobDetailStyles.type}`}>
             <IoMdCheckmarkCircleOutline className="desc-icon" /> Requirements
           </p>
-          {data?.requirements.map((req: string, idx: number) => {
-            return (
-              <div key={idx} className={JobDetailStyles.requirement}>
-                <TbPoint className={JobDetailStyles.icon} />
-                <p>{req}</p>
-              </div>
-            )
-          })}
+          {data?.requirements.length ? (
+            data?.requirements.map((req: string, idx: number) => {
+              return (
+                <div key={idx} className={JobDetailStyles.requirement}>
+                  <TbPoint className={JobDetailStyles.icon} />
+                  <p>{req}</p>
+                </div>
+              )
+            })
+          ) : (
+            <div className={JobDetailStyles.requirement}>
+              <TbPoint className={JobDetailStyles.icon} />
+              <p>No requiremet</p>
+            </div>
+          )}
         </div>
       </div>
       <div className={JobDetailStyles["job-details__footer"]}>
