@@ -6,7 +6,7 @@ import TutorStyles from "../styles/Tutor.module.css"
 export default function TutorExcerpt({ user }: { user: IUser }) {
   return (
     <Link
-      href={`users/${user._id}`}
+      href={`/users/${user._id}`}
       tabIndex={0}
       className={TutorStyles.tuttor}
     >

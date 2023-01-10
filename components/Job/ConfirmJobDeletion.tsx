@@ -1,15 +1,6 @@
-import {
-  Dispatch,
-  FormEventHandler,
-  SetStateAction,
-  useState,
-  MouseEvent,
-} from "react"
+import { Dispatch, SetStateAction, useState, MouseEvent } from "react"
 import ProfileStyles from "../../styles/Profile.module.css"
 import { MdOutlineClose } from "react-icons/md"
-import axiosInstance from "../../axios/axios"
-import { signOut } from "next-auth/react"
-import useToast from "../../context/ToastContext"
 import Spinner from "../Spinner"
 
 export default function ConfirmDelete({

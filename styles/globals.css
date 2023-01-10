@@ -288,7 +288,7 @@ button {
 .job-status {
   display: inline-block;
   font-size: .8rem;
-  padding: .5rem;
+  padding: .35rem .5rem;
   align-self: flex-start;
   border-radius: 4px;
   margin: 0 .5rem;
@@ -317,6 +317,17 @@ button {
   font-size: .75rem;
   color: var(--clr-accent-secondary);
   font-weight: 400;
+}
+
+.avatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid var(--clr-accent-secondary);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  text-transform: capitalize;
 }
 
 /* @media (prefers-color-scheme: dark) {

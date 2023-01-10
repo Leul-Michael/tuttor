@@ -3,7 +3,6 @@ import User from "../../../models/User"
 import Job from "../../../models/Job"
 import connectDB from "../../../middleware/connectDB"
 import { getSession } from "next-auth/react"
-import { EduProps } from "../../../components/Profile/Education"
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const session = await getSession({ req })
@@ -16,11 +15,18 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     // Connect to DB
     await connectDB()
 
-    const jobs = await Job.find({ user: session.user.id }).sort({
-      createdAt: -1,
-    })
+    try {
+      const jobs = await Job.find({ user: session.user.id })
+        .sort({
+          createdAt: -1,
+        })
+        .populate({ path: "proposals.user", model: User, select: "name" })
 
-    return res.status(200).json(jobs)
+      return res.status(200).json(jobs)
+    } catch (e: any) {
+      console.log(e.message)
+      return res.status(500).json(null)
+    }
   }
 
   if (req.method === "POST") {

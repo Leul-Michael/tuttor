@@ -9,6 +9,7 @@ import { MdOutlineDelete, MdOutlineEdit } from "react-icons/md"
 import { TbPoint } from "react-icons/tb"
 import axiosInstance from "../../axios/axios"
 import ConfirmDelete from "../../components/Job/ConfirmJobDeletion"
+import JobProposals from "../../components/Job/JobProposals"
 import MyJobSkeleton from "../../components/Skeleton/MyJobSkeleton"
 import TimeAgo from "../../components/TimeAgo"
 import useToast from "../../context/ToastContext"
@@ -17,8 +18,11 @@ import { JobType } from "../../types"
 
 export default function All() {
   const { addMessage } = useToast()
+
   const [confirmDelete, setConfirmDelete] = useState(false)
+  const [jobProposalsModal, setJobProposalsModal] = useState(false)
   const [deleteJobId, setDeleteJobId] = useState("")
+  const [jobProposals, setJobProposals] = useState<string[]>([])
 
   const queryClient = useQueryClient()
   const { data, isLoading } = useQuery({
@@ -88,10 +92,26 @@ export default function All() {
                     jobId={deleteJobId}
                   />
                 )}
+                {jobProposalsModal && (
+                  <JobProposals
+                    setOpenModal={setJobProposalsModal}
+                    proposals={jobProposals}
+                    jobId={deleteJobId}
+                  />
+                )}
                 <div className={Styles["my-job__header"]}>
-                  <h2 className="font-serif">{job.title}</h2>
+                  <h2 className="font-serif">
+                    {job.title}{" "}
+                    <span className="job-status job-status-good">Active</span>
+                  </h2>
                   <div className={Styles["flex-buttons"]}>
                     <button
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        e.preventDefault()
+                        setJobProposals(job?.proposals)
+                        setJobProposalsModal(true)
+                      }}
                       className={`btn  ${Styles.btn} ${Styles["btn-sm"]}`}
                     >
                       Proposals{" "}
@@ -100,6 +120,10 @@ export default function All() {
                     <div className={Styles["icon-buttons"]}>
                       <button
                         disabled={mutation.isLoading}
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          e.preventDefault()
+                        }}
                         className={`${Styles.btn} ${Styles["icon-btn"]}`}
                       >
                         <MdOutlineEdit />
@@ -118,6 +142,10 @@ export default function All() {
                       </button>
                       <button
                         disabled={mutation.isLoading}
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          e.preventDefault()
+                        }}
                         className={`${Styles.btn} ${Styles["icon-btn"]}`}
                       >
                         <BsThreeDotsVertical />

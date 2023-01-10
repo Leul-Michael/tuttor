@@ -39,8 +39,13 @@ export default function Resume() {
       const res = await axiosInstance.delete("/profile/resume")
       addMessage(res.data.msg)
       refetch()
-    } catch (e) {
-      console.log(e)
+    } catch (e: any) {
+      if (e?.code === "storage/object-not-found") {
+        const res = await axiosInstance.delete("/profile/resume")
+        addMessage(res.data.msg)
+        refetch()
+        return
+      }
       addMessage("Failed to remove pdf, try again!")
     } finally {
       setLoading(false)

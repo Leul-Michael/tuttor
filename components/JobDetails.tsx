@@ -55,7 +55,7 @@ export default function JobDetails() {
             <p className={JobDetailStyles.type}>Schedule</p>
           </div>
           <div className={JobDetailStyles["schedule-btns"]}>
-            {data.schedule.map((d: string) => (
+            {data?.schedule.map((d: string) => (
               <div key={d} className={JobDetailStyles["price-tag"]}>
                 {d}
               </div>
@@ -104,7 +104,7 @@ export default function JobDetails() {
         <div className={JobDetailStyles["flex-btns"]}>
           <Link
             href={`/jobs/[id]/apply`}
-            as={`/jobs/${data._id}/apply`}
+            as={`/jobs/${data?._id}/apply`}
             className={`btn  ${JobDetailStyles.btn} ${JobDetailStyles["btn-primary"]}`}
           >
             Apply
