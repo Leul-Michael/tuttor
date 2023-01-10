@@ -313,6 +313,12 @@ button {
   margin-right: .5rem;
 }
 
+.count {
+  font-size: .75rem;
+  color: var(--clr-accent-secondary);
+  font-weight: 400;
+}
+
 /* @media (prefers-color-scheme: dark) {
   :root {
     --clr-background: #202124;

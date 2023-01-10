@@ -358,7 +358,9 @@
 }
 
 .btn-profile:not(:disabled):hover,
-.btn:not(:disabled):hover {
+.btn-profile:not(:disabled):focus,
+.btn:not(:disabled):hover,
+.btn:not(:disabled):focus {
     color: var(--clr-logo);
     background: var(--clr-btn-hover);
     border-color: var(--clr-accent-secondary);
@@ -382,6 +384,16 @@
 .btn-sm {
     padding: .5rem 1.5rem;
     font-size: .8rem;
+}
+
+.icon-btn {
+    padding: .45rem;
+    font-size: 1.1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    border: 1px solid var(--clr-background-light);
 }
 
 /* requirement */
@@ -462,6 +474,7 @@
     border-bottom: 1px solid var(--clr-background-light);
     padding-bottom: 1rem;
     margin-bottom: 1rem;
+    cursor: default;
 }
 
 .my-job:hover h2 {
@@ -474,10 +487,16 @@
     align-items: center;
 }
 
-.flex-buttons {
+.flex-buttons,
+.icon-buttons {
     display: flex;
     gap: 2rem;
 }
+
+.icon-buttons {
+    gap: .5rem;
+}
+
 
 .my-job h2 {
     font-size: 1.75rem;

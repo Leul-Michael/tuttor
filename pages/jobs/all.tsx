@@ -2,10 +2,13 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { GetServerSideProps } from "next"
 import { getSession } from "next-auth/react"
 import Link from "next/link"
-import { MouseEvent } from "react"
+import { MouseEvent, useState } from "react"
+import { BsThreeDotsVertical } from "react-icons/bs"
 import { FiPlusCircle } from "react-icons/fi"
+import { MdOutlineDelete, MdOutlineEdit } from "react-icons/md"
 import { TbPoint } from "react-icons/tb"
 import axiosInstance from "../../axios/axios"
+import ConfirmDelete from "../../components/Job/ConfirmJobDeletion"
 import MyJobSkeleton from "../../components/Skeleton/MyJobSkeleton"
 import TimeAgo from "../../components/TimeAgo"
 import useToast from "../../context/ToastContext"
@@ -14,6 +17,9 @@ import { JobType } from "../../types"
 
 export default function All() {
   const { addMessage } = useToast()
+  const [confirmDelete, setConfirmDelete] = useState(false)
+  const [deleteJobId, setDeleteJobId] = useState("")
+
   const queryClient = useQueryClient()
   const { data, isLoading } = useQuery({
     queryKey: ["MyJobs"],
@@ -43,6 +49,9 @@ export default function All() {
       addMessage(res.data?.msg)
     } catch (e: any) {
       addMessage(e.response.data.msg || e.message)
+    } finally {
+      setConfirmDelete(false)
+      setDeleteJobId("")
     }
   }
 
@@ -72,21 +81,48 @@ export default function All() {
                 key={job._id}
                 className={Styles["my-job"]}
               >
+                {confirmDelete && (
+                  <ConfirmDelete
+                    setOpenModal={setConfirmDelete}
+                    removeSelected={removeSelected}
+                    jobId={deleteJobId}
+                  />
+                )}
                 <div className={Styles["my-job__header"]}>
                   <h2 className="font-serif">{job.title}</h2>
                   <div className={Styles["flex-buttons"]}>
                     <button
                       className={`btn  ${Styles.btn} ${Styles["btn-sm"]}`}
                     >
-                      Proposals
+                      Proposals{" "}
+                      <span className="count">({job.proposals.length})</span>
                     </button>
-                    <button
-                      disabled={mutation.isLoading}
-                      onClick={(e) => removeSelected(e, job._id)}
-                      className={`btn  ${Styles.btn} ${Styles["btn-sm"]} ${Styles.delete}`}
-                    >
-                      Remove
-                    </button>
+                    <div className={Styles["icon-buttons"]}>
+                      <button
+                        disabled={mutation.isLoading}
+                        className={`${Styles.btn} ${Styles["icon-btn"]}`}
+                      >
+                        <MdOutlineEdit />
+                      </button>
+                      <button
+                        disabled={mutation.isLoading}
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          e.preventDefault()
+                          setDeleteJobId(job._id)
+                          setConfirmDelete(true)
+                        }}
+                        className={`${Styles.btn} ${Styles["icon-btn"]} ${Styles.delete}`}
+                      >
+                        <MdOutlineDelete />
+                      </button>
+                      <button
+                        disabled={mutation.isLoading}
+                        className={`${Styles.btn} ${Styles["icon-btn"]}`}
+                      >
+                        <BsThreeDotsVertical />
+                      </button>
+                    </div>
                   </div>
                 </div>
                 <p className={Styles.location}>{job.location}</p>
