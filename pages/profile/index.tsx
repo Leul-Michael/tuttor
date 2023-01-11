@@ -193,6 +193,15 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     })
 
+    if (!res.data) {
+      return {
+        redirect: {
+          destination: "/",
+          permanent: false,
+        },
+      }
+    }
+
     return {
       props: {
         user: res.data,

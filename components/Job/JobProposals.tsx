@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useState, MouseEvent } from "react"
 import ProfileStyles from "../../styles/Profile.module.css"
 import { MdOutlineClose } from "react-icons/md"
-import Link from "next/link"
+import { useRouter } from "next/router"
 
 export default function JobProposals({
   setOpenModal,
@@ -12,8 +12,7 @@ export default function JobProposals({
   proposals: string[]
   jobId: string
 }) {
-  const [loading, setLoading] = useState(false)
-  const [jobStatus, setJobStatus] = useState()
+  const router = useRouter()
 
   return (
     <div
@@ -39,9 +38,14 @@ export default function JobProposals({
           proposal?.user?.name ? (
             <li className={ProfileStyles["proposals-item"]} key={proposal._id}>
               <div className={ProfileStyles["proposal-item__header"]}>
-                <Link href={`/users/${proposal?.user?._id}`} className="avatar">
+                <div
+                  onClick={(e) => {
+                    router.push(`/users/${proposal?.user?._id}`)
+                  }}
+                  className="avatar pointer"
+                >
                   {proposal?.user?.name.slice(0, 2)}
-                </Link>
+                </div>
                 <p>{proposal?.user?.name}</p>
               </div>
               <p className={`${ProfileStyles["prop-desc"]}`}>

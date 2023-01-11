@@ -330,6 +330,10 @@ button {
   text-transform: capitalize;
 }
 
+.avatar.pointer {
+  cursor: pointer;
+}
+
 /* @media (prefers-color-scheme: dark) {
   :root {
     --clr-background: #202124;
