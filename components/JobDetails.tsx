@@ -22,7 +22,7 @@ export default function JobDetails() {
     enabled: !!jobId,
   })
 
-  if (!jobId) {
+  if (!jobId || !data) {
     return null
   }
 

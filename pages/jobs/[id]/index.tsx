@@ -123,6 +123,15 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         cookie: context.req.headers.cookie || "",
       },
     })
+
+    if (!res.data) {
+      return {
+        redirect: {
+          destination: "/",
+          permanent: false,
+        },
+      }
+    }
     return {
       props: {
         job: res.data,
