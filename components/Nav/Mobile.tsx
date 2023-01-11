@@ -95,6 +95,15 @@ export default function Mobile() {
                 <Link href="/jobs/all">My jobs</Link>
               </li>
             )}
+            {session.data?.user.role === ACCOUNT_TYPE.TUTTOR && (
+              <li
+                className={`${Styles.link} ${
+                  router.pathname === "/jobs/user-jobs" ? Styles.active : ""
+                }`}
+              >
+                <Link href="/jobs/user-jobs">My jobs</Link>
+              </li>
+            )}
             {session.status === "authenticated" ? (
               <li className={`${Styles["link-btn"]}`} onClick={() => signOut()}>
                 Sign out
