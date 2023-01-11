@@ -2,16 +2,18 @@ import { MouseEvent } from "react"
 import Link from "next/link"
 import Styles from "../../styles/Job.module.css"
 import { JobType } from "../../types"
-import { BsThreeDotsVertical } from "react-icons/bs"
+import { BiCommentMinus } from "react-icons/bi"
 import { TbPoint } from "react-icons/tb"
-import { MdOutlineDelete, MdOutlineEdit } from "react-icons/md"
+import { MdOutlineEdit } from "react-icons/md"
 import TimeAgo from "../TimeAgo"
 import axiosInstance from "../../axios/axios"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import MyJobSkeleton from "../Skeleton/MyJobSkeleton"
 import useToast from "../../context/ToastContext"
+import { useSession } from "next-auth/react"
 
 export default function AppliedJobs() {
+  const session = useSession()
   const { addMessage } = useToast()
   const queryClient = useQueryClient()
 
@@ -66,6 +68,7 @@ export default function AppliedJobs() {
               <div className={Styles["flex-buttons"]}>
                 <div className={Styles["icon-buttons"]}>
                   <button
+                    title="Edit your proposal"
                     onClick={(e) => {
                       e.stopPropagation()
                       e.preventDefault()
@@ -75,6 +78,7 @@ export default function AppliedJobs() {
                     <MdOutlineEdit />
                   </button>
                   <button
+                    title="Withdraw your proposal"
                     disabled={mutation?.isLoading}
                     onClick={(e) => {
                       e.stopPropagation()
@@ -83,30 +87,30 @@ export default function AppliedJobs() {
                     }}
                     className={`${Styles.btn} ${Styles["icon-btn"]} ${Styles.delete}`}
                   >
-                    <MdOutlineDelete />
-                  </button>
-                  <button
-                    disabled={mutation?.isLoading}
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      e.preventDefault()
-                    }}
-                    className={`${Styles.btn} ${Styles["icon-btn"]}`}
-                  >
-                    <BsThreeDotsVertical />
+                    <BiCommentMinus />
                   </button>
                 </div>
               </div>
             </div>
             <p className={Styles.location}>{job?.location}</p>
             <p className={Styles.type}>{job?.tutorType}</p>
-            <div className={Styles.price}>
-              <div className={Styles.header}>
-                <TbPoint className={Styles.icon} />
-                <p className={Styles.type}>Salary</p>
-              </div>
-              <div className={Styles["price-tag"]}>{job?.budget} / hr</div>
-            </div>
+            {job.proposals.map((prop: any) => {
+              if (prop?.user === session.data?.user.id) {
+                return (
+                  <div key={prop?._id} className={Styles.price}>
+                    <div className={Styles.header}>
+                      <TbPoint className={Styles.icon} />
+                      <p className={Styles.type}>Your Proposal</p>
+                    </div>
+                    <p
+                      className={`${Styles["price-tag"]} ${Styles["edu-tag"]}`}
+                    >
+                      {prop?.desc}
+                    </p>
+                  </div>
+                )
+              }
+            })}
             <TimeAgo timestamp={job?.createdAt} />
           </div>
         ))
