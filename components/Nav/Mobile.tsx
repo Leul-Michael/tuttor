@@ -100,6 +100,7 @@ export default function Mobile() {
                 className={`${Styles.link} ${
                   router.pathname === "/jobs/user-jobs" ? Styles.active : ""
                 }`}
+                onClick={() => setIsMenuOpen(false)}
               >
                 <Link href="/jobs/user-jobs">My jobs</Link>
               </li>
