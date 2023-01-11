@@ -50,6 +50,15 @@ export default function Header() {
                 <Link href="/jobs/all">My jobs</Link>
               </li>
             )}
+            {session.data?.user.role === ACCOUNT_TYPE.TUTTOR && (
+              <li
+                className={`${styles.link} ${
+                  router.pathname === "/jobs/user-jobs" ? styles.active : ""
+                }`}
+              >
+                <Link href="/jobs/user-jobs">My jobs</Link>
+              </li>
+            )}
           </ul>
         </div>
         <div className={styles["nav-item"]}>

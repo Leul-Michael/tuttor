@@ -36,8 +36,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       return res.status(400).json({ msg: "Job not found." })
     }
 
-    const alreadySubmitted = job.proposals.some((job: any) => {
-      return job.user.toString() === id
+    const alreadySubmitted = job.proposals.some((proposal: any) => {
+      return proposal.user.toString() === id
     })
 
     if (alreadySubmitted) {

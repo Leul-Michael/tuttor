@@ -375,7 +375,8 @@
     color: var(--clr-red);
 }
 
-.delete:not(:disabled):hover {
+.delete:not(:disabled):hover,
+.delete:not(:disabled):focus {
     color: var(--clr-red);
     background: var(--clr-btn-hover);
     border-color: var(--clr-accent-secondary);
@@ -513,12 +514,17 @@
     max-width: 700px;
 }
 
-.view-job .job-details__header {
+.view-job .job-details__header,
+.user-jobs .job-details__header {
     position: sticky;
     top: 0%;
     background-color: var(--clr-background);
     padding-bottom: 2rem;
     padding-top: 5vh;
+}
+
+.user-jobs .job-details__header {
+    padding-top: 7vh;
 }
 
 .view-job h1 {
@@ -583,12 +589,62 @@
     color: var(--clr-accent);
 }
 
+/* User Jobs */
+.user-jobs {
+    padding: 0 4rem;
+}
+
+.jobs-tab {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--clr-background-light);
+}
+
+.btn-tab {
+    position: relative;
+    font-size: 1.2rem;
+    border: none;
+    padding: 1rem 2rem 1rem .25rem;
+    border-radius: 0;
+    font-weight: 400;
+    color: var(--clr-font-light-secondary);
+    margin-right: .25rem;
+}
+
+.btn-tab::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0%;
+    height: 2px;
+    background-color: var(--clr-accent);
+    transition: all 250ms ease-in-out;
+}
+
+.btn-tab.active {
+    color: var(--clr-font);
+}
+
+.btn-tab.active::after {
+    width: 100%;
+}
+
+.btn-tab:hover {
+    color: var(--clr-font);
+}
+
+
 @media (max-width: 768px) {
 
     .view-job,
     .all-jobs__container,
     .create-job {
         padding: 3rem;
+    }
+
+    .user-jobs {
+        padding: 0 3rem;
     }
 
     .recent {
@@ -625,6 +681,10 @@
     .all-jobs__container,
     .view-job {
         padding: 3rem 2rem;
+    }
+
+    .user-jobs {
+        padding: 0 2rem;
     }
 
     .view-job h1 {
