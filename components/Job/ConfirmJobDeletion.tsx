@@ -52,7 +52,7 @@ export default function ConfirmDelete({
           <>
             <button
               onClick={(e) => removeAction(e)}
-              type="submit"
+              type="button"
               className={`${ProfileStyles.btn} ${ProfileStyles["btn-danger"]}`}
             >
               DELETE

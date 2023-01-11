@@ -1,5 +1,5 @@
 import React from "react"
 
 export default function SavedJobs() {
-  return <div>SavedJobs</div>
+  return <div>Your Saved Jobs Will Appear Here</div>
 }

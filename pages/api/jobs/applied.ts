@@ -37,6 +37,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       return res.status(500).json({ msg: "Job not found!" })
     }
   }
+
   if (req.method === "DELETE") {
     const { jobId } = req.body
 

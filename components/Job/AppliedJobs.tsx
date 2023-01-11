@@ -1,10 +1,8 @@
 import { MouseEvent } from "react"
-import Link from "next/link"
 import Styles from "../../styles/Job.module.css"
 import { JobType } from "../../types"
 import { BiCommentMinus } from "react-icons/bi"
 import { TbPoint } from "react-icons/tb"
-import { MdOutlineEdit } from "react-icons/md"
 import TimeAgo from "../TimeAgo"
 import axiosInstance from "../../axios/axios"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
@@ -67,16 +65,6 @@ export default function AppliedJobs() {
               </h2>
               <div className={Styles["flex-buttons"]}>
                 <div className={Styles["icon-buttons"]}>
-                  <button
-                    title="Edit your proposal"
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      e.preventDefault()
-                    }}
-                    className={`${Styles.btn} ${Styles["icon-btn"]}`}
-                  >
-                    <MdOutlineEdit />
-                  </button>
                   <button
                     title="Withdraw your proposal"
                     disabled={mutation?.isLoading}

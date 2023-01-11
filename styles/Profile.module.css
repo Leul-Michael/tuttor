@@ -436,6 +436,22 @@
     height: 40px;
 }
 
+.update-proposal-form textarea {
+    padding: 1rem .25rem;
+    min-height: 100px;
+    resize: vertical;
+    border-bottom: 1px solid var(--clr-border);
+}
+
+.update-proposal-form textarea:focus {
+    border-color: var(--clr-select-accent);
+}
+
+.resume .update-proposal-form label {
+    font-size: 1rem;
+    font-weight: 500;
+}
+
 .reset-pwd-form .btn {
     margin-top: 1rem;
     align-self: stretch;
@@ -448,7 +464,8 @@
     min-height: 50px;
 }
 
-.delete-acc-form .btn {
+.delete-acc-form .btn,
+.update-proposal-form .btn {
     padding-block: .75rem;
 }
 

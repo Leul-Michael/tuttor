@@ -1,10 +1,4 @@
-import {
-  Dispatch,
-  FormEventHandler,
-  MouseEventHandler,
-  SetStateAction,
-  useState,
-} from "react"
+import { Dispatch, FormEventHandler, SetStateAction, useState } from "react"
 import ProfileStyles from "../../styles/Profile.module.css"
 import { MdOutlineClose } from "react-icons/md"
 import axiosInstance from "../../axios/axios"
