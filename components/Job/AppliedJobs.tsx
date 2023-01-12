@@ -58,7 +58,9 @@ export default function AppliedJobs() {
       ) : data?.length ? (
         data?.map((job: JobType) => (
           <div key={job._id} className={Styles["my-job"]}>
-            <div className={Styles["my-job__header"]}>
+            <div
+              className={`${Styles["my-job__header"]} ${Styles["n-flex-row"]}`}
+            >
               <h2 className="font-serif">
                 {job?.title}{" "}
                 <span className="job-status job-status-good">Applied</span>

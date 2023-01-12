@@ -21,6 +21,11 @@ export default function Index({ job }: { job: JobType }) {
     })
   }, [job?.proposals, session.data?.user.id])
 
+  const isSaved = useMemo(() => {
+    if (!session.data?.user.id) return false
+    return job?.saves.includes(session?.data?.user.id)
+  }, [job?.saves, session?.data?.user.id])
+
   return (
     <section className={ViewJobStyles["view-job"]}>
       <div className="container-md">
@@ -46,7 +51,11 @@ export default function Index({ job }: { job: JobType }) {
               >
                 Apply
               </Link>
-              <HiOutlineHeart className={ViewJobStyles["save-icon"]} />
+              <HiOutlineHeart
+                className={`${ViewJobStyles["save-icon"]} ${
+                  isSaved ? ViewJobStyles.saved : ""
+                }`}
+              />
             </div>
           </div>
           <div className={ViewJobStyles["job-details__body"]}>

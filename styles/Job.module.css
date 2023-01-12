@@ -86,6 +86,10 @@
     background-color: var(--clr-background-light);
 }
 
+.save-icon.saved {
+    fill: var(--clr-border);
+}
+
 .job {
     padding: 1.5rem;
     border: 1px solid var(--clr-border);
@@ -672,6 +676,10 @@
     .my-job__header {
         flex-direction: column;
         padding-bottom: 1rem;
+    }
+
+    .my-job__header.n-flex-row {
+        flex-direction: row;
     }
 }
 

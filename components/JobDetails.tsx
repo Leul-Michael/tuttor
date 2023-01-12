@@ -9,11 +9,14 @@ import useJobContext from "../context/JobContext"
 import JobDetailStyles from "../styles/Job.module.css"
 import JobDetailSkeleton from "./Skeleton/JobDetailSkeleton"
 import TimeAgo from "./TimeAgo"
+import { MouseEvent, useMemo, useState } from "react"
+import { useSession } from "next-auth/react"
 
 export default function JobDetails() {
+  const session = useSession()
   const { jobId } = useJobContext()
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ["jobs", jobId],
     queryFn: async () => {
       const res = await axiosInstance.get(`/jobs/${jobId}`)
@@ -22,12 +25,26 @@ export default function JobDetails() {
     enabled: !!jobId,
   })
 
-  if (!jobId || !data) {
+  const addSavedJob = async (e: MouseEvent<SVGElement>) => {
+    e.preventDefault()
+    await axiosInstance.post(`/jobs/saved`, { jobId })
+    refetch()
+  }
+
+  const isSaved = useMemo(() => {
+    return data?.saves.includes(session?.data?.user.id)
+  }, [data?.saves, session?.data?.user.id])
+
+  if (!jobId) {
     return null
   }
 
   if (isLoading) {
     return <JobDetailSkeleton />
+  }
+
+  if (!data) {
+    return null
   }
 
   return (
@@ -109,7 +126,12 @@ export default function JobDetails() {
           >
             Apply
           </Link>
-          <HiOutlineHeart className={JobDetailStyles["save-icon"]} />
+          <HiOutlineHeart
+            onClick={(e) => addSavedJob(e)}
+            className={`${JobDetailStyles["save-icon"]} ${
+              isSaved ? JobDetailStyles.saved : ""
+            }`}
+          />
         </div>
         <TimeAgo timestamp={data.createdAt} />
       </div>

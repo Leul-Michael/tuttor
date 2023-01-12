@@ -31,5 +31,6 @@ export interface JobType {
   createdAt: string
   requirements: string[]
   proposals: string[]
+  saves: string[]
   schedule: string[]
 }
