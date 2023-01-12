@@ -1,7 +1,7 @@
 import { GetServerSideProps } from "next"
 import { useSession } from "next-auth/react"
 import Link from "next/link"
-import { useMemo } from "react"
+import { useMemo, MouseEvent } from "react"
 import { HiOutlineHeart } from "react-icons/hi"
 import { MdOutlineModeEdit } from "react-icons/md"
 import { IoMdCheckmarkCircleOutline } from "react-icons/io"
@@ -10,9 +10,11 @@ import axiosInstance from "../../../axios/axios"
 import TimeAgo from "../../../components/TimeAgo"
 import ViewJobStyles from "../../../styles/Job.module.css"
 import { JobType } from "../../../types"
+import { useRouter } from "next/router"
 
 export default function Index({ job }: { job: JobType }) {
   const session = useSession()
+  const router = useRouter()
 
   const isApplied = useMemo(() => {
     if (!session.data?.user.id) return
@@ -20,6 +22,12 @@ export default function Index({ job }: { job: JobType }) {
       return job.user.toString() === session.data?.user.id
     })
   }, [job?.proposals, session.data?.user.id])
+
+  const addSavedJob = async (e: MouseEvent<SVGElement>) => {
+    e.preventDefault()
+    await axiosInstance.post(`/jobs/saved`, { jobId: job._id })
+    router.replace(router.asPath)
+  }
 
   const isSaved = useMemo(() => {
     if (!session.data?.user.id) return false
@@ -52,6 +60,7 @@ export default function Index({ job }: { job: JobType }) {
                 Apply
               </Link>
               <HiOutlineHeart
+                onClick={(e) => addSavedJob(e)}
                 className={`${ViewJobStyles["save-icon"]} ${
                   isSaved ? ViewJobStyles.saved : ""
                 }`}
