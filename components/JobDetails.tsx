@@ -119,7 +119,7 @@ export default function JobDetails() {
         </div>
       </div>
       <div className={JobDetailStyles["job-details__footer"]}>
-        {session.data?.user.role === ACCOUNT_TYPE.TUTTOR ? (
+        {session.data?.user.role !== ACCOUNT_TYPE.EMPLOYER ? (
           <div className={JobDetailStyles["flex-btns"]}>
             <Link
               href={`/jobs/[id]/apply`}
@@ -129,7 +129,7 @@ export default function JobDetails() {
               Apply
             </Link>
             <HiOutlineHeart
-              onClick={(e) => addSavedJob(e)}
+              onClick={(e) => session.data?.user && addSavedJob(e)}
               className={`${JobDetailStyles["save-icon"]} ${
                 isSaved ? JobDetailStyles.saved : ""
               }`}

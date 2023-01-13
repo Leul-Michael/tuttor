@@ -53,7 +53,7 @@ export default function Index({ job }: { job: JobType }) {
                 ? "Both In Person and Online"
                 : job.tutorType}
             </p>
-            {session.data?.user.role === ACCOUNT_TYPE.TUTTOR ? (
+            {session.data?.user.role !== ACCOUNT_TYPE.EMPLOYER ? (
               <div className={ViewJobStyles["flex-btns"]}>
                 <Link
                   href={`/jobs/[id]/apply`}
@@ -63,7 +63,7 @@ export default function Index({ job }: { job: JobType }) {
                   Apply
                 </Link>
                 <HiOutlineHeart
-                  onClick={(e) => addSavedJob(e)}
+                  onClick={(e) => session.data?.user && addSavedJob(e)}
                   className={`${ViewJobStyles["save-icon"]} ${
                     isSaved ? ViewJobStyles.saved : ""
                   }`}
