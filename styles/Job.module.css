@@ -73,6 +73,7 @@
     cursor: pointer;
     color: var(--clr-font-light-secondary);
     border: 1px solid var(--clr-border);
+    transition: font-size .3s ease-out, padding .3s ease-out;
 }
 
 .resume-icon {
@@ -88,6 +89,8 @@
 
 .save-icon.saved {
     fill: var(--clr-border);
+    font-size: 2rem;
+    padding: .15rem;
 }
 
 .job {
