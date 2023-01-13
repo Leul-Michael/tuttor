@@ -34,6 +34,8 @@ export default function JobExcerpt({ job }: { job: JobType }) {
         {job.title}{" "}
         {isApplied ? (
           <span className="job-status job-status-good">Applied</span>
+        ) : session.data?.user.id === job.user ? (
+          <span className="job-status job-status-good">Author</span>
         ) : null}
       </h1>
       <p className={styles.location}>{job.location}</p>

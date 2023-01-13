@@ -9,7 +9,7 @@ import { TbPoint } from "react-icons/tb"
 import axiosInstance from "../../../axios/axios"
 import TimeAgo from "../../../components/TimeAgo"
 import ViewJobStyles from "../../../styles/Job.module.css"
-import { JobType } from "../../../types"
+import { ACCOUNT_TYPE, JobType } from "../../../types"
 import { useRouter } from "next/router"
 
 export default function Index({ job }: { job: JobType }) {
@@ -40,9 +40,11 @@ export default function Index({ job }: { job: JobType }) {
         <article className={`${ViewJobStyles["no-p"]}`}>
           <div className={ViewJobStyles["job-details__header"]}>
             <h1 className="font-serif">
-              {job.title}{" "}
+              {job.title}
               {isApplied ? (
                 <span className="job-status job-status-good">Applied</span>
+              ) : session.data?.user.id === job.user ? (
+                <span className="job-status job-status-good">Author</span>
               ) : null}
             </h1>
             <p className={ViewJobStyles.location}>{job.location}</p>
@@ -51,21 +53,23 @@ export default function Index({ job }: { job: JobType }) {
                 ? "Both In Person and Online"
                 : job.tutorType}
             </p>
-            <div className={ViewJobStyles["flex-btns"]}>
-              <Link
-                href={`/jobs/[id]/apply`}
-                as={`/jobs/${job._id}/apply`}
-                className={`btn  ${ViewJobStyles.btn} ${ViewJobStyles["btn-primary"]}`}
-              >
-                Apply
-              </Link>
-              <HiOutlineHeart
-                onClick={(e) => addSavedJob(e)}
-                className={`${ViewJobStyles["save-icon"]} ${
-                  isSaved ? ViewJobStyles.saved : ""
-                }`}
-              />
-            </div>
+            {session.data?.user.role === ACCOUNT_TYPE.TUTTOR ? (
+              <div className={ViewJobStyles["flex-btns"]}>
+                <Link
+                  href={`/jobs/[id]/apply`}
+                  as={`/jobs/${job._id}/apply`}
+                  className={`btn  ${ViewJobStyles.btn} ${ViewJobStyles["btn-primary"]}`}
+                >
+                  Apply
+                </Link>
+                <HiOutlineHeart
+                  onClick={(e) => addSavedJob(e)}
+                  className={`${ViewJobStyles["save-icon"]} ${
+                    isSaved ? ViewJobStyles.saved : ""
+                  }`}
+                />
+              </div>
+            ) : null}
           </div>
           <div className={ViewJobStyles["job-details__body"]}>
             <div className={ViewJobStyles.price}>

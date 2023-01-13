@@ -11,6 +11,7 @@ import JobDetailSkeleton from "./Skeleton/JobDetailSkeleton"
 import TimeAgo from "./TimeAgo"
 import { MouseEvent, useMemo, useState } from "react"
 import { useSession } from "next-auth/react"
+import { ACCOUNT_TYPE } from "../types"
 
 export default function JobDetails() {
   const session = useSession()
@@ -118,21 +119,23 @@ export default function JobDetails() {
         </div>
       </div>
       <div className={JobDetailStyles["job-details__footer"]}>
-        <div className={JobDetailStyles["flex-btns"]}>
-          <Link
-            href={`/jobs/[id]/apply`}
-            as={`/jobs/${data?._id}/apply`}
-            className={`btn  ${JobDetailStyles.btn} ${JobDetailStyles["btn-primary"]}`}
-          >
-            Apply
-          </Link>
-          <HiOutlineHeart
-            onClick={(e) => addSavedJob(e)}
-            className={`${JobDetailStyles["save-icon"]} ${
-              isSaved ? JobDetailStyles.saved : ""
-            }`}
-          />
-        </div>
+        {session.data?.user.role === ACCOUNT_TYPE.TUTTOR ? (
+          <div className={JobDetailStyles["flex-btns"]}>
+            <Link
+              href={`/jobs/[id]/apply`}
+              as={`/jobs/${data?._id}/apply`}
+              className={`btn  ${JobDetailStyles.btn} ${JobDetailStyles["btn-primary"]}`}
+            >
+              Apply
+            </Link>
+            <HiOutlineHeart
+              onClick={(e) => addSavedJob(e)}
+              className={`${JobDetailStyles["save-icon"]} ${
+                isSaved ? JobDetailStyles.saved : ""
+              }`}
+            />
+          </div>
+        ) : null}
         <TimeAgo timestamp={data.createdAt} />
       </div>
     </article>

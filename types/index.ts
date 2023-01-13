@@ -22,6 +22,7 @@ export enum ACCOUNT_TYPE {
 
 export interface JobType {
   _id: string
+  user: string
   title: string
   location: string
   budget: string
