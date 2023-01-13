@@ -88,9 +88,10 @@
 }
 
 .save-icon.saved {
+    color: var(--clr-border);
     fill: var(--clr-border);
-    font-size: 2rem;
-    padding: .15rem;
+    font-size: 1.8rem;
+    padding: .25rem;
 }
 
 .job {
