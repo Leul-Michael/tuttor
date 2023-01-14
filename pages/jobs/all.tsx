@@ -14,7 +14,7 @@ import MyJobSkeleton from "../../components/Skeleton/MyJobSkeleton"
 import TimeAgo from "../../components/TimeAgo"
 import useToast from "../../context/ToastContext"
 import Styles from "../../styles/Job.module.css"
-import { JobType } from "../../types"
+import { ACCOUNT_TYPE, JobType } from "../../types"
 
 export default function All() {
   const { addMessage } = useToast()
@@ -177,7 +177,7 @@ export default function All() {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context)
 
-  if (!session) {
+  if (!session || session.user.role !== ACCOUNT_TYPE.EMPLOYER) {
     return {
       redirect: {
         destination: "/",

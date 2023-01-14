@@ -1,17 +1,19 @@
 import FeedStyles from "../styles/Feed.module.css"
-import { useRef, useState } from "react"
+import { useRef, useState, useCallback, ReactElement, ReactNode } from "react"
 import JobExcerpt from "./JobExcerpt"
 import RecentSearch from "./RecentSearch"
 import JobDetails from "./JobDetails"
 import axiosInstance from "../axios/axios"
 import { JobType } from "../types"
 import JobExcerptSkeleton from "./Skeleton/JobExcerptSkeleton"
-import { useQuery } from "@tanstack/react-query"
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query"
 import { JobContextProvider } from "../context/JobContext"
 import useWindowsWidth from "../hooks/useWindowsWidth"
 
 export default function Feed() {
   const [width] = useWindowsWidth()
+  const intObserver = useRef<IntersectionObserver | null>(null)
+
   const feedRef = useRef<HTMLDivElement>(null)
   const [tabIndex, setTabIndex] = useState(0)
 
@@ -20,13 +22,36 @@ export default function Feed() {
     feedRef.current?.style.setProperty("--indicator", x.toString())
   }
 
-  const { data, isLoading } = useQuery({
-    queryKey: ["jobs"],
-    queryFn: async () => {
-      const res = await axiosInstance.get("/jobs/feed")
-      return res.data
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useInfiniteQuery({
+      queryKey: ["jobs"],
+      queryFn: async ({ pageParam = 1 }) => {
+        const res = await axiosInstance.get("/jobs/feed", {
+          params: { pageParam },
+        })
+        return res.data
+      },
+      getNextPageParam: (lastPage, allPages) => {
+        return lastPage?.hasMore ? parseInt(lastPage?.pageParam) + 1 : undefined
+      },
+    })
+
+  const lastPostRef = useCallback(
+    (job: HTMLDivElement) => {
+      if (isFetchingNextPage || isLoading) return
+
+      if (intObserver.current) intObserver.current.disconnect()
+
+      intObserver.current = new IntersectionObserver((posts) => {
+        if (posts[0].isIntersecting && hasNextPage) {
+          fetchNextPage()
+        }
+      })
+
+      if (job) intObserver.current?.observe(job)
     },
-  })
+    [isFetchingNextPage, fetchNextPage, hasNextPage, isLoading]
+  )
 
   let content
   if (tabIndex === 0) {
@@ -37,14 +62,23 @@ export default function Feed() {
         }`}
       >
         <div className={FeedStyles["job-feed__list"]}>
-          {isLoading ? (
+          {data?.pages?.map((pg: any) => {
+            return pg?.jobs?.map((job: JobType, idx: number) => {
+              if (pg?.jobs?.length === idx + 1) {
+                return (
+                  <div ref={lastPostRef} key={job._id}>
+                    <JobExcerpt job={job} />
+                  </div>
+                )
+              }
+              return <JobExcerpt key={job._id} job={job} />
+            })
+          })}
+          {(isLoading || isFetchingNextPage) && (
             <>
               <JobExcerptSkeleton />
               <JobExcerptSkeleton />
-              <JobExcerptSkeleton />
             </>
-          ) : (
-            data?.map((job: JobType) => <JobExcerpt key={job._id} job={job} />)
           )}
         </div>
         {width >= 1000 ? (

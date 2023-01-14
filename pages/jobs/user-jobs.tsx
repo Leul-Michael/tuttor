@@ -1,7 +1,10 @@
+import { GetServerSideProps } from "next"
+import { getSession } from "next-auth/react"
 import { useState } from "react"
 import AppliedJobs from "../../components/Job/AppliedJobs"
 import SavedJobs from "../../components/Job/SavedJobs"
 import Styles from "../../styles/Job.module.css"
+import { ACCOUNT_TYPE } from "../../types"
 
 export default function UserJobs() {
   const [tabIndex, setTabIndex] = useState(0)
@@ -40,4 +43,21 @@ export default function UserJobs() {
       </div>
     </section>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getSession(context)
+
+  if (!session || session.user.role !== ACCOUNT_TYPE.TUTTOR) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    }
+  }
+
+  return {
+    props: {},
+  }
 }
