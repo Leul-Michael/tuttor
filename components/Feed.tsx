@@ -1,5 +1,5 @@
 import FeedStyles from "../styles/Feed.module.css"
-import { useRef, useState, useCallback, ReactElement, ReactNode } from "react"
+import { useRef, useState, useCallback } from "react"
 import JobExcerpt from "./JobExcerpt"
 import RecentSearch from "./RecentSearch"
 import JobDetails from "./JobDetails"
@@ -9,10 +9,10 @@ import JobExcerptSkeleton from "./Skeleton/JobExcerptSkeleton"
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query"
 import { JobContextProvider } from "../context/JobContext"
 import useWindowsWidth from "../hooks/useWindowsWidth"
+import useLastPostRef from "../hooks/useLastPostRef"
 
 export default function Feed() {
   const [width] = useWindowsWidth()
-  const intObserver = useRef<IntersectionObserver | null>(null)
 
   const feedRef = useRef<HTMLDivElement>(null)
   const [tabIndex, setTabIndex] = useState(0)
@@ -36,21 +36,11 @@ export default function Feed() {
       },
     })
 
-  const lastPostRef = useCallback(
-    (job: HTMLDivElement) => {
-      if (isFetchingNextPage || isLoading) return
-
-      if (intObserver.current) intObserver.current.disconnect()
-
-      intObserver.current = new IntersectionObserver((posts) => {
-        if (posts[0].isIntersecting && hasNextPage) {
-          fetchNextPage()
-        }
-      })
-
-      if (job) intObserver.current?.observe(job)
-    },
-    [isFetchingNextPage, fetchNextPage, hasNextPage, isLoading]
+  const lastPostRef = useLastPostRef(
+    isFetchingNextPage,
+    isLoading,
+    fetchNextPage,
+    hasNextPage
   )
 
   let content
@@ -91,8 +81,6 @@ export default function Feed() {
   } else {
     content = (
       <div className={FeedStyles["recent-searches"]}>
-        <RecentSearch />
-        <RecentSearch />
         <RecentSearch />
       </div>
     )

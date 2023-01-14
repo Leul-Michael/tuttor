@@ -2,19 +2,29 @@ import Head from "next/head"
 import TutorStyles from "../styles/Tutor.module.css"
 import TutorExcerpt from "../components/TutorExcerpt"
 import TutorSearch from "../components/Search/TutorSearch"
-import { useQuery } from "@tanstack/react-query"
+import { useInfiniteQuery } from "@tanstack/react-query"
 import axiosInstance from "../axios/axios"
 import { IUser } from "../models/User"
 import TutorExcerptSkeleton from "../components/Skeleton/TutorExcerptSkeleton"
+// import useLastPostRef from "../hooks/useLastPostRef"
 
 export default function Tutors() {
-  const { data, isLoading } = useQuery({
-    queryKey: ["tutors"],
-    queryFn: async () => {
-      const res = await axiosInstance.get("/tutor")
-      return res.data
-    },
-  })
+  const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } =
+    useInfiniteQuery({
+      queryKey: ["tutors"],
+      queryFn: async ({ pageParam = 1 }) => {
+        const res = await axiosInstance.get("/tutor", { params: { pageParam } })
+        return res.data
+      },
+    })
+
+  // const lastPostRef = useLastPostRef(
+  //   isFetchingNextPage,
+  //   isLoading,
+  //   fetchNextPage,
+  //   hasNextPage
+  // )
+
   return (
     <>
       <Head>
@@ -25,19 +35,32 @@ export default function Tutors() {
       </Head>
       <TutorSearch />
       <div className={`container ${TutorStyles.tuttors}`}>
-        <p className={TutorStyles.results}>{data?.length} results found</p>
+        <p className={TutorStyles.results}>
+          {data?.pages[0]?.tutors?.length} results found
+        </p>
         <div className={`${TutorStyles["tutor-grid"]}`}>
-          {isLoading ? (
+          {data?.pages?.map((pg) =>
+            pg?.tutors?.map((user: IUser, idx: number) => {
+              // if (pg?.tutors?.length === idx + 1) {
+              //   return (
+              //     <div ref={lastPostRef} key={user._id}>
+              //       <TutorExcerpt user={user} />
+              //     </div>
+              //   )
+              // }
+              return <TutorExcerpt key={user._id} user={user} />
+            })
+          )}
+          {(isLoading || isFetchingNextPage) && (
             <>
-              <TutorExcerptSkeleton /> <TutorExcerptSkeleton />{" "}
-              <TutorExcerptSkeleton /> <TutorExcerptSkeleton />{" "}
+              <TutorExcerptSkeleton /> <TutorExcerptSkeleton />
+              <TutorExcerptSkeleton /> <TutorExcerptSkeleton />
               <TutorExcerptSkeleton /> <TutorExcerptSkeleton />
             </>
-          ) : (
-            data?.map((user: IUser) => (
-              <TutorExcerpt key={user._id} user={user} />
-            ))
           )}
+          {data?.pages[0].tutors.length === 0 ? (
+            <p className="text-light">No available jobs to show here!</p>
+          ) : null}
         </div>
       </div>
     </>

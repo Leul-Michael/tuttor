@@ -2,10 +2,12 @@ import Image from "next/image"
 import Link from "next/link"
 import { IUser } from "../models/User"
 import TutorStyles from "../styles/Tutor.module.css"
+// import { forwardRef } from "react"
 
-export default function TutorExcerpt({ user }: { user: IUser }) {
+const TutorExcerpt = ({ user }: { user: IUser }) => {
   return (
     <Link
+      //  ref={ref}
       href={`/users/${user._id}`}
       tabIndex={0}
       className={TutorStyles.tuttor}
@@ -33,3 +35,5 @@ export default function TutorExcerpt({ user }: { user: IUser }) {
     </Link>
   )
 }
+
+export default TutorExcerpt

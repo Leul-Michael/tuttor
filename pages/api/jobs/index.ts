@@ -12,6 +12,9 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 
   if (req.method === "GET") {
+    const { pageParam } = req.query
+
+    let limit = 5
     // Connect to DB
     await connectDB()
 
@@ -21,8 +24,19 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           createdAt: -1,
         })
         .populate({ path: "proposals.user", model: User, select: "name" })
+        .sort({ createdAt: -1 })
+        .skip(Number(pageParam) > 0 ? limit * (Number(pageParam) - 1) : 0)
+        .limit(limit)
 
-      return res.status(200).json(jobs)
+      const total = await Job.countDocuments({ user: session.user.id }).exec()
+
+      const response = {
+        hasMore: Number(pageParam) * limit < total,
+        jobs,
+        pageParam,
+      }
+
+      return res.status(200).json(response)
     } catch (e: any) {
       console.log(e.message)
       return res.status(500).json(null)

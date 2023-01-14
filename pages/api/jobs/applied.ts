@@ -1,10 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next"
-import { Types } from "mongoose"
-import User from "../../../models/User"
 import Job from "../../../models/Job"
 import connectDB from "../../../middleware/connectDB"
 import { getSession } from "next-auth/react"
-import { JobType } from "../../../types"
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const session = await getSession({ req })
