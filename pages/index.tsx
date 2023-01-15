@@ -2,6 +2,7 @@ import Head from "next/head"
 import Feed from "../components/Feed"
 // import { Inter } from "@next/font/google"
 import HomeSearch from "../components/Search/HomeSearch"
+import { JobContextProvider } from "../context/JobContext"
 
 // const inter = Inter({ subsets: ["latin"] })
 
@@ -18,7 +19,9 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <HomeSearch />
-      <Feed />
+      <JobContextProvider>
+        <Feed />
+      </JobContextProvider>
     </>
   )
 }

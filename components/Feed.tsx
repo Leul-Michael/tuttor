@@ -1,17 +1,18 @@
 import FeedStyles from "../styles/Feed.module.css"
-import { useRef, useState } from "react"
+import { useRef, useState, useEffect } from "react"
 import JobExcerpt from "./JobExcerpt"
 import RecentSearch from "./RecentSearch"
 import JobDetails from "./JobDetails"
 import axiosInstance from "../axios/axios"
 import { JobType } from "../types"
 import JobExcerptSkeleton from "./Skeleton/JobExcerptSkeleton"
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query"
-import { JobContextProvider } from "../context/JobContext"
+import { useInfiniteQuery } from "@tanstack/react-query"
+import useJobContext, { JobContextProvider } from "../context/JobContext"
 import useWindowsWidth from "../hooks/useWindowsWidth"
 import useLastPostRef from "../hooks/useLastPostRef"
 
 export default function Feed() {
+  const { viewJob, jobId } = useJobContext()
   const [width] = useWindowsWidth()
 
   const feedRef = useRef<HTMLDivElement>(null)
@@ -42,6 +43,12 @@ export default function Feed() {
     fetchNextPage,
     hasNextPage
   )
+
+  useEffect(() => {
+    if (!jobId) {
+      viewJob(data?.pages[0]?.jobs[0]?._id)
+    }
+  }, [jobId, data?.pages, viewJob])
 
   let content
   if (tabIndex === 0) {
@@ -87,21 +94,19 @@ export default function Feed() {
   }
 
   return (
-    <JobContextProvider>
-      <section className={FeedStyles.feed}>
-        <header>
-          <div ref={feedRef} className={`${FeedStyles["flex-btns"]} container`}>
-            <button
-              onClick={() => changeTabIndex(0)}
-              className={FeedStyles.active}
-            >
-              your feed
-            </button>
-            <button onClick={() => changeTabIndex(1)}>recent searches</button>
-          </div>
-        </header>
-        <div className="container">{content}</div>
-      </section>
-    </JobContextProvider>
+    <section className={FeedStyles.feed}>
+      <header>
+        <div ref={feedRef} className={`${FeedStyles["flex-btns"]} container`}>
+          <button
+            onClick={() => changeTabIndex(0)}
+            className={FeedStyles.active}
+          >
+            your feed
+          </button>
+          <button onClick={() => changeTabIndex(1)}>recent searches</button>
+        </div>
+      </header>
+      <div className="container">{content}</div>
+    </section>
   )
 }
