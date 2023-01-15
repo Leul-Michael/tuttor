@@ -45,10 +45,10 @@ export default function Feed() {
   )
 
   useEffect(() => {
-    if (!jobId) {
+    if (!jobId && width >= 1000) {
       viewJob(data?.pages[0]?.jobs[0]?._id)
     }
-  }, [jobId, data?.pages, viewJob])
+  }, [jobId, data?.pages, viewJob, width])
 
   let content
   if (tabIndex === 0) {

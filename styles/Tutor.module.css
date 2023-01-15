@@ -4,7 +4,7 @@
 
 .tutor-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 1rem;
 }
 
@@ -22,7 +22,6 @@
     padding: 1rem;
     border: 1px solid var(--clr-border);
     width: 100%;
-    max-width: 350px;
     border-radius: 8px;
     margin-bottom: 1rem;
 }
