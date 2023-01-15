@@ -10,29 +10,54 @@ import useWindowsWidth from "../../hooks/useWindowsWidth"
 interface SearchFeedProps {
   data: any
   isLoading: boolean
+  lastPostRef: (node: HTMLDivElement) => void
+  isFetchingNextPage: boolean
 }
 
-export default function SearchFeed({ data, isLoading }: SearchFeedProps) {
+export default function SearchFeed({
+  data,
+  isLoading,
+  lastPostRef,
+  isFetchingNextPage,
+}: SearchFeedProps) {
   const [width] = useWindowsWidth()
+
+  const Loading = () => {
+    return (
+      <>
+        <JobExcerptSkeleton />
+        <JobExcerptSkeleton />
+        <JobExcerptSkeleton />
+      </>
+    )
+  }
 
   let content
   if (isLoading) {
     content = (
       <div className={FeedStyles["job-feed__list"]}>
-        <JobExcerptSkeleton />
-        <JobExcerptSkeleton />
-        <JobExcerptSkeleton />
+        <Loading />
       </div>
     )
   }
 
-  if (data?.length > 0) {
+  if (data?.pages?.length > 0) {
     content = (
       <>
         <div className={FeedStyles["job-feed__list"]}>
-          {data?.map((job: JobType) => (
-            <JobExcerpt key={job._id} job={job} />
-          ))}
+          {data?.pages?.map((pg: any) => {
+            return pg?.jobs?.map((job: JobType, idx: number) => {
+              if (pg?.jobs?.length === idx + 1) {
+                return (
+                  <div ref={lastPostRef} key={job._id}>
+                    <JobExcerpt job={job} />
+                  </div>
+                )
+              }
+              return <JobExcerpt key={job._id} job={job} />
+            })
+          })}
+          {isFetchingNextPage && <Loading />}
         </div>
         {width >= 1000 ? (
           <div className={FeedStyles["job-feed__description"]}>
@@ -48,7 +73,7 @@ export default function SearchFeed({ data, isLoading }: SearchFeedProps) {
       <section className={FeedStyles.feed}>
         <div className="container-md pd">
           <p className={FeedStyles["result-p"]}>
-            Search results {data?.length}
+            Search results {data?.pages[0].total}
           </p>
         </div>
         <div className="container">

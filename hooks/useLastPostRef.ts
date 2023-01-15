@@ -15,18 +15,18 @@ export default function useLastPostRef(
   const intObserver = useRef<IntersectionObserver | null>(null)
 
   const lastPostRef = useCallback(
-    (job: HTMLDivElement) => {
+    (node: HTMLDivElement) => {
       if (isFetchingNextPage || isLoading) return
 
       if (intObserver.current) intObserver.current.disconnect()
 
-      intObserver.current = new IntersectionObserver((posts) => {
-        if (posts[0].isIntersecting && hasNextPage) {
+      intObserver.current = new IntersectionObserver((elems) => {
+        if (elems[0].isIntersecting && hasNextPage) {
           fetchNextPage()
         }
       })
 
-      if (job) intObserver.current?.observe(job)
+      if (node) intObserver.current?.observe(node)
     },
     [isFetchingNextPage, fetchNextPage, hasNextPage, isLoading]
   )

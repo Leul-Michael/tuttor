@@ -1,12 +1,13 @@
-import { useState, useRef, FormEvent, LegacyRef } from "react"
+import { useState, useRef, FormEvent } from "react"
 import { AiOutlineSearch } from "react-icons/ai"
 import { MdLocationOn } from "react-icons/md"
 import SearchStyles from "../../styles/Search.module.css"
 import SelectCheckbox, { Option } from "../../components/Select/SelectCheckbox"
 import { useRouter } from "next/router"
-import { useQuery } from "@tanstack/react-query"
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query"
 import axiosInstance from "../../axios/axios"
 import SearchFeed from "../../components/Search/SearchFeed"
+import useLastPostRef from "../../hooks/useLastPostRef"
 
 const CategoriyOptions = [
   { key: 1, value: "Home" },
@@ -66,19 +67,37 @@ export default function Search() {
   //     }
   //   }
 
-  const { data, isFetching, refetch } = useQuery({
+  const {
+    data,
+    isFetching,
+    refetch,
+    isFetchingNextPage,
+    isLoading,
+    fetchNextPage,
+    hasNextPage,
+  } = useInfiniteQuery({
     queryKey: ["jobs"],
-    queryFn: async () => {
+    queryFn: async ({ pageParam = 1 }) => {
       const res = await axiosInstance.get("/search/jobs", {
         params: {
+          pageParam,
           title: titleRef.current?.value,
           location: locationRef.current?.value,
         },
       })
       return res.data
     },
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage?.hasMore ? parseInt(lastPage?.pageParam) + 1 : undefined
+    },
   })
 
+  const lastPostRef = useLastPostRef(
+    isFetchingNextPage,
+    isLoading,
+    fetchNextPage,
+    hasNextPage
+  )
   const refetchQuery = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     refetch()
@@ -141,7 +160,12 @@ export default function Search() {
           />
         </div>
       </section>
-      <SearchFeed data={data} isLoading={isFetching} />
+      <SearchFeed
+        data={data}
+        isLoading={isFetching}
+        isFetchingNextPage={isFetchingNextPage}
+        lastPostRef={lastPostRef}
+      />
     </>
   )
 }
