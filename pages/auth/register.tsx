@@ -26,6 +26,7 @@ export default function Register() {
     name: "",
     email: "",
     password: "",
+    location: "",
   })
   const [errorMsg, setErrorMsg] = useState({
     type: msgType.ERROR,
@@ -33,7 +34,7 @@ export default function Register() {
   })
   const [register, isLoading] = useRegister()
 
-  const { name, email, password } = formData
+  const { name, email, password, location } = formData
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault()
@@ -75,6 +76,7 @@ export default function Register() {
           name: "",
           email: "",
           password: "",
+          location: "",
         })
       }
     } catch (e: any) {
@@ -122,6 +124,17 @@ export default function Register() {
                 required
               />
               <label htmlFor="email">email</label>
+            </div>
+            <div className={AuthStyles["input-box"]}>
+              <input
+                type="text"
+                id="location"
+                name="location"
+                onChange={handleChange}
+                value={location}
+                required
+              />
+              <label htmlFor="email">location</label>
             </div>
             <div className={AuthStyles["input-box"]}>
               <input

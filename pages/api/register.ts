@@ -8,9 +8,9 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   await connectDB()
 
   if (req.method === "POST") {
-    const { name, email, password, role } = req.body
+    const { name, email, password, role, location } = req.body
 
-    if (!name || !email || !password) {
+    if (!name || !email || !password || !location) {
       return res.status(400).json({ msg: "Please input all fields." })
     }
 
@@ -32,6 +32,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         email: email.toLowerCase(),
         password: hashedPassword,
         role: role,
+        location,
       })
 
       return res

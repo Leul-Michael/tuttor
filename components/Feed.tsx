@@ -1,5 +1,5 @@
 import FeedStyles from "../styles/Feed.module.css"
-import { useRef, useState, useCallback } from "react"
+import { useRef, useState } from "react"
 import JobExcerpt from "./JobExcerpt"
 import RecentSearch from "./RecentSearch"
 import JobDetails from "./JobDetails"

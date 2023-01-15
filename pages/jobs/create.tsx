@@ -181,8 +181,9 @@ export default function Create({ user }: { user: IUser }) {
               id="budget"
               min={50}
               max={10000}
-              value={startingPrice}
+              value={startingPrice || 50}
               onChange={(e) => setStartingPrice(e.target.value)}
+              required
             />
             <span>-</span>
             <input

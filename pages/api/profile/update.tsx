@@ -11,6 +11,11 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 
   if (req.method === "POST") {
+    const { location, name, email, price } = req.body
+
+    if (!location || !email || !name || !price) {
+      return res.status(400).json({ msg: "Required fields can not be empty." })
+    }
     // Connect to DB
     await connectDB()
 

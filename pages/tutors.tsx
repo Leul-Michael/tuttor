@@ -52,6 +52,15 @@ export default function Tutors() {
     refetch()
   }
 
+  const Loading = () => {
+    return (
+      <>
+        <TutorExcerptSkeleton /> <TutorExcerptSkeleton />
+        <TutorExcerptSkeleton />
+      </>
+    )
+  }
+
   return (
     <>
       <Head>
@@ -75,10 +84,7 @@ export default function Tutors() {
         </p>
         <div className={`${TutorStyles["tutor-grid"]}`}>
           {isLoading || isRefetching ? (
-            <>
-              <TutorExcerptSkeleton /> <TutorExcerptSkeleton />
-              <TutorExcerptSkeleton />
-            </>
+            <Loading />
           ) : data?.pages[0].tutors.length === 0 ? (
             <p className="text-light">No tutor found!</p>
           ) : (
@@ -99,12 +105,7 @@ export default function Tutors() {
               })
             )
           )}
-          {isFetchingNextPage && (
-            <>
-              <TutorExcerptSkeleton /> <TutorExcerptSkeleton />
-              <TutorExcerptSkeleton />
-            </>
-          )}
+          {isFetchingNextPage && <Loading />}
         </div>
       </div>
     </>

@@ -30,6 +30,15 @@ export default function All() {
     hasNextPage
   )
 
+  const Loading = () => {
+    return (
+      <>
+        <MyJobSkeleton />
+        <MyJobSkeleton />
+      </>
+    )
+  }
+
   return (
     <section className={Styles["all-jobs"]}>
       <div className={`container ${Styles["all-jobs__container"]}`}>
@@ -43,7 +52,11 @@ export default function All() {
         </div>
 
         <ul className={Styles["all-jobs__list"]}>
-          {data?.pages.length ? (
+          {isLoading ? (
+            <Loading />
+          ) : data?.pages[0]?.jobs.length === 0 ? (
+            <p className="text-light">No available jobs to show here!</p>
+          ) : (
             data?.pages.map((pg) => {
               return pg?.jobs?.map((job: JobType, idx: number) => {
                 if (pg?.jobs?.length === idx + 1) {
@@ -56,15 +69,8 @@ export default function All() {
                 return <UserJobExcerpt key={job._id} job={job} />
               })
             })
-          ) : (
-            <p className="text-light">No available jobs to show here!</p>
           )}
-          {(isLoading || isFetchingNextPage) && (
-            <>
-              <MyJobSkeleton />
-              <MyJobSkeleton />
-            </>
-          )}
+          {isFetchingNextPage && <Loading />}
         </ul>
       </div>
     </section>
