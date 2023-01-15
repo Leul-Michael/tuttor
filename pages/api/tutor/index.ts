@@ -16,7 +16,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     const tutors = await User.find({
       role: ACCOUNT_TYPE.TUTTOR,
       name: queryName,
-      // location: queryLocation,
+      location: queryLocation,
     })
       .select("-password")
       .sort({ createdAt: -1 })
@@ -26,7 +26,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     const total = await User.countDocuments({
       role: ACCOUNT_TYPE.TUTTOR,
       name: queryName,
-      // location: queryLocation,
+      location: queryLocation,
     }).exec()
 
     const response = {
