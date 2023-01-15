@@ -134,6 +134,12 @@ export default function Profile({ user }: { user: IUser }) {
                 </div>{" "}
               </>
             )}
+            {user.role === ACCOUNT_TYPE.TUTTOR && (
+              <Tip
+                inside
+                tip="You need to provide your location to appear on searches."
+              />
+            )}
             <div className={ProfileStyles["input-box"]}>
               <label htmlFor="location">
                 Location <span>*</span>

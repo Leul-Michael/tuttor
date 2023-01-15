@@ -2,6 +2,7 @@ import { GetServerSideProps } from "next"
 import { getSession } from "next-auth/react"
 import { useState } from "react"
 import AppliedJobs from "../../components/Job/AppliedJobs"
+import InvitedJobs from "../../components/Job/InvitedJobs"
 import SavedJobs from "../../components/Job/SavedJobs"
 import Styles from "../../styles/Job.module.css"
 import { ACCOUNT_TYPE } from "../../types"
@@ -34,11 +35,20 @@ export default function UserJobs() {
             >
               Saved
             </button>
+            <button
+              onClick={() => setTabIndex(2)}
+              className={`btn ${Styles["btn-tab"]} ${
+                tabIndex === 2 ? Styles.active : ""
+              }`}
+            >
+              Invited
+            </button>
           </div>
         </div>
         <div className={Styles["user-job__outlet"]}>
           {tabIndex === 0 ? <AppliedJobs /> : null}
           {tabIndex === 1 ? <SavedJobs /> : null}
+          {tabIndex === 2 ? <InvitedJobs /> : null}
         </div>
       </div>
     </section>

@@ -14,9 +14,14 @@
     padding: 1rem 0;
 }
 
+.last-ref {
+    display: flex;
+}
+
 .tuttor {
     padding: 1rem;
     border: 1px solid var(--clr-border);
+    width: 100%;
     max-width: 350px;
     border-radius: 8px;
     margin-bottom: 1rem;
@@ -32,6 +37,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .header h1 {

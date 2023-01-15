@@ -6,24 +6,51 @@ import { useInfiniteQuery } from "@tanstack/react-query"
 import axiosInstance from "../axios/axios"
 import { IUser } from "../models/User"
 import TutorExcerptSkeleton from "../components/Skeleton/TutorExcerptSkeleton"
-// import useLastPostRef from "../hooks/useLastPostRef"
+import { useState, FormEventHandler } from "react"
+import useLastPostRef from "../hooks/useLastPostRef"
 
 export default function Tutors() {
-  const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } =
-    useInfiniteQuery({
-      queryKey: ["tutors"],
-      queryFn: async ({ pageParam = 1 }) => {
-        const res = await axiosInstance.get("/tutor", { params: { pageParam } })
-        return res.data
-      },
-    })
+  const [searchData, setSearchData] = useState({
+    name: "",
+    location: "",
+  })
 
-  // const lastPostRef = useLastPostRef(
-  //   isFetchingNextPage,
-  //   isLoading,
-  //   fetchNextPage,
-  //   hasNextPage
-  // )
+  const {
+    data,
+    isLoading,
+    isFetchingNextPage,
+    fetchNextPage,
+    hasNextPage,
+    isRefetching,
+    refetch,
+  } = useInfiniteQuery({
+    queryKey: ["tutors"],
+    queryFn: async ({ pageParam = 1 }) => {
+      const res = await axiosInstance.get("/tutor", {
+        params: {
+          pageParam,
+          name: searchData.name,
+          location: searchData.location,
+        },
+      })
+      return res.data
+    },
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage?.hasMore ? parseInt(lastPage?.pageParam) + 1 : undefined
+    },
+  })
+
+  const lastPostRef = useLastPostRef(
+    isFetchingNextPage,
+    isLoading,
+    fetchNextPage,
+    hasNextPage
+  )
+
+  const findTutor: FormEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault()
+    refetch()
+  }
 
   return (
     <>
@@ -33,34 +60,51 @@ export default function Tutors() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <TutorSearch />
+      <TutorSearch
+        searchData={searchData}
+        setSearchData={setSearchData}
+        findTutor={findTutor}
+      />
       <div className={`container ${TutorStyles.tuttors}`}>
         <p className={TutorStyles.results}>
-          {data?.pages[0]?.tutors?.length} results found
+          {/* {data?.pages.reduce((total, pg) => {
+            total = total + pg?.tutors?.length
+            return total
+          }, 0)}{" "} */}
+          {data?.pages[0].total} results found
         </p>
         <div className={`${TutorStyles["tutor-grid"]}`}>
-          {data?.pages?.map((pg) =>
-            pg?.tutors?.map((user: IUser, idx: number) => {
-              // if (pg?.tutors?.length === idx + 1) {
-              //   return (
-              //     <div ref={lastPostRef} key={user._id}>
-              //       <TutorExcerpt user={user} />
-              //     </div>
-              //   )
-              // }
-              return <TutorExcerpt key={user._id} user={user} />
-            })
-          )}
-          {(isLoading || isFetchingNextPage) && (
+          {isLoading || isRefetching ? (
             <>
               <TutorExcerptSkeleton /> <TutorExcerptSkeleton />
+              <TutorExcerptSkeleton />
+            </>
+          ) : data?.pages[0].tutors.length === 0 ? (
+            <p className="text-light">No tutor found!</p>
+          ) : (
+            data?.pages?.map((pg) =>
+              pg?.tutors?.map((user: IUser, idx: number) => {
+                if (pg?.tutors?.length === idx + 1) {
+                  return (
+                    <div
+                      className={TutorStyles["last-ref"]}
+                      ref={lastPostRef}
+                      key={user._id}
+                    >
+                      <TutorExcerpt user={user} />
+                    </div>
+                  )
+                }
+                return <TutorExcerpt key={user._id} user={user} />
+              })
+            )
+          )}
+          {isFetchingNextPage && (
+            <>
               <TutorExcerptSkeleton /> <TutorExcerptSkeleton />
-              <TutorExcerptSkeleton /> <TutorExcerptSkeleton />
+              <TutorExcerptSkeleton />
             </>
           )}
-          {data?.pages[0].tutors.length === 0 ? (
-            <p className="text-light">No available jobs to show here!</p>
-          ) : null}
         </div>
       </div>
     </>

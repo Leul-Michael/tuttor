@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, Dispatch, SetStateAction, FormEventHandler } from "react"
 import { AiOutlineSearch } from "react-icons/ai"
 import { MdLocationOn } from "react-icons/md"
 import SearchStyles from "../../styles/Search.module.css"
@@ -21,7 +21,22 @@ const PriceOptions = [
   { key: 3, value: "500+/hr" },
 ]
 
-export default function TutorSearch() {
+type searchDataProp = {
+  name: string
+  location: string
+}
+
+type TutorProps = {
+  searchData: searchDataProp
+  setSearchData: Dispatch<SetStateAction<searchDataProp>>
+  findTutor: FormEventHandler<HTMLFormElement>
+}
+
+export default function TutorSearch({
+  searchData,
+  setSearchData,
+  findTutor,
+}: TutorProps) {
   const [values, setValues] = useState<Option[]>(CategoriyOptions)
   const [levels, setLevels] = useState<Option[]>(LevelOptions)
   const [price, setPrice] = useState<Option[]>(PriceOptions)
@@ -61,25 +76,38 @@ export default function TutorSearch() {
     <section className={SearchStyles.container}>
       <div className="container">
         <h1 className="font-serif main-title">Find the best Tutor.</h1>
-        <div className={SearchStyles["search-container"]}>
+        <form onSubmit={findTutor} className={SearchStyles["search-container"]}>
           <div className={SearchStyles["input-box"]}>
-            <label htmlFor="title">Who</label>
-            <input type="text" placeholder="name" id="name" name="name" />
+            <label htmlFor="name">Who</label>
+            <input
+              type="text"
+              placeholder="name"
+              id="name"
+              name="name"
+              value={searchData.name}
+              onChange={(e) =>
+                setSearchData((prev) => ({ ...prev, name: e.target.value }))
+              }
+            />
             <AiOutlineSearch className={SearchStyles.icon} />
           </div>
           <div className={SearchStyles["input-box"]}>
-            <label htmlFor="title">Where</label>
+            <label htmlFor="location">Where</label>
             <input
               type="text"
               placeholder="location"
               id="location"
               name="location"
               autoComplete="off"
+              value={searchData.location}
+              onChange={(e) =>
+                setSearchData((prev) => ({ ...prev, location: e.target.value }))
+              }
             />
             <MdLocationOn className={SearchStyles.icon} />
           </div>
           <button className={`btn btn-primary`}>Find</button>
-        </div>
+        </form>
       </div>
       <div className={`${SearchStyles.filters} container`}>
         <SelectCheckbox
