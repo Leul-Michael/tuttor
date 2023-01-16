@@ -100,7 +100,7 @@ export default function Feed() {
             />
           ))
         ) : (
-          <p className="text-sm text-light">No recent searchs</p>
+          <p className="text-sm text-light">No recent searches</p>
         )}
       </div>
     )

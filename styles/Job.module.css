@@ -204,11 +204,12 @@
 /* Recent Searches */
 .recents {
     width: var(--excerpt-width);
-    height: 60px;
+    height: 70px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid var(--clr-border);
+    cursor: pointer;
 }
 
 .recents .recent {
@@ -738,7 +739,7 @@
     }
 
     .recents {
-        width: 280px;
+        width: 300px;
     }
 
     .flex-buttons {
