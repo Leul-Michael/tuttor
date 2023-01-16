@@ -2,16 +2,19 @@ import { useRouter } from "next/router"
 import { useState, MouseEvent } from "react"
 import { AiOutlineSearch } from "react-icons/ai"
 import { MdLocationOn } from "react-icons/md"
+import useRecentSearch from "../../context/RecentSearchContext"
 import SearchStyles from "../../styles/Search.module.css"
 
 export default function HomeSearch() {
   const router = useRouter()
+  const { addRecentSearch } = useRecentSearch()
 
   const [title, setTitle] = useState("")
   const [location, setLocation] = useState("")
 
   const handleSearch = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
+    addRecentSearch(title, location)
     router.push({
       pathname: "/search",
       query: {

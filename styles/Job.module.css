@@ -202,7 +202,7 @@
 }
 
 /* Recent Searches */
-.recent {
+.recents {
     width: var(--excerpt-width);
     height: 60px;
     display: flex;
@@ -211,7 +211,18 @@
     border-bottom: 1px solid var(--clr-border);
 }
 
-.recent .icon {
+.recents .recent {
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
+}
+
+.recents .recent span {
+    font-size: .7rem;
+    color: var(--clr-font-light-secondary);
+}
+
+.recents .icon {
     box-sizing: content-box;
     padding: .35rem;
     display: inline-block;
@@ -219,7 +230,7 @@
     cursor: pointer;
 }
 
-.recent .icon:hover {
+.recents .icon:hover {
     background-color: var(--clr-background-light);
 }
 
@@ -658,7 +669,7 @@
         padding: 0 3rem;
     }
 
-    .recent {
+    .recents {
         width: 350px;
     }
 
@@ -726,8 +737,8 @@
         padding-left: 0;
     }
 
-    .recent {
-        width: 250px;
+    .recents {
+        width: 280px;
     }
 
     .flex-buttons {

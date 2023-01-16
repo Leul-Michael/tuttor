@@ -7,11 +7,13 @@ import axiosInstance from "../axios/axios"
 import { JobType } from "../types"
 import JobExcerptSkeleton from "./Skeleton/JobExcerptSkeleton"
 import { useInfiniteQuery } from "@tanstack/react-query"
-import useJobContext, { JobContextProvider } from "../context/JobContext"
+import useJobContext from "../context/JobContext"
 import useWindowsWidth from "../hooks/useWindowsWidth"
 import useLastPostRef from "../hooks/useLastPostRef"
+import useRecentSearch from "../context/RecentSearchContext"
 
 export default function Feed() {
+  const { recentSearch } = useRecentSearch()
   const { viewJob, jobId } = useJobContext()
   const [width] = useWindowsWidth()
 
@@ -88,7 +90,18 @@ export default function Feed() {
   } else {
     content = (
       <div className={FeedStyles["recent-searches"]}>
-        <RecentSearch />
+        {recentSearch.length > 0 ? (
+          recentSearch.map((search, idx: number) => (
+            <RecentSearch
+              key={search.id}
+              id={search.id}
+              title={search.title}
+              location={search.location}
+            />
+          ))
+        ) : (
+          <p>No recent searchs</p>
+        )}
       </div>
     )
   }

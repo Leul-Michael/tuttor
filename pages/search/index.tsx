@@ -4,10 +4,11 @@ import { MdLocationOn } from "react-icons/md"
 import SearchStyles from "../../styles/Search.module.css"
 import SelectCheckbox, { Option } from "../../components/Select/SelectCheckbox"
 import { useRouter } from "next/router"
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query"
+import { useInfiniteQuery } from "@tanstack/react-query"
 import axiosInstance from "../../axios/axios"
 import SearchFeed from "../../components/Search/SearchFeed"
 import useLastPostRef from "../../hooks/useLastPostRef"
+import useRecentSearch from "../../context/RecentSearchContext"
 
 const CategoriyOptions = [
   { key: 1, value: "Home" },
@@ -28,6 +29,7 @@ const PriceOptions = [
 
 export default function Search() {
   const router = useRouter()
+  const { addRecentSearch } = useRecentSearch()
 
   const [values, setValues] = useState<Option[]>(CategoriyOptions)
   //   const [levels, setLevels] = useState<Option[]>(LevelOptions)
@@ -100,6 +102,10 @@ export default function Search() {
   )
   const refetchQuery = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    addRecentSearch(
+      titleRef.current?.value || "",
+      locationRef.current?.value || ""
+    )
     refetch()
   }
 

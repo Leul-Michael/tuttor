@@ -5,6 +5,7 @@ import { SessionProvider } from "next-auth/react"
 import { ToastContextProvider } from "../context/ToastContext"
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import { RecentSearchContextProvider } from "../context/RecentSearchContext"
 
 export default function App({
   Component,
@@ -19,17 +20,19 @@ export default function App({
   })
   return (
     <ToastContextProvider>
-      <SessionProvider
-        session={session}
-        refetchInterval={5 * 60 * 60}
-        refetchOnWindowFocus={false}
-      >
-        <QueryClientProvider client={queryClient}>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        </QueryClientProvider>
-      </SessionProvider>
+      <RecentSearchContextProvider>
+        <SessionProvider
+          session={session}
+          refetchInterval={5 * 60 * 60}
+          refetchOnWindowFocus={false}
+        >
+          <QueryClientProvider client={queryClient}>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </QueryClientProvider>
+        </SessionProvider>
+      </RecentSearchContextProvider>
     </ToastContextProvider>
   )
 }
