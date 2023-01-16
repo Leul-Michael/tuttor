@@ -91,14 +91,18 @@ export default function Feed() {
     content = (
       <div className={FeedStyles["recent-searches"]}>
         {recentSearch.length > 0 ? (
-          recentSearch.map((search, idx: number) => (
-            <RecentSearch
-              key={search.id}
-              id={search.id}
-              title={search.title}
-              location={search.location}
-            />
-          ))
+          recentSearch
+            .sort((a: any, b: any) => {
+              return new Date(b.id)?.getTime() - new Date(a.id)?.getTime()
+            })
+            .map((search) => (
+              <RecentSearch
+                key={search.id}
+                id={search.id}
+                title={search.title}
+                location={search.location}
+              />
+            ))
         ) : (
           <p className="text-sm text-light">No recent searches</p>
         )}
