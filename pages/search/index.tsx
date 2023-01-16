@@ -71,7 +71,6 @@ export default function Search() {
 
   const {
     data,
-    isFetching,
     refetch,
     isFetchingNextPage,
     isLoading,
@@ -168,7 +167,7 @@ export default function Search() {
       </section>
       <SearchFeed
         data={data}
-        isLoading={isFetching}
+        isLoading={isLoading}
         isFetchingNextPage={isFetchingNextPage}
         lastPostRef={lastPostRef}
       />
