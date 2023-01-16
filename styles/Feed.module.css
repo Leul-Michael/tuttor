@@ -37,6 +37,10 @@
     user-select: none;
 }
 
+.flex-btns button:hover {
+    background-color: var(--clr-background-light);
+}
+
 .recent-searches {
     display: flex;
     flex-direction: column;
