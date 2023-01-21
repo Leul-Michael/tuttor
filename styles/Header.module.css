@@ -215,6 +215,15 @@
     margin: 1rem 0;
 }
 
+.msg-icon,
+.mobile-msg-icon {
+    font-size: 1.2rem;
+}
+
+.mobile-msg-icon {
+    margin-inline: 0;
+}
+
 @media (max-width: 500px) {
     .header {
         padding: 0 1.5rem;

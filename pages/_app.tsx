@@ -6,6 +6,7 @@ import { ToastContextProvider } from "../context/ToastContext"
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { RecentSearchContextProvider } from "../context/RecentSearchContext"
+import { DMContextProvider } from "../context/DMContext"
 
 export default function App({
   Component,
@@ -27,9 +28,11 @@ export default function App({
           refetchOnWindowFocus={false}
         >
           <QueryClientProvider client={queryClient}>
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
+            <DMContextProvider>
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+            </DMContextProvider>
           </QueryClientProvider>
         </SessionProvider>
       </RecentSearchContextProvider>

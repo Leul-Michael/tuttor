@@ -12,6 +12,7 @@ export interface IUser {
   subjects?: []
   education?: []
   reviews?: []
+  chats?: string[]
   role: string
 }
 
@@ -60,6 +61,7 @@ const UserSchema = new Schema<IUser>(
       enum: ["tuttor", "employer"],
       required: true,
     },
+    chats: [String],
   },
   {
     timestamps: true,

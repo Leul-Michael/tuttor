@@ -7,6 +7,7 @@ import { useSession } from "next-auth/react"
 import SelectProfile from "../Select/SelectProfile"
 import { useState } from "react"
 import { ACCOUNT_TYPE } from "../../types"
+import { SiGooglemessages } from "react-icons/si"
 
 const Theme = dynamic(() => import("../Select/Theme"), {
   ssr: false,
@@ -65,21 +66,35 @@ export default function Header() {
           <ul className={`${styles.ul} ${styles.auth}`}>
             <Theme />
             {session.status === "authenticated" ? (
-              <div
-                tabIndex={0}
-                className={styles.profile}
-                onBlur={() => setIsOpen(false)}
-              >
-                <HiOutlineUserCircle
-                  onClick={() => setIsOpen((prev) => !prev)}
-                  className={styles["profile-icon"]}
-                />
-                <SelectProfile
-                  isOpen={isOpen}
-                  setIsOpen={setIsOpen}
-                  username={session.data.user.name!}
-                />
-              </div>
+              <>
+                <li
+                  className={`${styles.link} ${styles["msg-icon"]} ${
+                    router.asPath ===
+                    `/users/${session.data.user.id}/conversation`
+                      ? styles.active
+                      : ""
+                  }`}
+                >
+                  <Link href={`/users/${session.data.user.id}/conversation`}>
+                    <SiGooglemessages />
+                  </Link>
+                </li>
+                <div
+                  tabIndex={0}
+                  className={styles.profile}
+                  onBlur={() => setIsOpen(false)}
+                >
+                  <HiOutlineUserCircle
+                    onClick={() => setIsOpen((prev) => !prev)}
+                    className={styles["profile-icon"]}
+                  />
+                  <SelectProfile
+                    isOpen={isOpen}
+                    setIsOpen={setIsOpen}
+                    username={session.data.user.name!}
+                  />
+                </div>
+              </>
             ) : (
               <>
                 <li

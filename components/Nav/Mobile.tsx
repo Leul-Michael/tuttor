@@ -8,6 +8,7 @@ import { signOut, useSession } from "next-auth/react"
 import SelectProfile from "../Select/SelectProfile"
 import { useState } from "react"
 import { ACCOUNT_TYPE } from "../../types"
+import { SiGooglemessages } from "react-icons/si"
 
 const Theme = dynamic(() => import("../Select/Theme"), {
   ssr: false,
@@ -29,21 +30,35 @@ export default function Mobile() {
         </div>
         <div className={Styles.menu}>
           {session.status === "authenticated" ? (
-            <div
-              tabIndex={0}
-              className={Styles.profile}
-              onBlur={() => setIsOpen(false)}
-            >
-              <HiOutlineUserCircle
-                onClick={() => setIsOpen((prev) => !prev)}
-                className={Styles["profile-icon"]}
-              />
-              <SelectProfile
-                isOpen={isOpen}
-                setIsOpen={setIsOpen}
-                username={session.data.user.name!}
-              />
-            </div>
+            <>
+              <li
+                className={`${Styles.link} ${Styles["mobile-msg-icon"]} ${
+                  router.asPath ===
+                  `/users/${session.data.user.id}/conversation`
+                    ? Styles.active
+                    : ""
+                }`}
+              >
+                <Link href={`/users/${session.data.user.id}/conversation`}>
+                  <SiGooglemessages />
+                </Link>
+              </li>
+              <div
+                tabIndex={0}
+                className={Styles.profile}
+                onBlur={() => setIsOpen(false)}
+              >
+                <HiOutlineUserCircle
+                  onClick={() => setIsOpen((prev) => !prev)}
+                  className={Styles["profile-icon"]}
+                />
+                <SelectProfile
+                  isOpen={isOpen}
+                  setIsOpen={setIsOpen}
+                  username={session.data.user.name!}
+                />
+              </div>
+            </>
           ) : (
             <Link href="/auth/login" className={`${Styles.btn}`}>
               Sign in
