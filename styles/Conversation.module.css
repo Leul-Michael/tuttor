@@ -246,10 +246,16 @@
 
 .user-messages__header {
     display: flex;
+    position: sticky;
+    top: -10px;
+    left: 0;
     gap: .5rem;
     align-items: center;
     border: 1px solid var(--clr-background-light);
     padding: 1.25rem .75rem;
+    width: 100%;
+    z-index: 1000;
+    background-color: var(--clr-background);
 }
 
 .back-icon {
@@ -268,19 +274,23 @@
     left: 100%;
     background-color: var(--clr-background);
     width: 100%;
-    opacity: 0;
+    height: 100%;
     z-index: -1;
     transition: all .3s ease-out;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
 }
 
 .mobile-chat.show {
-    opacity: 1;
     left: 0;
     z-index: 100;
+    opacity: 1;
 }
 
 @media (max-width: 600px) {
     .conversation {
+        height: calc(90vh - min(11vh, 110px));
         padding: 0;
     }
 
@@ -290,12 +300,14 @@
         height: 100%;
     }
 
-    .user-conversations,
-    .user-messages__content {
-        height: calc(90vh - min(11vh, 110px));
+    .user-conversations {
+        height: 100%;
         border: 0;
     }
 
+    .mobile-chat .user-messages__content {
+        height: 100%;
+    }
 
     .users-list__user {
         padding: 1.25rem .75rem;
@@ -305,7 +317,20 @@
         height: 45px;
     }
 
+    .mobile-chat .user-messages__input-box {
+        visibility: hidden;
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        z-index: 1000;
+    }
+
+    .mobile-chat.show .user-messages__input-box {
+
+        visibility: visible;
+    }
+
     .user-messages__input-box input {
-        height: 55px;
+        height: 60px;
     }
 }
