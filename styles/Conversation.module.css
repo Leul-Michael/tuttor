@@ -248,7 +248,7 @@
     gap: .5rem;
     align-items: center;
     border: 1px solid var(--clr-background-light);
-    padding: .5rem;
+    padding: 1.25rem .75rem;
 }
 
 .back-icon {
@@ -279,14 +279,25 @@
 }
 
 @media (max-width: 600px) {
+    .conversation {
+        padding: 0;
+    }
+
     .user-conversations {
         position: relative;
         grid-template-columns: 1fr;
+        height: 100%;
     }
 
     .user-conversations,
     .user-messages__content {
-        height: 100vh;
+        height: calc(100vh - min(11vh, 110px));
         border: 0;
     }
+
+
+    .users-list__user {
+        padding: 1.25rem .75rem;
+    }
+
 }
