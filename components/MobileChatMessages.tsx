@@ -74,7 +74,7 @@ export default function MobileChatMessages({
 
   useEffect(() => {
     showChat && lastMsgRef.current?.scrollIntoView({ behavior: "smooth" })
-  }, [showChat])
+  }, [showChat, messages])
 
   const conversationUser = useMemo(
     () => chat?.members.find((u: any) => u["userId"] !== session.data?.user.id),
