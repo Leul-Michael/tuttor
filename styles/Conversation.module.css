@@ -141,21 +141,23 @@
 }
 
 .user-messages__msg {
+    position: relative;
     display: flex;
     align-items: baseline;
     flex-wrap: wrap;
-    padding: .75rem 1.25rem;
+    padding: .75rem 2rem .75rem 1.25rem;
     max-width: 80%;
 }
 
 .user-messages__msg p {
     font-size: .9rem;
+    padding-right: .25rem;
 }
 
 .user-messages__msg span {
     font-size: .75rem;
     color: var(--clr-font-light-secondary);
-    padding: .25rem 0 0 .5rem;
+    padding-top: .25rem;
 }
 
 .user-messages__my-msg {
@@ -215,7 +217,10 @@
 }
 
 .msg__options-btn {
-    position: relative;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: .5rem;
     display: inline-block;
     opacity: 1;
     padding: 0 .25rem;
@@ -232,12 +237,14 @@
     flex-direction: column;
     background-color: var(--clr-background-light);
     z-index: 100;
+    border-radius: 5px;
 }
 
 .msg__options span {
     display: flex;
     gap: .5rem;
     padding: .75rem 1.25rem;
+    font-size: .75rem;
 }
 
 .msg__options span:hover {
@@ -259,9 +266,17 @@
 }
 
 .back-icon {
-    display: inline-block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     font-size: 1.6rem;
     color: var(--clr-select-accent);
+    padding: .5rem;
+    border-radius: 50%;
+}
+
+.back-icon:active {
+    background-color: var(--clr-background-light);
 }
 
 .msg-preview p {
@@ -326,11 +341,10 @@
     }
 
     .mobile-chat.show .user-messages__input-box {
-
         visibility: visible;
     }
 
     .user-messages__input-box input {
-        height: 60px;
+        height: 65px;
     }
 }

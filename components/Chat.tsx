@@ -50,7 +50,11 @@ export default function Chat({
       <div className="avatar">{conversationUser?.name.slice(0, 2)}</div>
       <div className={ConversationStyles["msg-preview"]}>
         <p>{conversationUser?.name}</p>
-        <span>{chat?.lastMsg || ""}</span>
+        <span>
+          {chat?.lastMsg?.length > 30
+            ? chat?.lastMsg?.slice(0, 30) + "..."
+            : chat?.lastMsg || ""}
+        </span>
       </div>
     </div>
   )
