@@ -25,20 +25,22 @@ export default function TextExcerpt({ msg }: { msg: MsgType }) {
     >
       <p>{msg?.text}</p>
       <span>{date.toLocaleTimeString()}</span>
-      <button
-        onClick={(e) => setShowSelect({ id: msg?.id, show: !showSelect.show })}
-        className={ConversationStyles["msg__options-btn"]}
-      >
-        <HiOutlineDotsVertical />
-        {showSelect.show &&
-          showSelect.id === msg?.id &&
-          msg.sentBy === session.data?.user.id && (
+      {msg.sentBy === session.data?.user.id ? (
+        <button
+          onClick={(e) =>
+            setShowSelect({ id: msg?.id, show: !showSelect.show })
+          }
+          className={ConversationStyles["msg__options-btn"]}
+        >
+          <HiOutlineDotsVertical />
+          {showSelect.show && showSelect.id === msg?.id && (
             <TextSelect
               setShowSelect={setShowSelect}
               deleteId={showSelect.id}
             />
           )}
-      </button>
+        </button>
+      ) : null}
     </div>
   )
 }
