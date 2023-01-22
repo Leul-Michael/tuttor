@@ -5,7 +5,6 @@ import {
   Timestamp,
   updateDoc,
 } from "firebase/firestore"
-import React from "react"
 import axiosInstance from "../axios/axios"
 import { db } from "../configs/firebase"
 import useDm from "../context/DMContext"

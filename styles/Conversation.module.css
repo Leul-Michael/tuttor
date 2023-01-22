@@ -247,7 +247,7 @@
     display: flex;
     flex-direction: column;
     background-color: var(--clr-background-light);
-    z-index: 100;
+    z-index: 11;
     border-radius: 5px;
 }
 
@@ -272,7 +272,7 @@
     border: 1px solid var(--clr-background-light);
     padding: 1.25rem .75rem;
     width: 100%;
-    z-index: 1000;
+    z-index: 20;
     background-color: var(--clr-background);
 }
 
@@ -310,7 +310,7 @@
 
 .mobile-chat.show {
     left: 0;
-    z-index: 100;
+    z-index: 20;
     opacity: 1;
 }
 
@@ -349,7 +349,7 @@
         position: fixed;
         left: 0;
         bottom: 0;
-        z-index: 1000;
+        z-index: 20;
     }
 
     .mobile-chat.show .user-messages__input-box {

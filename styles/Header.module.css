@@ -89,7 +89,7 @@
 }
 
 .profile-ul {
-    z-index: 10;
+    z-index: 100;
     position: absolute;
     top: calc(100% + .5rem);
     right: 0;
