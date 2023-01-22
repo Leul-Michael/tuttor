@@ -30,9 +30,14 @@ export default function TextExcerpt({ msg }: { msg: MsgType }) {
         className={ConversationStyles["msg__options-btn"]}
       >
         <HiOutlineDotsVertical />
-        {showSelect.show && showSelect.id === msg?.id && (
-          <TextSelect setShowSelect={setShowSelect} deleteId={showSelect.id} />
-        )}
+        {showSelect.show &&
+          showSelect.id === msg?.id &&
+          msg.sentBy === session.data?.user.id && (
+            <TextSelect
+              setShowSelect={setShowSelect}
+              deleteId={showSelect.id}
+            />
+          )}
       </button>
     </div>
   )
