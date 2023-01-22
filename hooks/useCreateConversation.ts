@@ -36,11 +36,12 @@ export default function useCreateConversation() {
           ],
           updatedAt: serverTimestamp(),
           lastMsg: "",
+          drafted: true,
         })
 
         await axiosInstance.post("/profile/chat", {
           chatId: conversationId,
-          recieverId: receiver?._id,
+          recieverId: null,
         })
       }
 

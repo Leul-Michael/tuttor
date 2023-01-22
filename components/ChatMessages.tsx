@@ -15,28 +15,56 @@ import { TiAttachmentOutline } from "react-icons/ti"
 import { RiSendPlaneFill } from "react-icons/ri"
 import ConversationStyles from "../styles/Conversation.module.css"
 import TextExcerpt from "./TextExcerpt"
+import axiosInstance from "../axios/axios"
+import useToast from "../context/ToastContext"
 
 export default function ChatMessages() {
   const session = useSession()
-  const { messages, selectedChatId } = useDm()
+  const { messages, selectedChatId, isDrafted, members } = useDm()
   const [textMsg, setTextMsg] = useState<string>("")
   const lastMsgRef = useRef<HTMLSpanElement>(null)
+  const { addMessage } = useToast()
 
   const sendMessage = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (textMsg === "") return
 
     setTextMsg("")
-    await updateDoc(doc(db, CHATS, selectedChatId), {
-      messages: arrayUnion({
-        id: uuidv4(),
-        text: textMsg,
-        sentBy: session.data?.user.id,
-        date: Timestamp.now(),
-      }),
-      updatedAt: serverTimestamp(),
-      lastMsg: textMsg,
-    })
+    try {
+      if (isDrafted) {
+        await axiosInstance.post("/profile/chat", {
+          chatId: selectedChatId,
+          recieverId: members.find(
+            (member) => member.userId !== session.data?.user.id
+          )?.userId,
+        })
+
+        await updateDoc(doc(db, CHATS, selectedChatId), {
+          messages: arrayUnion({
+            id: uuidv4(),
+            text: textMsg,
+            sentBy: session.data?.user.id,
+            date: Timestamp.now(),
+          }),
+          updatedAt: serverTimestamp(),
+          lastMsg: textMsg,
+          drafted: false,
+        })
+      } else {
+        await updateDoc(doc(db, CHATS, selectedChatId), {
+          messages: arrayUnion({
+            id: uuidv4(),
+            text: textMsg,
+            sentBy: session.data?.user.id,
+            date: Timestamp.now(),
+          }),
+          updatedAt: serverTimestamp(),
+          lastMsg: textMsg,
+        })
+      }
+    } catch (e) {
+      addMessage(`Something went wrong, please refresh the page!`)
+    }
   }
 
   useEffect(() => {

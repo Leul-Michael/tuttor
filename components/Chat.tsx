@@ -1,5 +1,5 @@
 import { doc, DocumentData, onSnapshot } from "firebase/firestore"
-import { Dispatch, SetStateAction, useEffect, useState } from "react"
+import { Dispatch, SetStateAction, useEffect, useState, useMemo } from "react"
 import { db } from "../configs/firebase"
 import useDm from "../context/DMContext"
 import { CHATS } from "../hooks/useCreateConversation"
@@ -29,13 +29,12 @@ export default function Chat({
     }
   }, [chatId, setChat])
 
-  if (!chat) return null
-
-  const conversationUser = chat?.members.find(
-    (u: any) => u["userId"] !== user._id
+  const conversationUser = useMemo(
+    () => chat?.members.find((u: any) => u["userId"] !== user._id),
+    [user._id, chat?.members]
   )
 
-  if (!conversationUser) return null
+  if (!chat || !conversationUser) return null
 
   return (
     <div
@@ -55,6 +54,9 @@ export default function Chat({
             ? chat?.lastMsg?.slice(0, 30) + "..."
             : chat?.lastMsg || ""}
         </span>
+        {chat?.drafted && (
+          <span className={ConversationStyles.drafted}>draft</span>
+        )}
       </div>
     </div>
   )

@@ -10,10 +10,7 @@ export default function TextExcerpt({ msg }: { msg: MsgType }) {
   const session = useSession()
   const [showSelect, setShowSelect] = useState({ show: false, id: "" })
 
-  const date = new Timestamp(
-    msg?.date?.seconds,
-    msg?.date?.nanoseconds
-  ).toDate()
+  const date = new Timestamp(msg?.date?.seconds, 0).toDate()
 
   return (
     <div

@@ -192,11 +192,22 @@
 }
 
 .users-list__user {
+    position: relative;
     display: flex;
     align-items: center;
     padding: .75rem;
     gap: 1rem;
     cursor: default;
+}
+
+
+.drafted {
+    position: absolute;
+    top: .5rem;
+    right: .5rem;
+    padding: .25rem .5rem;
+    border-radius: 100vw;
+    background-color: var(--clr-caution);
 }
 
 .users-list__user:hover,

@@ -26,6 +26,8 @@ import ConversationStyles from "../styles/Conversation.module.css"
 import TextExcerpt from "./TextExcerpt"
 import { v4 as uuidv4 } from "uuid"
 import { CHATS } from "../hooks/useCreateConversation"
+import axiosInstance from "../axios/axios"
+import useToast from "../context/ToastContext"
 
 export default function MobileChatMessages({
   showChat,
@@ -35,10 +37,11 @@ export default function MobileChatMessages({
   setShowChat: Dispatch<SetStateAction<boolean>>
 }) {
   const session = useSession()
-  const { messages, selectedChatId } = useDm()
+  const { messages, selectedChatId, isDrafted, members } = useDm()
   const [textMsg, setTextMsg] = useState<string>("")
   const [chat, setChat] = useState<DocumentData | undefined>()
   const lastMsgRef = useRef<HTMLSpanElement>(null)
+  const { addMessage } = useToast()
 
   const sendMessage = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -46,17 +49,42 @@ export default function MobileChatMessages({
 
     setTextMsg("")
 
-    await updateDoc(doc(db, CHATS, selectedChatId), {
-      messages: arrayUnion({
-        id: uuidv4(),
-        text: textMsg,
-        sentBy: session.data?.user.id,
-        date: Timestamp.now(),
-      }),
-      updatedAt: serverTimestamp(),
-      lastMsg: textMsg,
-    })
-    lastMsgRef.current?.scrollIntoView({ behavior: "smooth" })
+    try {
+      if (isDrafted) {
+        await axiosInstance.post("/profile/chat", {
+          chatId: selectedChatId,
+          recieverId: members.find(
+            (member) => member.userId !== session.data?.user.id
+          )?.userId,
+        })
+
+        await updateDoc(doc(db, CHATS, selectedChatId), {
+          messages: arrayUnion({
+            id: uuidv4(),
+            text: textMsg,
+            sentBy: session.data?.user.id,
+            date: Timestamp.now(),
+          }),
+          updatedAt: serverTimestamp(),
+          lastMsg: textMsg,
+          drafted: false,
+        })
+      } else {
+        await updateDoc(doc(db, CHATS, selectedChatId), {
+          messages: arrayUnion({
+            id: uuidv4(),
+            text: textMsg,
+            sentBy: session.data?.user.id,
+            date: Timestamp.now(),
+          }),
+          updatedAt: serverTimestamp(),
+          lastMsg: textMsg,
+        })
+      }
+      lastMsgRef.current?.scrollIntoView({ behavior: "smooth" })
+    } catch (e) {
+      addMessage(`Something went wrong, please refresh the page!`)
+    }
   }
 
   useEffect(() => {

@@ -14,9 +14,10 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     const { chatId, recieverId }: { chatId: string; recieverId: string } =
       req.body
 
-    if (!chatId || !recieverId) {
+    if (!chatId) {
       return res.status(400).json({ msg: "Chat not found!" })
     }
+
     // Connect to DB
     await connectDB()
 
@@ -29,7 +30,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         await currentUser?.save()
       }
 
-      if (!receiver?.chats?.includes(chatId)) {
+      if (recieverId && !receiver?.chats?.includes(chatId)) {
         receiver?.chats?.unshift(chatId)
         await receiver?.save()
       }
