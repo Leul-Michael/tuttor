@@ -333,6 +333,7 @@
 
     .mobile-chat .user-messages__content {
         height: 100%;
+        padding: 1rem .75rem;
     }
 
     .users-list__user {

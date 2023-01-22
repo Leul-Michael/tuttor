@@ -1,67 +1,26 @@
 import { useRef, useEffect, useState, FormEvent } from "react"
 import useDm from "../context/DMContext"
-import {
-  arrayUnion,
-  doc,
-  serverTimestamp,
-  Timestamp,
-  updateDoc,
-} from "firebase/firestore"
-import { db } from "../configs/firebase"
-import { CHATS } from "../hooks/useCreateConversation"
-import { useSession } from "next-auth/react"
-import { v4 as uuidv4 } from "uuid"
 import { TiAttachmentOutline } from "react-icons/ti"
 import { RiSendPlaneFill } from "react-icons/ri"
 import ConversationStyles from "../styles/Conversation.module.css"
 import TextExcerpt from "./TextExcerpt"
-import axiosInstance from "../axios/axios"
 import useToast from "../context/ToastContext"
+import useSendTextMsg from "../hooks/useSendTextMsg"
 
 export default function ChatMessages() {
-  const session = useSession()
-  const { messages, selectedChatId, isDrafted, members } = useDm()
+  const { messages, selectedChatId } = useDm()
   const [textMsg, setTextMsg] = useState<string>("")
   const lastMsgRef = useRef<HTMLSpanElement>(null)
   const { addMessage } = useToast()
+  const sendMessage = useSendTextMsg()
 
-  const sendMessage = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSendMessage = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (textMsg === "") return
 
     setTextMsg("")
     try {
-      if (isDrafted) {
-        await axiosInstance.post("/profile/chat", {
-          chatId: selectedChatId,
-          recieverId: members.find(
-            (member) => member.userId !== session.data?.user.id
-          )?.userId,
-        })
-
-        await updateDoc(doc(db, CHATS, selectedChatId), {
-          messages: arrayUnion({
-            id: uuidv4(),
-            text: textMsg,
-            sentBy: session.data?.user.id,
-            date: Timestamp.now(),
-          }),
-          updatedAt: serverTimestamp(),
-          lastMsg: textMsg,
-          drafted: false,
-        })
-      } else {
-        await updateDoc(doc(db, CHATS, selectedChatId), {
-          messages: arrayUnion({
-            id: uuidv4(),
-            text: textMsg,
-            sentBy: session.data?.user.id,
-            date: Timestamp.now(),
-          }),
-          updatedAt: serverTimestamp(),
-          lastMsg: textMsg,
-        })
-      }
+      await sendMessage(textMsg)
     } catch (e) {
       addMessage(`Something went wrong, please refresh the page!`)
     }
@@ -88,7 +47,7 @@ export default function ChatMessages() {
             <span ref={lastMsgRef}></span>
           </div>
           <form
-            onSubmit={sendMessage}
+            onSubmit={handleSendMessage}
             className={ConversationStyles["user-messages__input-box"]}
           >
             <input

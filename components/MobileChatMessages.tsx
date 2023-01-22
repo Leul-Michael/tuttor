@@ -1,12 +1,4 @@
-import {
-  arrayUnion,
-  doc,
-  DocumentData,
-  onSnapshot,
-  serverTimestamp,
-  Timestamp,
-  updateDoc,
-} from "firebase/firestore"
+import { doc, DocumentData, onSnapshot } from "firebase/firestore"
 import { useSession } from "next-auth/react"
 import {
   useEffect,
@@ -24,10 +16,9 @@ import { db } from "../configs/firebase"
 import useDm from "../context/DMContext"
 import ConversationStyles from "../styles/Conversation.module.css"
 import TextExcerpt from "./TextExcerpt"
-import { v4 as uuidv4 } from "uuid"
 import { CHATS } from "../hooks/useCreateConversation"
-import axiosInstance from "../axios/axios"
 import useToast from "../context/ToastContext"
+import useSendTextMsg from "../hooks/useSendTextMsg"
 
 export default function MobileChatMessages({
   showChat,
@@ -37,50 +28,20 @@ export default function MobileChatMessages({
   setShowChat: Dispatch<SetStateAction<boolean>>
 }) {
   const session = useSession()
-  const { messages, selectedChatId, isDrafted, members } = useDm()
+  const { messages, selectedChatId } = useDm()
   const [textMsg, setTextMsg] = useState<string>("")
   const [chat, setChat] = useState<DocumentData | undefined>()
   const lastMsgRef = useRef<HTMLSpanElement>(null)
   const { addMessage } = useToast()
+  const sendMessage = useSendTextMsg()
 
-  const sendMessage = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSendMessage = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (textMsg === "") return
 
     setTextMsg("")
-
     try {
-      if (isDrafted) {
-        await axiosInstance.post("/profile/chat", {
-          chatId: selectedChatId,
-          recieverId: members.find(
-            (member) => member.userId !== session.data?.user.id
-          )?.userId,
-        })
-
-        await updateDoc(doc(db, CHATS, selectedChatId), {
-          messages: arrayUnion({
-            id: uuidv4(),
-            text: textMsg,
-            sentBy: session.data?.user.id,
-            date: Timestamp.now(),
-          }),
-          updatedAt: serverTimestamp(),
-          lastMsg: textMsg,
-          drafted: false,
-        })
-      } else {
-        await updateDoc(doc(db, CHATS, selectedChatId), {
-          messages: arrayUnion({
-            id: uuidv4(),
-            text: textMsg,
-            sentBy: session.data?.user.id,
-            date: Timestamp.now(),
-          }),
-          updatedAt: serverTimestamp(),
-          lastMsg: textMsg,
-        })
-      }
+      await sendMessage(textMsg)
       lastMsgRef.current?.scrollIntoView({ behavior: "smooth" })
     } catch (e) {
       addMessage(`Something went wrong, please refresh the page!`)
@@ -140,7 +101,7 @@ export default function MobileChatMessages({
         <span ref={lastMsgRef}></span>
       </div>
       <form
-        onSubmit={sendMessage}
+        onSubmit={handleSendMessage}
         className={ConversationStyles["user-messages__input-box"]}
       >
         <input
