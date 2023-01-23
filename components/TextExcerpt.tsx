@@ -2,7 +2,7 @@ import { useCallback, useRef, useState } from "react"
 import { HiOutlineDotsVertical } from "react-icons/hi"
 import TextSelect from "./Select/TextSelect"
 import ConversationStyles from "../styles/Conversation.module.css"
-import { Timestamp, doc, updateDoc } from "firebase/firestore"
+import { Timestamp, doc, updateDoc, getDoc } from "firebase/firestore"
 import { useSession } from "next-auth/react"
 import useDm, { MsgType } from "../context/DMContext"
 import { db } from "../configs/firebase"
@@ -32,19 +32,28 @@ export default function TextExcerpt({ msg }: { msg: MsgType }) {
         if (elems[0].isIntersecting) {
           try {
             const textRef = doc(db, CHATS, selectedChatId)
-            const currentMsg = messages.find(
-              (message: MsgType) => message.id === msg.id
-            )
-            if (!currentMsg) return
-            currentMsg.seenBy.unshift(userId)
-            const updtedMsgs = messages.map((message: MsgType) => {
-              if (message.id === currentMsg.id) {
-                return currentMsg
-              } else {
-                return message
-              }
-            })
-            await updateDoc(textRef, { messages: updtedMsgs })
+            const docSnap = await getDoc(textRef)
+
+            if (docSnap.exists()) {
+              if (!docSnap.data().messages) return
+              const currentMsg = docSnap
+                .data()
+                .messages.find((message: MsgType) => message.id === msg.id)
+              if (!currentMsg) return
+              currentMsg.seenBy.unshift(userId)
+              const updtedMsgs = docSnap
+                .data()
+                .messages.map((message: MsgType) => {
+                  if (message.id === currentMsg.id) {
+                    return currentMsg
+                  } else {
+                    return message
+                  }
+                })
+              await updateDoc(textRef, { messages: updtedMsgs })
+            } else {
+              return
+            }
           } catch (e) {
             console.log(e)
           }
@@ -53,7 +62,7 @@ export default function TextExcerpt({ msg }: { msg: MsgType }) {
 
       if (node) intObserver.current?.observe(node)
     },
-    [userId, msg.seenBy, msg.sentBy, msg.id, selectedChatId, messages]
+    [userId, msg.seenBy, msg.sentBy, msg.id, selectedChatId]
   )
 
   return (

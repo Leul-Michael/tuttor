@@ -55,7 +55,13 @@ export function DMContextProvider({ children }: { children: ReactElement }) {
       }
     }
 
-    selectedChatId && getMessges()
+    selectedChatId
+      ? getMessges()
+      : () => {
+          setMessages([])
+          setisDrafted(false)
+          setMembers([])
+        }
   }, [selectedChatId])
 
   return (
