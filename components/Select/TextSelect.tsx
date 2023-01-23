@@ -1,4 +1,4 @@
-import { deleteDoc, doc, updateDoc } from "firebase/firestore"
+import { doc, getDoc, updateDoc } from "firebase/firestore"
 import {
   MouseEventHandler,
   useRef,
@@ -26,7 +26,7 @@ export default function TextSelect({
   >
 }) {
   const { addMessage } = useToast()
-  const { messages, selectedChatId } = useDm()
+  const { selectedChatId } = useDm()
   const selectMsgRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -46,6 +46,10 @@ export default function TextSelect({
     e.preventDefault()
     if (!deleteId) return
     try {
+      const textRef = doc(db, CHATS, selectedChatId)
+      const docSnap = await getDoc(textRef)
+      if (!docSnap.exists()) throw Error
+      const messages = docSnap.data()?.messages
       await updateDoc(doc(db, CHATS, selectedChatId), {
         messages: messages.filter((msg: any) => msg?.id !== deleteId),
         lastMsg:
