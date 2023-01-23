@@ -17,6 +17,14 @@ export default function useSendTextMsg() {
 
   const { isDrafted, members, selectedChatId } = useDm()
   const sendMessage = async (textMsg: string) => {
+    const newChatMsg = {
+      id: uuidv4(),
+      text: textMsg,
+      sentBy: session.data?.user.id,
+      date: Timestamp.now(),
+      seenBy: [session.data?.user.id],
+    }
+
     if (isDrafted) {
       await axiosInstance.post("/profile/chat", {
         chatId: selectedChatId,
@@ -26,24 +34,14 @@ export default function useSendTextMsg() {
       })
 
       await updateDoc(doc(db, CHATS, selectedChatId), {
-        messages: arrayUnion({
-          id: uuidv4(),
-          text: textMsg,
-          sentBy: session.data?.user.id,
-          date: Timestamp.now(),
-        }),
+        messages: arrayUnion(newChatMsg),
         updatedAt: serverTimestamp(),
         lastMsg: textMsg,
         drafted: false,
       })
     } else {
       await updateDoc(doc(db, CHATS, selectedChatId), {
-        messages: arrayUnion({
-          id: uuidv4(),
-          text: textMsg,
-          sentBy: session.data?.user.id,
-          date: Timestamp.now(),
-        }),
+        messages: arrayUnion(newChatMsg),
         updatedAt: serverTimestamp(),
         lastMsg: textMsg,
       })
