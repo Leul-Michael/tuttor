@@ -1,10 +1,12 @@
 import { doc, DocumentData, onSnapshot } from "firebase/firestore"
 import { Dispatch, SetStateAction, useEffect, useState, useMemo } from "react"
+import { HiOutlineDotsVertical } from "react-icons/hi"
 import { db } from "../configs/firebase"
 import useDm from "../context/DMContext"
 import { CHATS } from "../hooks/useCreateConversation"
 import { IUser } from "../models/User"
 import ConversationStyles from "../styles/Conversation.module.css"
+import ChatSelect from "./Select/ChatSelect"
 
 export default function Chat({
   chatId,
@@ -16,6 +18,7 @@ export default function Chat({
   setShowChat: Dispatch<SetStateAction<boolean>>
 }) {
   const [chat, setChat] = useState<DocumentData | undefined>()
+  const [showSelect, setShowSelect] = useState({ show: false, id: "" })
   const { setSelectedChatId, selectedChatId } = useDm()
 
   useEffect(() => {
@@ -58,6 +61,19 @@ export default function Chat({
           <span className={ConversationStyles.drafted}>draft</span>
         )}
       </div>
+      <button
+        onClick={(e) => {
+          e.preventDefault()
+          e.stopPropagation()
+          setShowSelect({ id: chatId, show: !showSelect.show })
+        }}
+        className={ConversationStyles["msg__options-btn"]}
+      >
+        <HiOutlineDotsVertical />
+        {showSelect.show && showSelect.id === chatId && (
+          <ChatSelect setShowSelect={setShowSelect} deleteId={showSelect.id} />
+        )}
+      </button>
     </div>
   )
 }

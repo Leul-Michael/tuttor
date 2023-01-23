@@ -1,5 +1,6 @@
 import { createContext, ReactNode, useContext } from "react"
 import useLocalStorage from "../hooks/useLocalStorage"
+import { v4 as uuidv4 } from "uuid"
 
 type RecentSearchProp = {
   id: string
@@ -30,6 +31,7 @@ export function RecentSearchContextProvider({
   )
 
   function addRecentSearch(title: string, location: string) {
+    if (!title && !location) return
     setRecentSearch((prev) => {
       if (
         prev.find((v) => v["title"] === title && v["location"] === location)
@@ -39,7 +41,7 @@ export function RecentSearchContextProvider({
         return [
           ...prev,
           {
-            id: Date(),
+            id: uuidv4(),
             title: title,
             location: location,
           },

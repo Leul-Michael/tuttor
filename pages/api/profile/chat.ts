@@ -41,6 +41,32 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       return res.status(500).json({ msg: "Something went wrong!" })
     }
   }
+
+  if (req.method === "DELETE") {
+    const { deleteId }: { deleteId: string } = req.body
+
+    if (!deleteId) {
+      return res.status(400).json({ msg: "Chat id is required!" })
+    }
+
+    // Connect to DB
+    await connectDB()
+
+    try {
+      const currentUser = await User.findById(session.user.id)
+      if (currentUser?.chats?.includes(deleteId)) {
+        const likeIndex = currentUser?.chats?.indexOf(deleteId)
+        currentUser?.chats?.splice(likeIndex, 1)
+        await currentUser?.save()
+        return res.status(200).json({ msg: "Chat removed!" })
+      } else {
+        return res.status(400).json({ msg: "Chat not found!" })
+      }
+    } catch (e: any) {
+      console.log(e.message)
+      return res.status(500).json({ msg: "Something went wrong!" })
+    }
+  }
 }
 
 export default handler

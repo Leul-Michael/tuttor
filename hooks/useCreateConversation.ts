@@ -38,12 +38,12 @@ export default function useCreateConversation() {
           lastMsg: "",
           drafted: true,
         })
-
-        await axiosInstance.post("/profile/chat", {
-          chatId: conversationId,
-          recieverId: null,
-        })
       }
+
+      await axiosInstance.post("/profile/chat", {
+        chatId: conversationId,
+        recieverId: null,
+      })
 
       return conversationId
     } catch (e) {

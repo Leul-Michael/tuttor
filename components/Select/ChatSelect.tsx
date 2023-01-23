@@ -1,4 +1,4 @@
-import { deleteDoc, doc, updateDoc } from "firebase/firestore"
+import { useRouter } from "next/router"
 import {
   MouseEventHandler,
   useRef,
@@ -7,13 +7,12 @@ import {
   SetStateAction,
 } from "react"
 import { MdOutlineDelete } from "react-icons/md"
-import { db } from "../../configs/firebase"
+import axiosInstance from "../../axios/axios"
 import useDm from "../../context/DMContext"
 import useToast from "../../context/ToastContext"
-import { CHATS } from "../../hooks/useCreateConversation"
 import ConversationStyles from "../../styles/Conversation.module.css"
 
-export default function TextSelect({
+export default function ChatSelect({
   deleteId,
   setShowSelect,
 }: {
@@ -25,8 +24,9 @@ export default function TextSelect({
     }>
   >
 }) {
+  const router = useRouter()
   const { addMessage } = useToast()
-  const { messages, selectedChatId } = useDm()
+  const { selectedChatId, setSelectedChatId } = useDm()
   const selectMsgRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -46,13 +46,11 @@ export default function TextSelect({
     e.preventDefault()
     if (!deleteId) return
     try {
-      await updateDoc(doc(db, CHATS, selectedChatId), {
-        messages: messages.filter((msg: any) => msg?.id !== deleteId),
-        lastMsg:
-          messages[messages.length - 1]?.id === deleteId
-            ? messages[messages.length - 2]?.text || ""
-            : messages[messages.length - 1]?.text || "",
-      })
+      await axiosInstance.delete("/profile/chat", { data: { deleteId } })
+      if (selectedChatId === deleteId) {
+        setSelectedChatId("")
+      }
+      router.replace(router.asPath)
     } catch (e) {
       addMessage(`Something went wrong, please refresh the page!`)
     }

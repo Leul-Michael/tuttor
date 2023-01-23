@@ -14,6 +14,7 @@ import { useSession } from "next-auth/react"
 
 export default function useSendTextMsg() {
   const session = useSession()
+
   const { isDrafted, members, selectedChatId } = useDm()
   const sendMessage = async (textMsg: string) => {
     if (isDrafted) {
