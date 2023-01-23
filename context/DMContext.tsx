@@ -22,7 +22,6 @@ export type MsgType = {
 export type MembersType = { userId: string; name: string }
 
 type DMContextProps = {
-  messages: MsgType[]
   setSelectedChatId: Dispatch<SetStateAction<string>>
   selectedChatId: string
   isDrafted: boolean
@@ -36,38 +35,27 @@ export default function useDm() {
 }
 
 export function DMContextProvider({ children }: { children: ReactElement }) {
-  const [messages, setMessages] = useState<MsgType[]>([])
   const [members, setMembers] = useState<MembersType[]>([])
   const [selectedChatId, setSelectedChatId] = useState("")
   const [isDrafted, setisDrafted] = useState(false)
 
   useEffect(() => {
-    const getMessges = async () => {
+    if (selectedChatId) {
       const unsub = onSnapshot(doc(db, CHATS, selectedChatId), (doc) => {
-        if (!doc?.data()) return
+        if (!doc?.exists()) return
         setisDrafted(doc.data()?.drafted)
         setMembers(doc.data()?.members)
-        setMessages(doc.data()?.messages)
       })
 
       return () => {
         unsub()
       }
     }
-
-    selectedChatId
-      ? getMessges()
-      : () => {
-          setMessages([])
-          setisDrafted(false)
-          setMembers([])
-        }
   }, [selectedChatId])
 
   return (
     <DMContext.Provider
       value={{
-        messages,
         setSelectedChatId,
         selectedChatId,
         isDrafted,

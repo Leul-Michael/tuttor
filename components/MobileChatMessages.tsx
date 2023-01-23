@@ -13,7 +13,7 @@ import { RiSendPlaneFill } from "react-icons/ri"
 import { TiAttachmentOutline } from "react-icons/ti"
 import { MdOutlineKeyboardArrowLeft } from "react-icons/md"
 import { db } from "../configs/firebase"
-import useDm from "../context/DMContext"
+import useDm, { MsgType } from "../context/DMContext"
 import ConversationStyles from "../styles/Conversation.module.css"
 import TextExcerpt from "./TextExcerpt"
 import { CHATS } from "../hooks/useCreateConversation"
@@ -28,7 +28,7 @@ export default function MobileChatMessages({
   setShowChat: Dispatch<SetStateAction<boolean>>
 }) {
   const session = useSession()
-  const { messages, selectedChatId } = useDm()
+  const { selectedChatId } = useDm()
   const [textMsg, setTextMsg] = useState<string>("")
   const [chat, setChat] = useState<DocumentData | undefined>()
   const lastMsgRef = useRef<HTMLSpanElement>(null)
@@ -51,7 +51,7 @@ export default function MobileChatMessages({
   useEffect(() => {
     if (selectedChatId) {
       const unsub = onSnapshot(doc(db, CHATS, selectedChatId), (doc) => {
-        if (!doc?.data()) return
+        if (!doc?.exists()) return
         setChat(doc?.data())
       })
 
@@ -63,7 +63,7 @@ export default function MobileChatMessages({
 
   useEffect(() => {
     showChat && lastMsgRef.current?.scrollIntoView({ behavior: "smooth" })
-  }, [showChat, messages])
+  }, [showChat, chat?.messages])
 
   const conversationUser = useMemo(
     () => chat?.members.find((u: any) => u["userId"] !== session.data?.user.id),
@@ -89,8 +89,10 @@ export default function MobileChatMessages({
         </div>
       </div>
       <div className={`${ConversationStyles["user-messages__content"]}`}>
-        {messages?.length > 0 ? (
-          messages.map((msg) => <TextExcerpt key={msg?.id} msg={msg} />)
+        {chat?.messages?.length > 0 ? (
+          chat?.messages.map((msg: MsgType) => (
+            <TextExcerpt key={msg?.id} msg={msg} />
+          ))
         ) : (
           <div
             className={`${ConversationStyles["user-messages__content"]} ${ConversationStyles["user-messages__no-chat"]}`}

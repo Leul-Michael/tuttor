@@ -14,7 +14,6 @@ export default function TextExcerpt({ msg }: { msg: MsgType }) {
   const intObserver = useRef<IntersectionObserver | null>(null)
   const { selectedChatId } = useDm()
   const [showSelect, setShowSelect] = useState({ show: false, id: "" })
-  const { messages } = useDm()
 
   const date = new Timestamp(msg?.date?.seconds, 0).toDate()
 
