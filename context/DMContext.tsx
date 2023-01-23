@@ -16,6 +16,7 @@ export type MsgType = {
   text: string
   date: { seconds: number; nanoseconds: number }
   id: string
+  seenBy: string[]
 }
 
 export type MembersType = { userId: string; name: string }

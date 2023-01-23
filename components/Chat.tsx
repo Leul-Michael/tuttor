@@ -1,8 +1,9 @@
 import { doc, DocumentData, onSnapshot } from "firebase/firestore"
+import { useSession } from "next-auth/react"
 import { Dispatch, SetStateAction, useEffect, useState, useMemo } from "react"
 import { HiOutlineDotsVertical } from "react-icons/hi"
 import { db } from "../configs/firebase"
-import useDm from "../context/DMContext"
+import useDm, { MsgType } from "../context/DMContext"
 import { CHATS } from "../hooks/useCreateConversation"
 import { IUser } from "../models/User"
 import ConversationStyles from "../styles/Conversation.module.css"
@@ -17,6 +18,7 @@ export default function Chat({
   user: Pick<IUser, "_id">
   setShowChat: Dispatch<SetStateAction<boolean>>
 }) {
+  const session = useSession()
   const [chat, setChat] = useState<DocumentData | undefined>()
   const [showSelect, setShowSelect] = useState({ show: false, id: "" })
   const { setSelectedChatId, selectedChatId } = useDm()
@@ -37,12 +39,25 @@ export default function Chat({
     [user._id, chat?.members]
   )
 
+  const hasNewMessage = useMemo(
+    () =>
+      chat?.messages.find((message: MsgType) => {
+        if (
+          session.data?.user.id !== undefined &&
+          !message.seenBy.includes(session.data?.user.id)
+        ) {
+          return message
+        }
+      }),
+    [chat?.messages, session.data?.user.id]
+  )
+
   if (!chat || !conversationUser) return null
 
   return (
     <div
       onClick={() => {
-        setSelectedChatId(chatId)
+        selectedChatId !== chatId && setSelectedChatId(chatId)
         setShowChat((prev) => !prev)
       }}
       className={`${ConversationStyles["users-list__user"]} ${
@@ -60,6 +75,12 @@ export default function Chat({
         {chat?.drafted && (
           <span className={ConversationStyles.drafted}>draft</span>
         )}
+        {hasNewMessage ? (
+          <span
+            title="new message"
+            className={ConversationStyles["new-msg"]}
+          ></span>
+        ) : null}
       </div>
       <button
         onClick={(e) => {
