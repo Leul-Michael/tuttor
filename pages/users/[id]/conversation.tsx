@@ -82,13 +82,13 @@ export default function Conversation({ user }: { user: IUser }) {
             )}
           </div>
         </div>
-        <div className={ConversationStyles["user-messages"]}>
-          {width <= 600 ? (
-            <MobileChatMessages setShowChat={setShowChat} showChat={showChat} />
-          ) : (
+        {width <= 600 ? (
+          <MobileChatMessages setShowChat={setShowChat} showChat={showChat} />
+        ) : (
+          <div className={ConversationStyles["user-messages"]}>
             <ChatMessages />
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </section>
   )

@@ -8,7 +8,6 @@ import {
   FormEvent,
   Dispatch,
   SetStateAction,
-  useLayoutEffect,
 } from "react"
 import { RiSendPlaneFill } from "react-icons/ri"
 import { TiAttachmentOutline } from "react-icons/ti"
@@ -62,7 +61,7 @@ export default function MobileChatMessages({
     }
   }, [selectedChatId])
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     showChat && lastMsgRef.current?.scrollIntoView({ behavior: "smooth" })
   }, [showChat, chat?.messages])
 
