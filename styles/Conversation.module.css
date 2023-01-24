@@ -114,7 +114,7 @@
 .user-messages__content {
     display: flex;
     flex-direction: column;
-    gap: .5rem;
+    gap: 1.5rem;
     padding: .75rem .25rem;
     height: auto;
     overflow-y: auto;
@@ -160,10 +160,27 @@
     padding-top: .25rem;
 }
 
+
+.user-messages__msg .sent-date {
+    position: absolute;
+    bottom: -.8rem;
+    font-size: .6rem;
+    color: var(--clr-font-light);
+}
+
+
 .user-messages__my-msg {
     border-radius: 5px 5px 0 5px;
     align-self: flex-end;
     background-color: var(--clr-btn-hover);
+}
+
+.user-messages__my-msg .sent-date {
+    right: 1.25rem;
+}
+
+.user-messages__user-msg .sent-date {
+    left: 1.25rem;
 }
 
 .user-messages__user-msg {
