@@ -114,7 +114,7 @@
 .user-messages__content {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1rem;
     padding: .75rem .25rem;
     height: auto;
     overflow-y: auto;
@@ -236,7 +236,6 @@
     height: 10px;
     border-radius: 50%;
     background-color: rgb(108, 169, 255);
-    /* background-color: var(--clr-accent-secondary); */
 }
 
 .users-list__user:hover,
@@ -309,10 +308,11 @@
     gap: .5rem;
     align-items: center;
     border: 1px solid var(--clr-background-light);
-    padding: 1.25rem .75rem;
+    padding: 1rem .75rem;
     width: 100%;
     z-index: 20;
     background-color: var(--clr-background);
+    border-radius: 5px;
 }
 
 .back-icon {
@@ -325,7 +325,8 @@
     border-radius: 50%;
 }
 
-.back-icon:active {
+.back-icon:active,
+.back-icon:focus {
     background-color: var(--clr-background-light);
 }
 
@@ -336,23 +337,38 @@
 .mobile-chat {
     position: absolute;
     top: 0;
-    left: 100%;
+    left: 0;
+    transform: translateX(100%);
     background-color: var(--clr-background);
     width: 100%;
     height: 100%;
-    transition: all .3s ease-out;
+    transition: transform .3s ease-out;
     display: flex;
     flex-direction: column;
 }
 
 .mobile-chat.show {
-    left: 0;
+    transform: translateX(0%);
     z-index: 20;
+}
+
+.mobile-chat .user-messages__input-box {
+    position: sticky;
+    position: -webkit-sticky;
+    left: 0;
+    bottom: 0;
+    transform: translateX(100%);
+    transition: transform .3s ease-out;
+    z-index: 20;
+}
+
+.mobile-chat.show .user-messages__input-box {
+    transform: translateX(0%);
 }
 
 @media (max-width: 600px) {
     .conversation {
-        height: calc(90vh - min(11vh, 110px));
+        height: calc(100vh - min(11vh, 110px));
         padding: 0;
     }
 
@@ -378,19 +394,7 @@
     }
 
     .input-box input {
-        height: 45px;
-    }
-
-    .mobile-chat .user-messages__input-box {
-        visibility: hidden;
-        position: fixed;
-        left: 0;
-        bottom: 0;
-        z-index: 20;
-    }
-
-    .mobile-chat.show .user-messages__input-box {
-        visibility: visible;
+        height: 50px;
     }
 
     .user-messages__input-box input {

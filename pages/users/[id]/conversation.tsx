@@ -9,10 +9,14 @@ import { IUser } from "../../../models/User"
 import { onSnapshot, DocumentData, collection } from "firebase/firestore"
 import { db } from "../../../configs/firebase"
 import { CHATS } from "../../../hooks/useCreateConversation"
-import ChatMessages from "../../../components/ChatMessages"
 import Chat from "../../../components/Chat"
 import useWindowsWidth from "../../../hooks/useWindowsWidth"
-import MobileChatMessages from "../../../components/MobileChatMessages"
+import dynamic from "next/dynamic"
+
+const ChatMessages = dynamic(() => import("../../../components/ChatMessages"))
+const MobileChatMessages = dynamic(
+  () => import("../../../components/MobileChatMessages")
+)
 
 export default function Conversation({ user }: { user: IUser }) {
   const [width] = useWindowsWidth()
