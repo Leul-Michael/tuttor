@@ -235,7 +235,8 @@
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background-color: var(--clr-accent-secondary);
+    background-color: rgb(108, 169, 255);
+    /* background-color: var(--clr-accent-secondary); */
 }
 
 .users-list__user:hover,
