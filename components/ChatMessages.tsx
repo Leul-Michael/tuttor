@@ -53,7 +53,12 @@ export default function ChatMessages() {
         <>
           <div className={ConversationStyles["user-messages__content"]}>
             {messages?.length > 0 ? (
-              messages.map((msg) => <TextExcerpt key={msg?.id} msg={msg} />)
+              messages.map((msg, i: number) => {
+                if (messages.length - 1 === i) {
+                  return <TextExcerpt key={msg?.id} msg={msg} last={true} />
+                }
+                return <TextExcerpt key={msg?.id} msg={msg} last={false} />
+              })
             ) : (
               <div
                 className={`${ConversationStyles["user-messages__content"]} ${ConversationStyles["user-messages__no-chat"]}`}

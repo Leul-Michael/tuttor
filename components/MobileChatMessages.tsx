@@ -90,9 +90,12 @@ export default function MobileChatMessages({
       </div>
       <div className={`${ConversationStyles["user-messages__content"]}`}>
         {chat?.messages?.length > 0 ? (
-          chat?.messages.map((msg: MsgType) => (
-            <TextExcerpt key={msg?.id} msg={msg} />
-          ))
+          chat?.messages.map((msg: MsgType, i: number) => {
+            if (chat?.messages.length - 1 === i) {
+              return <TextExcerpt key={msg?.id} msg={msg} last={true} />
+            }
+            return <TextExcerpt key={msg?.id} msg={msg} last={false} />
+          })
         ) : (
           <div
             className={`${ConversationStyles["user-messages__content"]} ${ConversationStyles["user-messages__no-chat"]}`}

@@ -161,11 +161,12 @@
 }
 
 
-.user-messages__msg .sent-date {
+.user-messages__msg .msg-seen {
     position: absolute;
     bottom: -.8rem;
-    font-size: .6rem;
-    color: var(--clr-font-light);
+    font-size: .7rem;
+    color: var(--clr-font-light-secondary);
+    right: 1.25rem;
 }
 
 
@@ -175,13 +176,12 @@
     background-color: var(--clr-btn-hover);
 }
 
-.user-messages__my-msg .sent-date {
-    right: 1.25rem;
+/* .user-messages__my-msg .sent-date {
 }
 
 .user-messages__user-msg .sent-date {
     left: 1.25rem;
-}
+} */
 
 .user-messages__user-msg {
     align-self: flex-start;

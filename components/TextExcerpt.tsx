@@ -9,7 +9,13 @@ import { db } from "../configs/firebase"
 import { CHATS } from "../hooks/useCreateConversation"
 import { format } from "date-fns"
 
-export default function TextExcerpt({ msg }: { msg: MsgType }) {
+export default function TextExcerpt({
+  msg,
+  last,
+}: {
+  msg: MsgType
+  last: boolean
+}) {
   const session = useSession()
   const userId = session.data?.user.id
   const intObserver = useRef<IntersectionObserver | null>(null)
@@ -17,8 +23,10 @@ export default function TextExcerpt({ msg }: { msg: MsgType }) {
   const [showSelect, setShowSelect] = useState({ show: false, id: "" })
 
   const date = new Timestamp(msg?.date?.seconds, 0).toDate()
-  const sentTime = format(date, "hh:mm")
+  const sentTime = format(date, "hh:mm aaa")
   const sentDate = format(date, "dd-MM-yyyy")
+
+  const lastTextSeen = last && msg.sentBy === userId && msg.seenBy.length >= 2
 
   const lastPostRef = useCallback(
     (node: HTMLDivElement) => {
@@ -77,11 +85,7 @@ export default function TextExcerpt({ msg }: { msg: MsgType }) {
       }`}
     >
       <p>{msg?.text}</p>
-      {/* <span>{date.toLocaleTimeString()}</span> */}
       <span>{sentTime}</span>
-      {/* <span>
-        {hour}:{second}
-      </span> */}
       {msg.sentBy === userId ? (
         <button
           onClick={(e) =>
@@ -98,7 +102,9 @@ export default function TextExcerpt({ msg }: { msg: MsgType }) {
           )}
         </button>
       ) : null}
-      <span className={ConversationStyles["sent-date"]}>{sentDate}</span>
+      {lastTextSeen && (
+        <span className={ConversationStyles["msg-seen"]}>seen</span>
+      )}
     </div>
   )
 }
