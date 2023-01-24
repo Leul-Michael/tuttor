@@ -266,7 +266,6 @@
     margin-left: .25rem;
     cursor: pointer;
     z-index: 10;
-    border-radius: 2px;
 }
 
 .msg__options-btn:active {
@@ -286,9 +285,15 @@
 
 .msg__options span {
     display: flex;
+    align-items: center;
     gap: .5rem;
-    padding: .75rem 1.25rem;
+    padding: .7rem 1.25rem;
     font-size: .75rem;
+    border-radius: inherit;
+}
+
+.msg__options span svg {
+    font-size: 1.2rem;
 }
 
 .msg__options span:hover {

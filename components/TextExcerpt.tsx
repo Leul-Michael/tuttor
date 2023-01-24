@@ -24,7 +24,7 @@ export default function TextExcerpt({
 
   const date = new Timestamp(msg?.date?.seconds, 0).toDate()
   const sentTime = format(date, "hh:mm aaa")
-  const sentDate = format(date, "dd-MM-yyyy")
+  // const sentDate = format(date, "dd-MM-yyyy")
 
   const lastTextSeen = last && msg.sentBy === userId && msg.seenBy.length >= 2
 
