@@ -1,6 +1,7 @@
 import { useInfiniteQuery } from "@tanstack/react-query"
 import { GetServerSideProps } from "next"
 import { getSession } from "next-auth/react"
+import Head from "next/head"
 import Link from "next/link"
 import { FiPlusCircle } from "react-icons/fi"
 import axiosInstance from "../../axios/axios"
@@ -40,40 +41,51 @@ export default function All() {
   }
 
   return (
-    <section className={Styles["all-jobs"]}>
-      <div className={`container ${Styles["all-jobs__container"]}`}>
-        <div className={Styles["all-jobs__header"]}>
-          <h1 className={`font-serif ${Styles["create-job__title"]}`}>
-            All Jobs
-          </h1>
-          <Link href={"/jobs/create"} className={Styles[`btn-profile`]}>
-            <FiPlusCircle className={Styles.icon} /> Create new Job
-          </Link>
-        </div>
+    <>
+      <Head>
+        <title>My Jobs</title>
+        <meta
+          name="description"
+          content="Follow your jobs status and filter proposals under the job."
+        />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <section className={Styles["all-jobs"]}>
+        <div className={`container ${Styles["all-jobs__container"]}`}>
+          <div className={Styles["all-jobs__header"]}>
+            <h1 className={`font-serif ${Styles["create-job__title"]}`}>
+              All Jobs
+            </h1>
+            <Link href={"/jobs/create"} className={Styles[`btn-profile`]}>
+              <FiPlusCircle className={Styles.icon} /> Create new Job
+            </Link>
+          </div>
 
-        <ul className={Styles["all-jobs__list"]}>
-          {isLoading ? (
-            <Loading />
-          ) : data?.pages[0]?.jobs.length === 0 ? (
-            <p className="text-light">No available jobs to show here!</p>
-          ) : (
-            data?.pages.map((pg) => {
-              return pg?.jobs?.map((job: JobType, idx: number) => {
-                if (pg?.jobs?.length === idx + 1) {
-                  return (
-                    <div ref={lastPostRef} key={job._id}>
-                      <UserJobExcerpt job={job} />
-                    </div>
-                  )
-                }
-                return <UserJobExcerpt key={job._id} job={job} />
+          <ul className={Styles["all-jobs__list"]}>
+            {isLoading ? (
+              <Loading />
+            ) : data?.pages[0]?.jobs.length === 0 ? (
+              <p className="text-light">No available jobs to show here!</p>
+            ) : (
+              data?.pages.map((pg) => {
+                return pg?.jobs?.map((job: JobType, idx: number) => {
+                  if (pg?.jobs?.length === idx + 1) {
+                    return (
+                      <div ref={lastPostRef} key={job._id}>
+                        <UserJobExcerpt job={job} />
+                      </div>
+                    )
+                  }
+                  return <UserJobExcerpt key={job._id} job={job} />
+                })
               })
-            })
-          )}
-          {isFetchingNextPage && <Loading />}
-        </ul>
-      </div>
-    </section>
+            )}
+            {isFetchingNextPage && <Loading />}
+          </ul>
+        </div>
+      </section>
+    </>
   )
 }
 

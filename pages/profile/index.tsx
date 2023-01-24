@@ -12,6 +12,7 @@ import useToast from "../../context/ToastContext"
 import { ACCOUNT_TYPE } from "../../types"
 import ChangePassword from "../../components/Profile/ChangePassword"
 import Deactivate from "../../components/Profile/Deactivate"
+import Head from "next/head"
 
 export default function Profile({ user }: { user: IUser }) {
   const { addMessage } = useToast()
@@ -55,128 +56,145 @@ export default function Profile({ user }: { user: IUser }) {
   }
 
   return (
-    <section className={`${ProfileStyles.profile}`}>
-      <div className={`${ProfileStyles.container}`}>
-        <div className={ProfileStyles.main}>
-          <p className={`font-serif ${ProfileStyles.title}`}>
-            Personal information
-          </p>
-          <form
-            onSubmit={updateProfile}
-            className={ProfileStyles["profile-from"]}
-          >
-            <div className={ProfileStyles["input-box"]}>
-              <label htmlFor="name">
-                Full name <span>*</span>
-              </label>
-              <input
-                type="text"
-                name="name"
-                id=""
-                value={currentUser.name}
-                onChange={(e) =>
-                  setCurrentUser((prev) => ({ ...prev, name: e.target.value }))
-                }
-              />
-            </div>
-            <div className={ProfileStyles["input-box"]}>
-              <label htmlFor="email">
-                Email <span>*</span>
-              </label>
-              <input
-                type="email"
-                name=""
-                id="email"
-                value={currentUser.email}
-                onChange={(e) =>
-                  setCurrentUser((prev) => ({ ...prev, email: e.target.value }))
-                }
-              />
-            </div>
-            <div className={ProfileStyles["textarea-box"]}>
-              <label htmlFor="bio">Summary</label>
-              <textarea
-                name=""
-                id="bio"
-                placeholder="Describe what you provide in details"
-                value={currentUser?.bio}
-                onChange={(e) =>
-                  setCurrentUser((prev) => ({ ...prev, bio: e.target.value }))
-                }
-              ></textarea>
-            </div>
-            {user.role === ACCOUNT_TYPE.TUTTOR && (
-              <>
+    <>
+      <Head>
+        <title>Your tuttor profile</title>
+        <meta
+          name="description"
+          content="Make changes to your tuttor profile."
+        />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <section className={`${ProfileStyles.profile}`}>
+        <div className={`${ProfileStyles.container}`}>
+          <div className={ProfileStyles.main}>
+            <p className={`font-serif ${ProfileStyles.title}`}>
+              Personal information
+            </p>
+            <form
+              onSubmit={updateProfile}
+              className={ProfileStyles["profile-from"]}
+            >
+              <div className={ProfileStyles["input-box"]}>
+                <label htmlFor="name">
+                  Full name <span>*</span>
+                </label>
+                <input
+                  type="text"
+                  name="name"
+                  id=""
+                  value={currentUser.name}
+                  onChange={(e) =>
+                    setCurrentUser((prev) => ({
+                      ...prev,
+                      name: e.target.value,
+                    }))
+                  }
+                />
+              </div>
+              <div className={ProfileStyles["input-box"]}>
+                <label htmlFor="email">
+                  Email <span>*</span>
+                </label>
+                <input
+                  type="email"
+                  name=""
+                  id="email"
+                  value={currentUser.email}
+                  onChange={(e) =>
+                    setCurrentUser((prev) => ({
+                      ...prev,
+                      email: e.target.value,
+                    }))
+                  }
+                />
+              </div>
+              <div className={ProfileStyles["textarea-box"]}>
+                <label htmlFor="bio">Summary</label>
+                <textarea
+                  name=""
+                  id="bio"
+                  placeholder="Describe what you provide in details"
+                  value={currentUser?.bio}
+                  onChange={(e) =>
+                    setCurrentUser((prev) => ({ ...prev, bio: e.target.value }))
+                  }
+                ></textarea>
+              </div>
+              {user.role === ACCOUNT_TYPE.TUTTOR && (
+                <>
+                  <Tip
+                    inside
+                    tip="Salary is the MINIMUM per hour price that you're willing to work for. If you haven't set a price, it will be set 50 Birr per hour by default."
+                  />
+                  <div
+                    className={`${ProfileStyles["input-box"]} ${ProfileStyles.price}`}
+                  >
+                    <label htmlFor="price">
+                      Salary (per hour in Birr) <span>*</span>
+                    </label>
+                    <input
+                      type="number"
+                      name=""
+                      id="price"
+                      min={50}
+                      max={10000}
+                      value={currentUser?.price}
+                      onChange={(e) =>
+                        setCurrentUser((prev) => ({
+                          ...prev,
+                          price: Number(e.target.value),
+                        }))
+                      }
+                    />
+                  </div>{" "}
+                </>
+              )}
+              {user.role === ACCOUNT_TYPE.TUTTOR && (
                 <Tip
                   inside
-                  tip="Salary is the MINIMUM per hour price that you're willing to work for. If you haven't set a price, it will be set 50 Birr per hour by default."
+                  tip="You need to provide your location to appear on searches."
                 />
-                <div
-                  className={`${ProfileStyles["input-box"]} ${ProfileStyles.price}`}
-                >
-                  <label htmlFor="price">
-                    Salary (per hour in Birr) <span>*</span>
-                  </label>
-                  <input
-                    type="number"
-                    name=""
-                    id="price"
-                    min={50}
-                    max={10000}
-                    value={currentUser?.price}
-                    onChange={(e) =>
-                      setCurrentUser((prev) => ({
-                        ...prev,
-                        price: Number(e.target.value),
-                      }))
-                    }
-                  />
-                </div>{" "}
-              </>
-            )}
-            {user.role === ACCOUNT_TYPE.TUTTOR && (
-              <Tip
-                inside
-                tip="You need to provide your location to appear on searches."
-              />
-            )}
-            <div className={ProfileStyles["input-box"]}>
-              <label htmlFor="location">
-                Location <span>*</span>
-              </label>
-              <input
-                type="text"
-                name=""
-                id="location"
-                value={currentUser.location}
-                onChange={(e) =>
-                  setCurrentUser((prev) => ({
-                    ...prev,
-                    location: e.target.value,
-                  }))
-                }
-                placeholder="e.g. CMC, Addis Ababa"
-              />
-            </div>
-            <button
-              disabled={loading}
-              className={`${ProfileStyles.btn} ${ProfileStyles["btn-primary"]}`}
-            >
-              Save Changes
-            </button>
-          </form>
+              )}
+              <div className={ProfileStyles["input-box"]}>
+                <label htmlFor="location">
+                  Location <span>*</span>
+                </label>
+                <input
+                  type="text"
+                  name=""
+                  id="location"
+                  value={currentUser.location}
+                  onChange={(e) =>
+                    setCurrentUser((prev) => ({
+                      ...prev,
+                      location: e.target.value,
+                    }))
+                  }
+                  placeholder="e.g. CMC, Addis Ababa"
+                />
+              </div>
+              <button
+                disabled={loading}
+                className={`${ProfileStyles.btn} ${ProfileStyles["btn-primary"]}`}
+              >
+                Save Changes
+              </button>
+            </form>
+          </div>
+          {user.role === ACCOUNT_TYPE.TUTTOR && (
+            <>
+              <Resume />
+              <Subjects />
+              <Education />
+            </>
+          )}
+          <ChangePassword />
+          <Deactivate />
         </div>
-        {user.role === ACCOUNT_TYPE.TUTTOR && (
-          <>
-            <Resume />
-            <Subjects />
-            <Education />
-          </>
-        )}
-        <ChangePassword />
-        <Deactivate />
-      </div>
-    </section>
+      </section>
+    </>
   )
 }
 

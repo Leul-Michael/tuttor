@@ -7,6 +7,7 @@ import Message from "../../components/Messages/Message"
 import { msgType } from "../../types"
 import { useRouter } from "next/router"
 import { signIn } from "next-auth/react"
+import Head from "next/head"
 
 const Login = () => {
   const router = useRouter()
@@ -48,62 +49,70 @@ const Login = () => {
   }
 
   return (
-    <section className={AuthStyles.container}>
-      <div className={AuthStyles.header}>
-        <div className={AuthStyles.logo}>
-          <h1 className="font-serif">Tuttor.</h1>
+    <>
+      <Head>
+        <title>Login to your tuttor account</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <section className={AuthStyles.container}>
+        <div className={AuthStyles.header}>
+          <div className={AuthStyles.logo}>
+            <h1 className="font-serif">Tuttor.</h1>
+          </div>
         </div>
-      </div>
-      <form onSubmit={handleLogin} className={AuthStyles.form}>
-        {errorMsg.msg ? (
-          <Message type={errorMsg.type} msg={errorMsg.msg} />
-        ) : null}
-        <div className={AuthStyles["input-box"]}>
-          <input
-            type="text"
-            id="email"
-            name="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <label htmlFor="email">email</label>
-        </div>
-        <div className={AuthStyles["input-box"]}>
-          <input
-            type={showPassword ? "text" : "password"}
-            id="password"
-            name="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <label htmlFor="password">password</label>
-          {password.length > 0 ? (
-            <span
-              onClick={() => setShowPassword((prev) => !prev)}
-              className={AuthStyles.show}
-            >
-              {showPassword ? <BiShowAlt /> : <BiHide />}
-            </span>
+        <form onSubmit={handleLogin} className={AuthStyles.form}>
+          {errorMsg.msg ? (
+            <Message type={errorMsg.type} msg={errorMsg.msg} />
           ) : null}
-        </div>
-        <button
-          disabled={isLoading}
-          className={`btn btn-primary p-relative ${
-            isLoading ? "loading-btn" : ""
-          } ${AuthStyles.btn}`}
-        >
-          {isLoading ? <Spinner /> : "Sign in"}
-        </button>
-        <div className={AuthStyles.footer}>
-          <p>
-            Don&#39;t have an account?{" "}
-            <Link href="/auth/register">Sign up</Link>
-          </p>
-        </div>
-      </form>
-    </section>
+          <div className={AuthStyles["input-box"]}>
+            <input
+              type="text"
+              id="email"
+              name="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <label htmlFor="email">email</label>
+          </div>
+          <div className={AuthStyles["input-box"]}>
+            <input
+              type={showPassword ? "text" : "password"}
+              id="password"
+              name="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <label htmlFor="password">password</label>
+            {password.length > 0 ? (
+              <span
+                onClick={() => setShowPassword((prev) => !prev)}
+                className={AuthStyles.show}
+              >
+                {showPassword ? <BiShowAlt /> : <BiHide />}
+              </span>
+            ) : null}
+          </div>
+          <button
+            disabled={isLoading}
+            className={`btn btn-primary p-relative ${
+              isLoading ? "loading-btn" : ""
+            } ${AuthStyles.btn}`}
+          >
+            {isLoading ? <Spinner /> : "Sign in"}
+          </button>
+          <div className={AuthStyles.footer}>
+            <p>
+              Don&#39;t have an account?{" "}
+              <Link href="/auth/register">Sign up</Link>
+            </p>
+          </div>
+        </form>
+      </section>
+    </>
   )
 }
 

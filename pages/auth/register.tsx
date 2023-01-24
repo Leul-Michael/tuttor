@@ -9,6 +9,7 @@ import { ACCOUNT_TYPE, msgType } from "../../types"
 import { useRouter } from "next/router"
 import useToast from "../../context/ToastContext"
 import AccoutType from "../../components/Register/AccoutType"
+import Head from "next/head"
 
 export const validateEmail = (inputEmail: string) => {
   if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,5})+$/.test(inputEmail)) {
@@ -85,92 +86,101 @@ export default function Register() {
   }
 
   return (
-    <section className={AuthStyles.container}>
-      {!accountType ? (
-        <AccoutType setAccountType={setAccountType} />
-      ) : (
-        <>
-          <div className={AuthStyles.header}>
-            <div className={AuthStyles.logo}>
-              <h1 className="font-serif">Tuttor.</h1>
+    <>
+      <Head>
+        <title>Register a tuttor account</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <section className={AuthStyles.container}>
+        {!accountType ? (
+          <AccoutType setAccountType={setAccountType} />
+        ) : (
+          <>
+            <div className={AuthStyles.header}>
+              <div className={AuthStyles.logo}>
+                <h1 className="font-serif">Tuttor.</h1>
+              </div>
             </div>
-          </div>
-          <form onSubmit={handleSubmit} className={AuthStyles.form}>
-            {errorMsg.msg ? (
-              <Message type={errorMsg.type} msg={errorMsg.msg} />
-            ) : null}
-            <p className={AuthStyles["account-type"]}>
-              Create new account as <span>{accountType}</span> --{" "}
-              <span onClick={() => setAccountType(undefined)}>change</span>
-            </p>
-            <div className={AuthStyles["input-box"]}>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                onChange={handleChange}
-                value={name}
-                required
-              />
-              <label htmlFor="name">full name</label>
-            </div>
-            <div className={AuthStyles["input-box"]}>
-              <input
-                type="text"
-                id="email"
-                name="email"
-                onChange={handleChange}
-                value={email}
-                required
-              />
-              <label htmlFor="email">email</label>
-            </div>
-            <div className={AuthStyles["input-box"]}>
-              <input
-                type="text"
-                id="location"
-                name="location"
-                onChange={handleChange}
-                value={location}
-                required
-              />
-              <label htmlFor="email">location</label>
-            </div>
-            <div className={AuthStyles["input-box"]}>
-              <input
-                type={showPassword ? "text" : "password"}
-                id="password"
-                name="password"
-                onChange={handleChange}
-                value={password}
-                required
-              />
-              <label htmlFor="password">password</label>
-              {password.length > 0 ? (
-                <span
-                  onClick={() => setShowPassword((prev) => !prev)}
-                  className={AuthStyles.show}
-                >
-                  {showPassword ? <BiShowAlt /> : <BiHide />}
-                </span>
+            <form onSubmit={handleSubmit} className={AuthStyles.form}>
+              {errorMsg.msg ? (
+                <Message type={errorMsg.type} msg={errorMsg.msg} />
               ) : null}
-            </div>
-            <button
-              disabled={isLoading}
-              className={`btn btn-primary p-relative ${
-                isLoading ? "loading-btn" : ""
-              } ${AuthStyles.btn}`}
-            >
-              {isLoading ? <Spinner /> : "Sign in"}
-            </button>
-            <div className={AuthStyles.footer}>
-              <p>
-                Already have an account? <Link href="/auth/login">Sign in</Link>{" "}
+              <p className={AuthStyles["account-type"]}>
+                Create new account as <span>{accountType}</span> --{" "}
+                <span onClick={() => setAccountType(undefined)}>change</span>
               </p>
-            </div>
-          </form>
-        </>
-      )}
-    </section>
+              <div className={AuthStyles["input-box"]}>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  onChange={handleChange}
+                  value={name}
+                  required
+                />
+                <label htmlFor="name">full name</label>
+              </div>
+              <div className={AuthStyles["input-box"]}>
+                <input
+                  type="text"
+                  id="email"
+                  name="email"
+                  onChange={handleChange}
+                  value={email}
+                  required
+                />
+                <label htmlFor="email">email</label>
+              </div>
+              <div className={AuthStyles["input-box"]}>
+                <input
+                  type="text"
+                  id="location"
+                  name="location"
+                  onChange={handleChange}
+                  value={location}
+                  required
+                />
+                <label htmlFor="email">location</label>
+              </div>
+              <div className={AuthStyles["input-box"]}>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  id="password"
+                  name="password"
+                  onChange={handleChange}
+                  value={password}
+                  required
+                />
+                <label htmlFor="password">password</label>
+                {password.length > 0 ? (
+                  <span
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    className={AuthStyles.show}
+                  >
+                    {showPassword ? <BiShowAlt /> : <BiHide />}
+                  </span>
+                ) : null}
+              </div>
+              <button
+                disabled={isLoading}
+                className={`btn btn-primary p-relative ${
+                  isLoading ? "loading-btn" : ""
+                } ${AuthStyles.btn}`}
+              >
+                {isLoading ? <Spinner /> : "Sign in"}
+              </button>
+              <div className={AuthStyles.footer}>
+                <p>
+                  Already have an account?{" "}
+                  <Link href="/auth/login">Sign in</Link>{" "}
+                </p>
+              </div>
+            </form>
+          </>
+        )}
+      </section>
+    </>
   )
 }

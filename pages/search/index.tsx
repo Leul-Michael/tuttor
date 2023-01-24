@@ -9,6 +9,7 @@ import axiosInstance from "../../axios/axios"
 import SearchFeed from "../../components/Search/SearchFeed"
 import useLastPostRef from "../../hooks/useLastPostRef"
 import useRecentSearch from "../../context/RecentSearchContext"
+import Head from "next/head"
 
 const CategoriyOptions = [
   { key: 1, value: "Home" },
@@ -110,6 +111,16 @@ export default function Search() {
 
   return (
     <>
+      <Head>
+        <title>Search for tutoring job</title>
+        <meta
+          name="description"
+          content="Find jobs bsaed on keywords and location."
+        />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
       <section className={SearchStyles.container}>
         <div className="container">
           <form

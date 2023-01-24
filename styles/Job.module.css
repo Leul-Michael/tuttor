@@ -615,6 +615,7 @@
 /* User Jobs */
 .user-jobs {
     padding: 0 4rem;
+    min-height: 100vh;
 }
 
 .jobs-tab {

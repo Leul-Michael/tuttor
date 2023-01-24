@@ -11,6 +11,7 @@ import useCreateConversation from "../../../hooks/useCreateConversation"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/router"
 import useDm from "../../../context/DMContext"
+import Head from "next/head"
 
 export default function User({ user }: { user: IUser }) {
   const session = useSession()
@@ -32,89 +33,97 @@ export default function User({ user }: { user: IUser }) {
     }
   }
   return (
-    <section className={ViewJobStyles["view-job"]}>
-      <div className="container-md">
-        <article className={`${ViewJobStyles["no-p"]}`}>
-          <div className={ViewJobStyles["job-details__header"]}>
-            <h1 className="font-serif">{user.name}</h1>
-            <p className={ViewJobStyles.location}>
-              {user.location ? user.location : "Location not specified"}
-            </p>
-            <div className={ViewJobStyles["flex-btns"]}>
-              <button
-                className={`btn  ${ViewJobStyles.btn} ${ViewJobStyles["btn-primary"]}`}
-                onClick={(e) => handleConversation(e)}
-              >
-                Contact
-              </button>
-              {user?.resume ? (
-                <a
-                  target="_blank"
-                  title="Resume"
-                  href={user?.resume}
-                  rel="noopener noreferrer"
+    <>
+      <Head>
+        <title>User profile</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <section className={ViewJobStyles["view-job"]}>
+        <div className="container-md">
+          <article className={`${ViewJobStyles["no-p"]}`}>
+            <div className={ViewJobStyles["job-details__header"]}>
+              <h1 className="font-serif">{user.name}</h1>
+              <p className={ViewJobStyles.location}>
+                {user.location ? user.location : "Location not specified"}
+              </p>
+              <div className={ViewJobStyles["flex-btns"]}>
+                <button
+                  className={`btn  ${ViewJobStyles.btn} ${ViewJobStyles["btn-primary"]}`}
+                  onClick={(e) => handleConversation(e)}
                 >
-                  <Image
-                    className={ViewJobStyles["resume-icon"]}
-                    src="/resume.png"
-                    alt="resume icon"
-                    width={25}
-                    height={25}
-                  />
-                  {/* <AiFillContainer className={ViewJobStyles["save-icon"]} /> */}
-                </a>
-              ) : null}
-            </div>
-          </div>
-          <div className={ViewJobStyles["job-details__body"]}>
-            <div className={ViewJobStyles.price}>
-              <div className={ViewJobStyles.header}>
-                <TbPoint className={ViewJobStyles.icon} />
-                <p className={ViewJobStyles.type}>Price per hour</p>
+                  Contact
+                </button>
+                {user?.resume ? (
+                  <a
+                    target="_blank"
+                    title="Resume"
+                    href={user?.resume}
+                    rel="noopener noreferrer"
+                  >
+                    <Image
+                      className={ViewJobStyles["resume-icon"]}
+                      src="/resume.png"
+                      alt="resume icon"
+                      width={25}
+                      height={25}
+                    />
+                    {/* <AiFillContainer className={ViewJobStyles["save-icon"]} /> */}
+                  </a>
+                ) : null}
               </div>
-              <div className={ViewJobStyles["price-tag"]}>
-                {user.price} / hr
-              </div>
             </div>
-            {user.subjects?.length ? (
+            <div className={ViewJobStyles["job-details__body"]}>
               <div className={ViewJobStyles.price}>
                 <div className={ViewJobStyles.header}>
                   <TbPoint className={ViewJobStyles.icon} />
-                  <p className={ViewJobStyles.type}>Subject priorities</p>
+                  <p className={ViewJobStyles.type}>Price per hour</p>
                 </div>
-                <div className={ViewJobStyles["schedule-btns"]}>
-                  {user.subjects?.map((subject, idx) => (
-                    <div key={idx} className={ViewJobStyles["price-tag"]}>
-                      {subject}
+                <div className={ViewJobStyles["price-tag"]}>
+                  {user.price} / hr
+                </div>
+              </div>
+              {user.subjects?.length ? (
+                <div className={ViewJobStyles.price}>
+                  <div className={ViewJobStyles.header}>
+                    <TbPoint className={ViewJobStyles.icon} />
+                    <p className={ViewJobStyles.type}>Subject priorities</p>
+                  </div>
+                  <div className={ViewJobStyles["schedule-btns"]}>
+                    {user.subjects?.map((subject, idx) => (
+                      <div key={idx} className={ViewJobStyles["price-tag"]}>
+                        {subject}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
+              {user.education?.length ? (
+                <div className={ViewJobStyles.price}>
+                  <div className={ViewJobStyles.header}>
+                    <TbPoint className={ViewJobStyles.icon} />
+                    <p className={ViewJobStyles.type}>Education</p>
+                  </div>
+                  {user.education?.map((edu: any) => (
+                    <div
+                      key={edu._id}
+                      className={`${ViewJobStyles["price-tag"]} ${ViewJobStyles["edu-tag"]}`}
+                    >
+                      {edu?.level} in {edu?.field} from {edu?.school}
                     </div>
                   ))}
                 </div>
-              </div>
-            ) : null}
-            {user.education?.length ? (
-              <div className={ViewJobStyles.price}>
-                <div className={ViewJobStyles.header}>
-                  <TbPoint className={ViewJobStyles.icon} />
-                  <p className={ViewJobStyles.type}>Education</p>
-                </div>
-                {user.education?.map((edu: any) => (
-                  <div
-                    key={edu._id}
-                    className={`${ViewJobStyles["price-tag"]} ${ViewJobStyles["edu-tag"]}`}
-                  >
-                    {edu?.level} in {edu?.field} from {edu?.school}
-                  </div>
-                ))}
-              </div>
-            ) : null}
-            <p className={ViewJobStyles.type}>Bio</p>
-            <p className={ViewJobStyles.desc}>
-              {user.bio ? user.bio : "no description"}
-            </p>
-          </div>
-        </article>
-      </div>
-    </section>
+              ) : null}
+              <p className={ViewJobStyles.type}>Bio</p>
+              <p className={ViewJobStyles.desc}>
+                {user.bio ? user.bio : "no description"}
+              </p>
+            </div>
+          </article>
+        </div>
+      </section>
+    </>
   )
 }
 

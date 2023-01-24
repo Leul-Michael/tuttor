@@ -11,6 +11,7 @@ import { useMutation } from "@tanstack/react-query"
 import axiosInstance from "../../../axios/axios"
 import useToast from "../../../context/ToastContext"
 import { GetServerSideProps } from "next"
+import Head from "next/head"
 
 export default function Apply({ resume }: { resume: string }) {
   const router = useRouter()
@@ -128,13 +129,24 @@ export default function Apply({ resume }: { resume: string }) {
   }
 
   return (
-    <section
-      className={`${ApplyJobStyles["create-job"]} ${ApplyJobStyles["apply-job"]}`}
-    >
-      <form onSubmit={submitProposal} className="container-md">
-        <div className={ApplyJobStyles["create-job__container"]}>{content}</div>
-      </form>
-    </section>
+    <>
+      <Head>
+        <title>Apply for Job</title>
+        <meta name="description" content="Apply for the selected Job." />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <section
+        className={`${ApplyJobStyles["create-job"]} ${ApplyJobStyles["apply-job"]}`}
+      >
+        <form onSubmit={submitProposal} className="container-md">
+          <div className={ApplyJobStyles["create-job__container"]}>
+            {content}
+          </div>
+        </form>
+      </section>
+    </>
   )
 }
 
