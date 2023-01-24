@@ -238,7 +238,7 @@
 }
 
 .footer-container {
-    padding: 1rem 0;
+    padding: 1rem 0 3rem;
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -250,11 +250,11 @@
 }
 
 .footer .logo a {
-    font-size: 1.5rem;
+    font-size: 1.75rem;
 }
 
 .footer .logo p {
-    font-size: .75rem;
+    font-size: .85rem;
     color: var(--clr-font);
     font-weight: 400;
 }
