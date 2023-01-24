@@ -63,7 +63,7 @@ export default function MobileChatMessages({
   }, [selectedChatId])
 
   useLayoutEffect(() => {
-    showChat && lastMsgRef.current?.scrollIntoView()
+    showChat && lastMsgRef.current?.scrollIntoView({ behavior: "smooth" })
   }, [showChat, chat?.messages])
 
   const conversationUser = useMemo(
