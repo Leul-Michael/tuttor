@@ -343,13 +343,11 @@
     transition: all .3s ease-out;
     display: flex;
     flex-direction: column;
-    opacity: 0;
 }
 
 .mobile-chat.show {
     left: 0;
     z-index: 20;
-    opacity: 1;
 }
 
 @media (max-width: 600px) {
