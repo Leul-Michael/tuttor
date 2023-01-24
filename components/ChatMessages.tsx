@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState, FormEvent } from "react"
+import { useRef, useEffect, useState, FormEvent, useLayoutEffect } from "react"
 import useDm, { MsgType } from "../context/DMContext"
 import { TiAttachmentOutline } from "react-icons/ti"
 import { RiSendPlaneFill } from "react-icons/ri"
@@ -43,8 +43,8 @@ export default function ChatMessages() {
     }
   }, [selectedChatId])
 
-  useEffect(() => {
-    lastMsgRef.current?.scrollIntoView({ behavior: "smooth" })
+  useLayoutEffect(() => {
+    lastMsgRef.current?.scrollIntoView()
   }, [messages])
 
   return (
