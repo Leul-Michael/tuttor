@@ -139,7 +139,7 @@
 .price {
     display: flex;
     flex-direction: column;
-    padding: 1rem 0;
+    padding: .5rem 0;
 }
 
 .header {
@@ -238,6 +238,7 @@
 /* New job post paage */
 .create-job {
     padding: 3rem 0;
+    min-height: var(--section-height);
 }
 
 .create-job p {
@@ -475,7 +476,7 @@
 /* All Jobs Page */
 .all-jobs__container {
     padding: 4rem;
-    min-height: 100vh;
+    min-height: var(--section-height);
     font-size: .9rem;
     border-radius: 4px;
 }
@@ -599,7 +600,7 @@
 .apply-job .create-job__input-box {
     max-width: 700px;
     box-shadow: none;
-    padding: 3rem 0;
+    padding: 2rem 0;
 }
 
 .apply-job .desc-text {
@@ -615,7 +616,7 @@
 /* User Jobs */
 .user-jobs {
     padding: 0 4rem;
-    min-height: 100vh;
+    min-height: var(--section-height);
 }
 
 .jobs-tab {
@@ -750,5 +751,9 @@
     .btn-sm {
         padding: .5rem 1.25rem;
         font-size: .75rem;
+    }
+
+    .btn-tab {
+        font-size: 1rem;
     }
 }

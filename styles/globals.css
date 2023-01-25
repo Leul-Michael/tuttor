@@ -4,11 +4,14 @@
 :root {
   --clr-background: #fff;
   --clr-background-opac: rgb(250, 250, 250);
-  --clr-background-light: #e4e2e0;
+  --clr-background-light: #f2f8ff;
+  /* --clr-background-light: #e4e2e0; */
   --clr-border: #bbb;
   --clr-font: rgb(13, 17, 23);
-  --clr-font-light: #282828;
-  --clr-font-light-secondary: #5f6368;
+  --clr-font-light: #050c26;
+  /* --clr-font-light: #282828; */
+  --clr-font-light-secondary: rgb(113 117 132);
+  /* --clr-font-light-secondary: #5f6368; */
   --clr-select-accent: #b7c7fe;
   --clr-caution: #feeeef;
 
@@ -24,6 +27,8 @@
 
   --font-serif: 'Alegreya', serif;
 
+  --header-height: min(11vh, 110px);
+  --section-height: calc(100vh - (2 * min(11vh, 110px)));
   --excerpt-width: 450px;
   --progess-width: 0%;
 }

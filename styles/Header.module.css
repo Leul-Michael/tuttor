@@ -5,7 +5,7 @@
 }
 
 .header {
-    height: min(11vh, 110px);
+    height: var(--header-height);
     border-bottom: 1px solid var(--clr-background-light);
 }
 
@@ -231,7 +231,7 @@
 /* Footer */
 .footer {
     margin-top: 3rem;
-    min-height: min(11vh, 110px);
+    min-height: var(--header-height);
     border-top: 1px solid var(--clr-background-light);
     display: flex;
     align-items: center;
@@ -272,8 +272,9 @@
 
 .footer-links li a {
     font-size: .9rem;
-    font-weight: 300;
+    font-weight: 400;
     padding: .25rem 0;
+    color: var(--clr-font-light-secondary);
 }
 
 .footer-links li a:hover,
