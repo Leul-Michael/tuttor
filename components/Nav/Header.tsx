@@ -68,6 +68,7 @@ export default function Header() {
             {session.status === "authenticated" ? (
               <>
                 <li
+                  title="messages"
                   className={`${styles.link} ${styles["msg-icon"]} ${
                     router.asPath ===
                     `/users/${session.data.user.id}/conversation`

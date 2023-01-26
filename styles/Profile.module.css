@@ -487,13 +487,21 @@
     flex-direction: column;
     margin-bottom: 1.5rem;
     padding-bottom: 1rem;
-    border-bottom: 1px solid var(--clr-background-light);
+    border-bottom: 1px solid var(--clr-select-accent);
 }
 
 .proposal-item__header {
     display: flex;
     align-items: center;
     gap: 1rem;
+    width: 100%;
+}
+
+.proposal-btns {
+    padding: .45rem .75rem;
+    align-self: center;
+    justify-self: flex-end;
+    font-size: .8rem;
 }
 
 .prop-desc {

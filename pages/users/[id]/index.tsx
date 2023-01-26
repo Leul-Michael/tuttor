@@ -1,4 +1,3 @@
-import { MouseEvent } from "react"
 import { GetServerSideProps } from "next"
 import Image from "next/image"
 // import { AiFillContainer } from "react-icons/ai"
@@ -7,31 +6,9 @@ import { TbPoint } from "react-icons/tb"
 import axiosInstance from "../../../axios/axios"
 import { IUser } from "../../../models/User"
 import ViewJobStyles from "../../../styles/Job.module.css"
-import useCreateConversation from "../../../hooks/useCreateConversation"
-import { useSession } from "next-auth/react"
-import { useRouter } from "next/router"
-import useDm from "../../../context/DMContext"
 import Head from "next/head"
 
 export default function User({ user }: { user: IUser }) {
-  const session = useSession()
-  const router = useRouter()
-  const { createConversation } = useCreateConversation()
-  const { setSelectedChatId } = useDm()
-
-  const handleConversation = async (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-    if (!session.data?.user) return
-    const res = await createConversation(
-      { _id: session.data.user.id, name: session.data.user.name! },
-      user
-    )
-
-    if (res) {
-      setSelectedChatId(res)
-      router.push(`/users/${user._id}/conversation`)
-    }
-  }
   return (
     <>
       <Head>
@@ -51,9 +28,8 @@ export default function User({ user }: { user: IUser }) {
               <div className={ViewJobStyles["flex-btns"]}>
                 <button
                   className={`btn  ${ViewJobStyles.btn} ${ViewJobStyles["btn-primary"]}`}
-                  onClick={(e) => handleConversation(e)}
                 >
-                  Contact
+                  Invite
                 </button>
                 {user?.resume ? (
                   <a

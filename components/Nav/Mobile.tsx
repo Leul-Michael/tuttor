@@ -32,6 +32,7 @@ export default function Mobile() {
           {session.status === "authenticated" ? (
             <>
               <li
+                title="messages"
                 className={`${Styles.link} ${Styles["mobile-msg-icon"]} ${
                   router.asPath ===
                   `/users/${session.data.user.id}/conversation`

@@ -62,9 +62,10 @@ export default function SavedJobs() {
               <h2 className="font-serif">{job?.title}</h2>
               <div className={Styles["flex-buttons"]}>
                 <button
+                  title="Apply for the job"
                   onClick={(e) => {
-                    e.stopPropagation()
                     e.preventDefault()
+                    e.stopPropagation()
                     router.push(`/jobs/${job._id}/apply`)
                   }}
                   className={`btn  ${Styles.btn} ${Styles["btn-sm"]}`}
@@ -73,11 +74,11 @@ export default function SavedJobs() {
                 </button>
                 <div className={Styles["icon-buttons"]}>
                   <button
-                    title="Withdraw your proposal"
+                    title="Remove job from saved"
                     disabled={mutation?.isLoading}
                     onClick={(e) => {
-                      e.stopPropagation()
                       e.preventDefault()
+                      e.stopPropagation()
                       removeSelected(e, job._id)
                     }}
                     className={`${Styles.btn} ${Styles["icon-btn"]} ${Styles.delete}`}
