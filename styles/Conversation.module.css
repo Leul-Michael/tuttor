@@ -292,6 +292,7 @@
     padding: .7rem 1.25rem;
     font-size: .75rem;
     border-radius: inherit;
+    border: 1px solid var(--clr-border);
 }
 
 .msg__options span svg {
