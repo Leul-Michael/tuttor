@@ -15,7 +15,7 @@ import { useSession } from "next-auth/react"
 export default function useSendTextMsg() {
   const session = useSession()
 
-  const { isDrafted, members, selectedChatId } = useDm()
+  const { members, selectedChatId } = useDm()
   const sendMessage = async (textMsg: string) => {
     const newChatMsg = {
       id: uuidv4(),
@@ -25,27 +25,19 @@ export default function useSendTextMsg() {
       seenBy: [session.data?.user.id],
     }
 
-    if (isDrafted) {
-      await axiosInstance.post("/profile/chat", {
-        chatId: selectedChatId,
-        recieverId: members.find(
-          (member) => member.userId !== session.data?.user.id
-        )?.userId,
-      })
+    await axiosInstance.post("/profile/chat", {
+      chatId: selectedChatId,
+      recieverId: members.find(
+        (member) => member.userId !== session.data?.user.id
+      )?.userId,
+    })
 
-      await updateDoc(doc(db, CHATS, selectedChatId), {
-        messages: arrayUnion(newChatMsg),
-        updatedAt: serverTimestamp(),
-        lastMsg: textMsg,
-        drafted: false,
-      })
-    } else {
-      await updateDoc(doc(db, CHATS, selectedChatId), {
-        messages: arrayUnion(newChatMsg),
-        updatedAt: serverTimestamp(),
-        lastMsg: textMsg,
-      })
-    }
+    await updateDoc(doc(db, CHATS, selectedChatId), {
+      messages: arrayUnion(newChatMsg),
+      updatedAt: serverTimestamp(),
+      lastMsg: textMsg,
+      drafted: false,
+    })
   }
 
   return sendMessage

@@ -13,8 +13,13 @@ const Theme = dynamic(() => import("../Select/Theme"), {
   ssr: false,
 })
 
+const Conversations = dynamic(() => import("../Profile/Conversations"), {
+  ssr: false,
+})
+
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false)
+  const [openModal, setOpenModal] = useState(false)
   const router = useRouter()
   const session = useSession()
 
@@ -68,17 +73,28 @@ export default function Header() {
             {session.status === "authenticated" ? (
               <>
                 <li
-                  title="messages"
-                  className={`${styles.link} ${styles["msg-icon"]} ${
+                  className={`p-relative ${styles.conversation} ${
+                    styles.link
+                  } ${styles["msg-icon"]} ${
                     router.asPath ===
                     `/users/${session.data.user.id}/conversation`
                       ? styles.active
                       : ""
                   }`}
+                  onClick={() => {
+                    if (
+                      router.asPath ===
+                      `/users/${session.data.user.id}/conversation`
+                    )
+                      return
+                    setOpenModal((prev) => !prev)
+                  }}
                 >
-                  <Link href={`/users/${session.data.user.id}/conversation`}>
-                    <SiGooglemessages />
-                  </Link>
+                  <SiGooglemessages />
+                  <Conversations
+                    openModal={openModal}
+                    setOpenModal={setOpenModal}
+                  />
                 </li>
                 <div
                   tabIndex={0}

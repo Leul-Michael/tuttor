@@ -24,14 +24,12 @@ export default async function handler(
     }
 
     if (user && (await bcrypt.compare(password, user.password))) {
-      return res
-        .status(201)
-        .json({
-          id: user.id,
-          name: user.name,
-          role: user.role,
-          email: user.email,
-        })
+      return res.status(201).json({
+        id: user.id,
+        name: user.name,
+        role: user.role,
+        email: user.email,
+      })
     } else {
       return res.status(400).json({ msg: "Invalid Password!" })
     }

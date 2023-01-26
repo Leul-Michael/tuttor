@@ -6,14 +6,9 @@ export const authOptions: AuthOptions = {
   session: {
     strategy: "jwt",
   },
-  // Configure one or more authentication providers
   providers: [
     CredentialsProvider({
       type: "credentials",
-      // The credentials is used to generate a suitable form on the sign in page.
-      // You can specify whatever fields you are expecting to be submitted.
-      // e.g. domain, username, password, 2FA token, etc.
-      // You can pass any HTML attribute to the <input> tag through the object.
       credentials: {},
       async authorize(credentials, req) {
         const { email, password } = credentials as {
@@ -41,20 +36,13 @@ export const authOptions: AuthOptions = {
   callbacks: {
     jwt: ({ token, user }) => {
       if (user) {
-        token.id = user.id
-        token.name = user.name
-        token.role = user.role
-        token.email = user.email
+        token = { ...user }
       }
-
       return token
     },
     session: ({ session, token }) => {
       if (token) {
-        session.user.id = token.id
-        session.user.name = token.name
-        session.user.role = token.role
-        session.user.email = token.email
+        session.user = { ...token }
       }
       return session
     },

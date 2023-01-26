@@ -289,7 +289,7 @@
     display: flex;
     align-items: center;
     gap: .5rem;
-    padding: .7rem 1.25rem;
+    padding: .5rem 1.25rem;
     font-size: .75rem;
     border-radius: inherit;
     border: 1px solid var(--clr-border);
@@ -367,6 +367,58 @@
 
 .mobile-chat.show .user-messages__input-box {
     transform: translateX(0%);
+}
+
+/* Conversation  */
+.conversation-peek {
+    position: absolute;
+    top: 80%;
+    right: 0;
+    background-color: var(--clr-background);
+    padding: 1rem;
+    border: 1px solid var(--clr-border);
+    border-radius: 4px;
+    min-width: 350px;
+    z-index: 20;
+    display: none;
+    flex-direction: column;
+    cursor: default;
+}
+
+.conversation-peek.show {
+    display: flex;
+}
+
+.conversation-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: .5rem 0;
+}
+
+.conversation-header h1 {
+    font-size: 1.2rem;
+}
+
+.btn-view-all {
+    margin-top: 1rem;
+    border: 1px solid var(--clr-select-accent);
+    padding: 0.75rem 2rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: .9rem;
+    color: var(--clr-font-light);
+    font-weight: 500;
+}
+
+.btn-view-all:hover,
+.btn-view-all:focus {
+    color: var(--clr-accent);
+    background: var(--clr-btn-hover);
+}
+
+.chat-loading {
+    min-height: 50px;
 }
 
 @media (max-width: 600px) {

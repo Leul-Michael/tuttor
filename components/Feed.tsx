@@ -73,12 +73,8 @@ export default function Feed() {
               return <JobExcerpt key={job._id} job={job} />
             })
           })}
-          {(isLoading || isFetchingNextPage) && (
-            <>
-              <JobExcerptSkeleton />
-              <JobExcerptSkeleton />
-            </>
-          )}
+          {(isLoading || isFetchingNextPage) &&
+            [...Array(5).keys()].map((i) => <JobExcerptSkeleton key={i} />)}
         </div>
         {width >= 1000 ? (
           <div className={FeedStyles["job-feed__description"]}>

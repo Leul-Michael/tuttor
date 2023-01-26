@@ -52,15 +52,6 @@ export default function Tutors() {
     refetch()
   }
 
-  const Loading = () => {
-    return (
-      <>
-        <TutorExcerptSkeleton /> <TutorExcerptSkeleton />
-        <TutorExcerptSkeleton />
-      </>
-    )
-  }
-
   return (
     <>
       <Head>
@@ -76,15 +67,11 @@ export default function Tutors() {
       />
       <div className={`container ${TutorStyles.tuttors}`}>
         <p className={TutorStyles.results}>
-          {/* {data?.pages.reduce((total, pg) => {
-            total = total + pg?.tutors?.length
-            return total
-          }, 0)}{" "} */}
           {data?.pages[0].total} results found
         </p>
         <div className={`${TutorStyles["tutor-grid"]}`}>
           {isLoading || isRefetching ? (
-            <Loading />
+            [...Array(6).keys()].map((i) => <TutorExcerptSkeleton key={i} />)
           ) : data?.pages[0].tutors.length === 0 ? (
             <p className="text-light">No tutor found!</p>
           ) : (
@@ -105,7 +92,8 @@ export default function Tutors() {
               })
             )
           )}
-          {isFetchingNextPage && <Loading />}
+          {isFetchingNextPage &&
+            [...Array(3).keys()].map((i) => <TutorExcerptSkeleton key={i} />)}
         </div>
       </div>
     </>

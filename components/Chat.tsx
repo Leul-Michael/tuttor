@@ -13,10 +13,12 @@ export default function Chat({
   chatId,
   user,
   setShowChat,
+  inChatPage = false,
 }: {
   chatId: string
   user: Pick<IUser, "_id">
   setShowChat: Dispatch<SetStateAction<boolean>>
+  inChatPage?: boolean
 }) {
   const session = useSession()
   const [chat, setChat] = useState<DocumentData | undefined>()
@@ -82,19 +84,24 @@ export default function Chat({
           ></span>
         ) : null}
       </div>
-      <button
-        onClick={(e) => {
-          e.preventDefault()
-          e.stopPropagation()
-          setShowSelect({ id: chatId, show: !showSelect.show })
-        }}
-        className={ConversationStyles["msg__options-btn"]}
-      >
-        <HiOutlineDotsVertical />
-        {showSelect.show && showSelect.id === chatId && (
-          <ChatSelect setShowSelect={setShowSelect} deleteId={showSelect.id} />
-        )}
-      </button>
+      {inChatPage && (
+        <button
+          onClick={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            setShowSelect({ id: chatId, show: !showSelect.show })
+          }}
+          className={ConversationStyles["msg__options-btn"]}
+        >
+          <HiOutlineDotsVertical />
+          {showSelect.show && showSelect.id === chatId && (
+            <ChatSelect
+              setShowSelect={setShowSelect}
+              deleteId={showSelect.id}
+            />
+          )}
+        </button>
+      )}
     </div>
   )
 }

@@ -10,6 +10,7 @@ import { MdOutlineDelete } from "react-icons/md"
 import axiosInstance from "../../axios/axios"
 import useDm from "../../context/DMContext"
 import useToast from "../../context/ToastContext"
+import useConversation from "../../hooks/useConversation"
 import ConversationStyles from "../../styles/Conversation.module.css"
 
 export default function ChatSelect({
@@ -28,6 +29,7 @@ export default function ChatSelect({
   const { addMessage } = useToast()
   const { selectedChatId, setSelectedChatId } = useDm()
   const selectMsgRef = useRef<HTMLDivElement>(null)
+  const [_, refetch] = useConversation()
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
@@ -46,7 +48,10 @@ export default function ChatSelect({
     e.preventDefault()
     if (!deleteId) return
     try {
-      await axiosInstance.delete("/profile/chat", { data: { deleteId } })
+      await axiosInstance.delete("/profile/chat", {
+        data: { deleteId },
+      })
+      refetch()
       if (selectedChatId === deleteId) {
         setSelectedChatId("")
       }

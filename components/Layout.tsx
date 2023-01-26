@@ -17,13 +17,7 @@ export default function Layout({ children }: { children: ReactElement }) {
       {width > 768 ? <Header /> : <Mobile />}
       <Toast />
       <main>{children}</main>
-      {router.pathname === `/users/[id]/conversation` ? (
-        width <= 600 ? null : (
-          <Footer />
-        )
-      ) : (
-        <Footer />
-      )}
+      {router.pathname === `/users/[id]/conversation` ? null : <Footer />}
     </>
   )
 }

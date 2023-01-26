@@ -10,6 +10,21 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     return res.status(401).json({ msg: "Unauthorized!" })
   }
 
+  if (req.method === "GET") {
+    const id = session?.user.id
+
+    // Connect to DB
+    await connectDB()
+
+    const user = await User.findById(id).select("chats")
+
+    if (!user) {
+      return res.status(400).json({ msg: "User not found!" })
+    }
+
+    return res.status(200).json(user)
+  }
+
   if (req.method === "POST") {
     const { chatId, recieverId }: { chatId: string; recieverId: string } =
       req.body

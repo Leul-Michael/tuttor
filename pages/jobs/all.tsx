@@ -31,15 +31,6 @@ export default function All() {
     hasNextPage
   )
 
-  const Loading = () => {
-    return (
-      <>
-        <MyJobSkeleton />
-        <MyJobSkeleton />
-      </>
-    )
-  }
-
   return (
     <>
       <Head>
@@ -64,7 +55,7 @@ export default function All() {
 
           <ul className={Styles["all-jobs__list"]}>
             {isLoading ? (
-              <Loading />
+              [...Array(2).keys()].map((i) => <MyJobSkeleton key={i} />)
             ) : data?.pages[0]?.jobs.length === 0 ? (
               <p className="text-light">No available jobs to show here!</p>
             ) : (
@@ -81,7 +72,8 @@ export default function All() {
                 })
               })
             )}
-            {isFetchingNextPage && <Loading />}
+            {isFetchingNextPage &&
+              [...Array(2).keys()].map((i) => <MyJobSkeleton key={i} />)}
           </ul>
         </div>
       </section>
