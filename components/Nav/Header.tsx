@@ -91,10 +91,12 @@ export default function Header() {
                   }}
                 >
                   <SiGooglemessages />
-                  <Conversations
-                    openModal={openModal}
-                    setOpenModal={setOpenModal}
-                  />
+                  {openModal && (
+                    <Conversations
+                      openModal={openModal}
+                      setOpenModal={setOpenModal}
+                    />
+                  )}
                 </li>
                 <div
                   tabIndex={0}

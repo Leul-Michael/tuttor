@@ -1,11 +1,9 @@
-import { useState, Dispatch, SetStateAction } from "react"
+import { useState, Dispatch, SetStateAction, useEffect, useRef } from "react"
 import ConversationStyles from "../../styles/Conversation.module.css"
 import Chat from "../Chat"
 import useConversation from "../../hooks/useConversation"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/router"
-import { useRef } from "react"
-import { useEffect } from "react"
 import Spinner from "../Spinner"
 
 export default function Conversations({
