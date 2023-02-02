@@ -57,11 +57,7 @@ export default function Resume() {
   return (
     <div className={`${ProfileStyles.portion}`}>
       {openUpload && (
-        <UploadPdf
-          refetch={refetch}
-          setOpenUpload={setOpenUpload}
-          data={data}
-        />
+        <UploadPdf refetch={refetch} setOpenUpload={setOpenUpload} />
       )}
       <p className={`font-serif ${ProfileStyles.title}`}>Resume</p>
       <div className={`p-relative n-left ${ProfileStyles["pdf-portion"]}`}>
@@ -69,27 +65,18 @@ export default function Resume() {
           <Spinner />
         ) : data ? (
           <>
-            <a
-              className={ProfileStyles["current-pdf"]}
-              target="_blank"
-              href={data}
-              rel="noopener noreferrer"
-            >
-              <VscFilePdf
-                title="your resume"
-                className={ProfileStyles["pdf-icon"]}
-              />
-            </a>
             <div className={ProfileStyles["buttons-flex"]}>
-              <button
-                title="Update resume"
-                onClick={() => setOpenUpload((prev) => !prev)}
-                className={`${ProfileStyles[`btn-profile`]} ${
-                  ProfileStyles["btn-sm"]
-                }`}
+              <a
+                className={ProfileStyles["current-pdf"]}
+                target="_blank"
+                href={data}
+                rel="noopener noreferrer"
               >
-                <FiPlusCircle className={ProfileStyles.icon} />
-              </button>
+                <VscFilePdf
+                  title="your resume"
+                  className={ProfileStyles["pdf-icon"]}
+                />
+              </a>
               <button
                 title="Delete resume"
                 onClick={removeResume}

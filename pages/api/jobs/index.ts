@@ -23,7 +23,11 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         .sort({
           createdAt: -1,
         })
-        .populate({ path: "proposals.user", model: User, select: "name" })
+        .populate({
+          path: "proposals.user",
+          model: User,
+          select: "name location",
+        })
         .sort({ createdAt: -1 })
         .skip(Number(pageParam) > 0 ? limit * (Number(pageParam) - 1) : 0)
         .limit(limit)

@@ -5,15 +5,16 @@ import timeStyles from "../styles/Job.module.css"
 
 interface TimeAgoProps {
   timestamp: string
+  prefix?: string
 }
 
-function TimeAgo({ timestamp }: TimeAgoProps) {
+function TimeAgo({ timestamp, prefix }: TimeAgoProps) {
   let time = ""
   if (timestamp) {
     const parseDate = parseISO(timestamp)
     const timePeriod = formatDistanceToNowStrict(parseDate)
 
-    time = `Posted ${timePeriod} ago`
+    time = prefix ? `${prefix} ${timePeriod} ago` : `Posted ${timePeriod} ago`
   }
   return <p className={timeStyles.posted}>{time}</p>
 }

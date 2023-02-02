@@ -16,7 +16,6 @@ import {
   uploadBytesResumable,
   getDownloadURL,
   UploadTask,
-  deleteObject,
 } from "firebase/storage"
 import app from "../../configs/firebase"
 import axiosInstance from "../../axios/axios"
@@ -30,13 +29,11 @@ import {
 export default function UploadPdf({
   setOpenUpload,
   refetch,
-  data,
 }: {
   setOpenUpload: Dispatch<SetStateAction<boolean>>
   refetch: <TPageData>(
     options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined
   ) => Promise<QueryObserverResult<any, unknown>>
-  data: any
 }) {
   const storage = getStorage(app)
   const { addMessage } = useToast()
@@ -57,13 +54,7 @@ export default function UploadPdf({
 
     setIsUpload(true)
 
-    // Delete the current PDF if any
-    if (data) {
-      const pdfRef = ref(storage, data)
-      await deleteObject(pdfRef)
-    }
-
-    const storageRef = ref(storage, `resumes/${resume?.name}`)
+    const storageRef = ref(storage, `resumes/${resume?.name}-${Date.now()}`)
 
     uploadTaskRef.current = uploadBytesResumable(storageRef, resume, {
       contentType: resume.type,
@@ -114,6 +105,7 @@ export default function UploadPdf({
               })
               addMessage(res.data.msg, downloadURL)
               refetch()
+              setOpenUpload(false)
             } catch (e) {
               console.log(e)
               addMessage("Resume update failed, try again!")

@@ -1,7 +1,7 @@
 .job,
 .tuttor {
     padding: 1.5rem;
-    border: 1px solid var(--clr-border);
+    border: 1px solid var(--clr-border-light);
     max-width: var(--excerpt-width);
     border-radius: 8px;
     margin-bottom: 1rem;

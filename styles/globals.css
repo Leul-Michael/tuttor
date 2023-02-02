@@ -2,20 +2,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-  --clr-background: #fff;
-  --clr-background-opac: rgb(250, 250, 250);
-  --clr-background-light: #f1f7fe;
-  /* --clr-background-light: #f2f8ff; */
-  /* --clr-background-light: #e4e2e0; */
-  --clr-border: #999;
-  --clr-border-light: #ddd;
-  --clr-font: rgb(13, 17, 23);
-  --clr-font-light: #050c26;
-  /* --clr-font-light: #282828; */
-  --clr-font-light-secondary: rgb(113 117 132);
-  /* --clr-font-light-secondary: #5f6368; */
-  --clr-select-accent: #b7c7fe;
-  --clr-caution: #feeeef;
+  --clr-background: rgb(13, 17, 23);
+  --clr-background-opac: rgba(22, 27, 34, 0.2);
+  --clr-background-light: rgb(22, 27, 34);
+  /* --clr-background: #202124; */
+  /* --clr-background-light: #3c4043; */
+  --clr-border: #5f6368;
+  --clr-border-light: rgb(22, 27, 34);
+  --clr-font: #fff;
+  --clr-font-light: #e8eaed;
+  --clr-font-light-secondary: #9aa0a6;
+  --clr-select-accent: #3f465d;
+  --clr-caution: #f39797;
 
   --clr-white: #fff;
   --clr-black: #171717;
@@ -35,19 +33,21 @@
   --progess-width: 0%;
 }
 
-.dark-theme {
-  --clr-background: rgb(13, 17, 23);
-  --clr-background-opac: rgba(22, 27, 34, 0.2);
-  --clr-background-light: rgb(22, 27, 34);
-  /* --clr-background: #202124; */
-  /* --clr-background-light: #3c4043; */
-  --clr-border: #5f6368;
-  --clr-border-light: rgb(22, 27, 34);
-  --clr-font: #fff;
-  --clr-font-light: #e8eaed;
-  --clr-font-light-secondary: #9aa0a6;
-  --clr-select-accent: #3f465d;
-  --clr-caution: #5e1e1e;
+.light-theme {
+  --clr-background: #fff;
+  --clr-background-opac: rgb(250, 250, 250);
+  --clr-background-light: #f1f7fe;
+  /* --clr-background-light: #f2f8ff; */
+  /* --clr-background-light: #e4e2e0; */
+  --clr-border: #999;
+  --clr-border-light: #ddd;
+  --clr-font: rgb(13, 17, 23);
+  --clr-font-light: #050c26;
+  /* --clr-font-light: #282828; */
+  --clr-font-light-secondary: rgb(113 117 132);
+  /* --clr-font-light-secondary: #5f6368; */
+  --clr-select-accent: #b7c7fe;
+  --clr-caution: #feeeef;
 }
 
 
@@ -156,7 +156,7 @@ button {
   display: flex;
   align-items: center;
   font-size: .9rem;
-  border: 1px solid var(--clr-border-light);
+  border: 1px solid var(--clr-border);
   padding: .35rem .5rem;
   border-radius: 4px;
   margin: 0 .5rem;

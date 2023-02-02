@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { FormEvent, useState } from "react"
+import { FormEvent, useState, ChangeEventHandler } from "react"
 import Spinner from "../../../components/Spinner"
 import Tip from "../../../components/Messages/Tip"
 import ApplyJobStyles from "../../../styles/Job.module.css"
@@ -95,7 +95,9 @@ export default function Apply({ resume }: { resume: string }) {
             link={{ to: "profile", path: "/profile" }}
             inside
           />
-          <div className={ApplyJobStyles["create-job__input-box"]}>
+          <div
+            className={`${ApplyJobStyles["create-job__input-box"]} ${ApplyJobStyles["text-box-border"]}`}
+          >
             <label htmlFor="desc">
               Description <span>*</span>
             </label>
@@ -104,11 +106,14 @@ export default function Apply({ resume }: { resume: string }) {
               name="desc"
               id="desc"
               placeholder="description..."
-              maxLength={300}
+              maxLength={250}
               value={desc}
               onChange={(e) => setDesc(e.target.value)}
               required
             ></textarea>
+            <div className={ApplyJobStyles["max-chars"]}>
+              {desc.length} / <span>250</span>
+            </div>
           </div>
           <button
             disabled={mutation.isLoading}

@@ -5,6 +5,7 @@ import { useRouter } from "next/router"
 import useDm from "../../context/DMContext"
 import useCreateConversation from "../../hooks/useCreateConversation"
 import { useSession } from "next-auth/react"
+import TimeAgo from "../TimeAgo"
 
 export default function JobProposals({
   setOpenModal,
@@ -79,7 +80,10 @@ export default function JobProposals({
                   >
                     {proposal?.user?.name.slice(0, 2)}
                   </div>
-                  <p>{proposal?.user?.name}</p>
+                  <div>
+                    <p>{proposal?.user?.name}</p>
+                    <span>{proposal?.user?.location}</span>
+                  </div>
                   <button
                     disabled={loading}
                     onClick={(e) => handleConversation(e, proposal?.user)}
@@ -87,10 +91,18 @@ export default function JobProposals({
                   >
                     {loading ? "loading..." : "Contact"}
                   </button>
+                  <button
+                    disabled={loading}
+                    onClick={(e) => handleConversation(e, proposal?.user)}
+                    className={`${ProfileStyles.btn} ${ProfileStyles["proposal-btns"]} ${ProfileStyles["btn-danger-light"]}`}
+                  >
+                    Not Intersted
+                  </button>
                 </div>
                 <p className={`${ProfileStyles["prop-desc"]}`}>
                   {proposal?.desc}
                 </p>
+                <TimeAgo timestamp={proposal?.proposedAt} prefix="Proposed" />
               </li>
             ) : (
               <li className={ProfileStyles["proposals-item"]} key={idx}>

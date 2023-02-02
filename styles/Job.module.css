@@ -330,6 +330,28 @@
     resize: vertical;
 }
 
+.text-box-border {
+    position: relative;
+}
+
+.text-box-border textarea {
+    border: 1px solid var(--clr-border);
+    padding: 1rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+}
+
+.max-chars {
+    position: absolute;
+    right: 1rem;
+    bottom: 3rem;
+    font-size: .8rem;
+}
+
+.max-chars span {
+    color: var(--clr-accent);
+}
+
 .create-job__input-box input:focus,
 .create-job__input-box textarea:focus {
     border-color: var(--clr-select-accent);

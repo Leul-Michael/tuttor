@@ -60,6 +60,12 @@ const JobSchema = new Schema<IJob>(
         },
         desc: String,
         resume: String,
+        proposedAt: { type: Date, default: Date.now },
+        status: {
+          type: String,
+          enum: ["Active", "Not Selected", "Selected"],
+          default: "Active",
+        },
       },
     ],
   },

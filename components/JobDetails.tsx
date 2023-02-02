@@ -33,7 +33,7 @@ export default function JobDetails() {
   }
 
   const isSaved = useMemo(() => {
-    return data?.saves.includes(session?.data?.user.id)
+    return data?.saves?.includes(session?.data?.user.id)
   }, [data?.saves, session?.data?.user.id])
 
   if (!jobId) {
@@ -73,7 +73,7 @@ export default function JobDetails() {
             <p className={JobDetailStyles.type}>Schedule</p>
           </div>
           <div className={JobDetailStyles["schedule-btns"]}>
-            {data?.schedule.map((d: string) => (
+            {data?.schedule?.map((d: string) => (
               <div key={d} className={JobDetailStyles["price-tag"]}>
                 {d}
               </div>
@@ -101,7 +101,7 @@ export default function JobDetails() {
           <p className={`j-desc ${JobDetailStyles.type}`}>
             <IoMdCheckmarkCircleOutline className="desc-icon" /> Requirements
           </p>
-          {data?.requirements.length ? (
+          {data?.requirements?.length ? (
             data?.requirements.map((req: string, idx: number) => {
               return (
                 <div key={idx} className={JobDetailStyles.requirement}>
