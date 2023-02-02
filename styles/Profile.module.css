@@ -298,7 +298,7 @@
 .resume-input-box label button {
     display: inline-block;
     padding: .5rem .75rem;
-    border: 1px solid var(--clr-background-light);
+    border: 1px solid var(--clr-border-light);
     border-radius: 2px;
     font-size: .8rem;
     margin-top: .5rem;
