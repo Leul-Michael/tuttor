@@ -5,7 +5,7 @@
 
 .feed header {
     width: 100%;
-    border-bottom: 1px solid var(--clr-background-light);
+    border-bottom: 1px solid var(--clr-border-light);
 }
 
 .flex-btns {

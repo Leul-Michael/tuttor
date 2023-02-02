@@ -9,7 +9,7 @@
 
 .user-conversations {
     height: 80vh;
-    border: 1px solid var(--clr-background-light);
+    border: 1px solid var(--clr-border-light);
     border-radius: 5px;
     flex-grow: 1;
     display: grid;
@@ -22,7 +22,7 @@
     flex-direction: column;
     width: 100%;
     height: 100%;
-    border-right: 1px solid var(--clr-background-light);
+    border-right: 1px solid var(--clr-border-light);
     overflow-y: hidden;
 }
 
@@ -199,7 +199,7 @@
 .users-list__users {
     display: flex;
     flex-direction: column;
-    border-top: 1px solid var(--clr-background-light);
+    border-top: 1px solid var(--clr-border-light);
     flex-grow: 1;
     overflow-y: auto;
     -ms-overflow-style: none;
@@ -292,7 +292,7 @@
     padding: .5rem 1.25rem;
     font-size: .75rem;
     border-radius: inherit;
-    border: 1px solid var(--clr-border);
+    border: 1px solid var(--clr-border-light);
 }
 
 .msg__options span svg {
@@ -376,7 +376,7 @@
     right: 0;
     background-color: var(--clr-background);
     padding: 1rem;
-    border: 1px solid var(--clr-border);
+    border: 1px solid var(--clr-border-light);
     border-radius: 4px;
     min-width: 350px;
     z-index: 20;

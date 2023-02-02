@@ -31,8 +31,8 @@
     flex-direction: column;
     gap: .5rem;
     padding: 1rem 0;
-    border-top: 1px solid var(--clr-background-light);
-    border-bottom: 1px solid var(--clr-background-light);
+    border-top: 1px solid var(--clr-border-light);
+    border-bottom: 1px solid var(--clr-border-light);
 }
 
 .desc {
@@ -74,7 +74,7 @@
     border-radius: 4px;
     cursor: pointer;
     color: var(--clr-font-light-secondary);
-    border: 1px solid var(--clr-border);
+    border: 1px solid var(--clr-border-light);
     transition: font-size .3s ease-out, padding .3s ease-out;
 }
 
@@ -129,7 +129,7 @@
 }
 
 .posted {
-    font-size: .85rem;
+    font-size: .75rem;
     padding-top: 1rem;
 }
 

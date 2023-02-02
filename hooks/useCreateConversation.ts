@@ -35,6 +35,7 @@ export default function useCreateConversation() {
             { userId: receiver._id, name: receiver.name },
           ],
           updatedAt: serverTimestamp(),
+          createdAt: serverTimestamp(),
           lastMsg: "",
           drafted: true,
         })

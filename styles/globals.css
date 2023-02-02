@@ -4,9 +4,11 @@
 :root {
   --clr-background: #fff;
   --clr-background-opac: rgb(250, 250, 250);
-  --clr-background-light: #f2f8ff;
+  --clr-background-light: #f1f7fe;
+  /* --clr-background-light: #f2f8ff; */
   /* --clr-background-light: #e4e2e0; */
-  --clr-border: #bbb;
+  --clr-border: #999;
+  --clr-border-light: #ddd;
   --clr-font: rgb(13, 17, 23);
   --clr-font-light: #050c26;
   /* --clr-font-light: #282828; */
@@ -40,6 +42,7 @@
   /* --clr-background: #202124; */
   /* --clr-background-light: #3c4043; */
   --clr-border: #5f6368;
+  --clr-border-light: rgb(22, 27, 34);
   --clr-font: #fff;
   --clr-font-light: #e8eaed;
   --clr-font-light-secondary: #9aa0a6;
@@ -66,7 +69,7 @@ body {
 body {
   color: var(--clr-font);
   background: var(--clr-background);
-  font-family: 'Work Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: 'Work Sans', 'inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   transition: background-color .2s ease-out;
 }
 
@@ -153,7 +156,7 @@ button {
   display: flex;
   align-items: center;
   font-size: .9rem;
-  border: 1px solid var(--clr-border);
+  border: 1px solid var(--clr-border-light);
   padding: .35rem .5rem;
   border-radius: 4px;
   margin: 0 .5rem;
@@ -178,7 +181,7 @@ button {
   flex-direction: column;
   padding: .35rem .2rem;
   background-color: var(--clr-background);
-  border: 1px solid var(--clr-border);
+  border: 1px solid var(--clr-border-light);
   position: absolute;
   top: calc(100% + .25rem);
   left: 0;

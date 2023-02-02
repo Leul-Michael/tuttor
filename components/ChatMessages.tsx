@@ -9,6 +9,7 @@ import useSendTextMsg from "../hooks/useSendTextMsg"
 import { doc, onSnapshot } from "firebase/firestore"
 import { CHATS } from "../hooks/useCreateConversation"
 import { db } from "../configs/firebase"
+import useConversation from "../hooks/useConversation"
 
 export default function ChatMessages() {
   const { selectedChatId } = useDm()
@@ -17,6 +18,7 @@ export default function ChatMessages() {
   const lastMsgRef = useRef<HTMLSpanElement>(null)
   const { addMessage } = useToast()
   const sendMessage = useSendTextMsg()
+  const [_, refetch] = useConversation()
 
   const handleSendMessage = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -24,6 +26,7 @@ export default function ChatMessages() {
 
     setTextMsg("")
     try {
+      refetch()
       await sendMessage(textMsg)
     } catch (e) {
       addMessage(`Something went wrong, please refresh the page!`)

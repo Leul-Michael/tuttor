@@ -4,7 +4,14 @@ import {
   RefetchQueryFilters,
   useQuery,
 } from "@tanstack/react-query"
-import { doc, DocumentData, onSnapshot } from "firebase/firestore"
+import {
+  collection,
+  doc,
+  DocumentData,
+  onSnapshot,
+  orderBy,
+  query,
+} from "firebase/firestore"
 import { useEffect, useMemo, useState } from "react"
 import axiosInstance from "../axios/axios"
 import { db } from "../configs/firebase"
@@ -27,6 +34,10 @@ export default function useConversation(): [
     },
   })
 
+  const orderdChats = useMemo(() => {
+    return chats.sort((a, b) => b?.updatedAt - a?.updatedAt)
+  }, [chats])
+
   useEffect(() => {
     setChats([])
     data?.chats.map((chat: string) => {
@@ -42,12 +53,27 @@ export default function useConversation(): [
         }
       })
     })
-  }, [data?.chats])
+    // const convRef = collection(db, CHATS)
+    // const q = query(convRef, orderBy("updatedAt"))
+    // const unsub = onSnapshot(q, (snapshot) => {
+    //   if (snapshot.empty) return
+    //   snapshot.docs.map((doc) => {
+    //     if (doc.exists() && data?.chats.includes(doc.id)) {
+    //       setChats((prev) => {
+    //         if (prev.find((v) => v?.id === doc.id)) {
+    //           return prev
+    //         } else {
+    //           return [...prev, { id: doc.id, ...doc.data() }]
+    //         }
+    //       })
+    //     }
+    //   })
+    // })
 
-  const orderdChats = useMemo(
-    () => chats.sort((a, b) => b?.updatedAt - a?.updatedAt),
-    [chats]
-  )
+    // return () => {
+    //   unsub()
+    // }
+  }, [data?.chats])
 
   return [orderdChats, refetch, isLoading]
 }

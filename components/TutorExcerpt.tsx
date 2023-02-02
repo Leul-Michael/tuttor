@@ -21,7 +21,7 @@ const TutorExcerpt = ({ user }: { user: IUser }) => {
         <Image
           className={TutorStyles.icon}
           src="/review.png"
-          alt="review icon"
+          alt="star"
           width={16}
           height={14}
         />{" "}

@@ -16,6 +16,7 @@ export default function useSendTextMsg() {
   const session = useSession()
 
   const { members, selectedChatId } = useDm()
+
   const sendMessage = async (textMsg: string) => {
     const newChatMsg = {
       id: uuidv4(),
