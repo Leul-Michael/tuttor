@@ -19,7 +19,7 @@ export default function Index({ job }: { job: JobType }) {
   const isApplied = useMemo(() => {
     if (!session.data?.user.id) return
     return job?.proposals.some((job: any) => {
-      return job.user.toString() === session.data?.user.id
+      return job?.user.toString() === session.data?.user.id
     })
   }, [job?.proposals, session.data?.user.id])
 

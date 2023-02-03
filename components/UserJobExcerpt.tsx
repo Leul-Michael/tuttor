@@ -63,7 +63,7 @@ export default function UserJobExcerpt({ job }: { job: JobType }) {
         <JobProposals
           setOpenModal={setJobProposalsModal}
           proposals={jobProposals}
-          jobId={deleteJobId}
+          jobId={job?._id}
         />
       )}
       <div className={Styles["my-job__header"]}>

@@ -32,6 +32,8 @@ const TUTTOR_TYPE = [
   { key: 3, value: "Both" },
 ]
 
+export type DaysProps = { i: number; v: string }
+
 export default function Create({ user }: { user: IUser }) {
   const { addMessage } = useToast()
   const [loading, setLoading] = useState(false)
@@ -45,7 +47,7 @@ export default function Create({ user }: { user: IUser }) {
   const selectTuttorType = (n: Option) => {
     setTuttorType(n)
   }
-  const [days, setDays] = useState<string[]>([])
+  const [days, setDays] = useState<DaysProps[]>([])
 
   const [startingPrice, setStartingPrice] = useState<string>("50")
   const [maxPrice, setMaxPrice] = useState<string>("")
@@ -115,7 +117,7 @@ export default function Create({ user }: { user: IUser }) {
         tutorType: tuttorType.value,
         numberOfStudents: numberOfStudents.value,
         requirements,
-        schedule: days,
+        schedule: days.map((d) => d.v),
       })
 
       addMessage(res.data.msg, `/jobs/${res.data.id}`)
@@ -251,7 +253,9 @@ export default function Create({ user }: { user: IUser }) {
               required
             />
           </div>
-          <div className={Styles["create-job__input-box"]}>
+          <div
+            className={`${Styles["create-job__input-box-lg"]} ${Styles["text-box-border"]}`}
+          >
             <label htmlFor="desc">
               Description <span>*</span>
             </label>
@@ -268,6 +272,9 @@ export default function Create({ user }: { user: IUser }) {
               maxLength={300}
               required
             ></textarea>
+            <div className={Styles["max-chars"]}>
+              {formData.desc.length} / <span>250</span>
+            </div>
           </div>
           <div className={Styles["create-job__input-box"]}>
             <label htmlFor="">Requirements</label>

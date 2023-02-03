@@ -307,6 +307,12 @@ button {
   background-color: rgb(212, 255, 233);
 }
 
+.job-status-fail {
+  color: var(--clr-red);
+  background-color: var(--clr-caution);
+}
+
+
 .j-desc {
   display: flex;
   align-items: center;

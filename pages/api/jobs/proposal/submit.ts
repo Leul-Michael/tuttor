@@ -3,6 +3,7 @@ import Job from "../../../../models/Job"
 import connectDB from "../../../../middleware/connectDB"
 import { getSession } from "next-auth/react"
 import { ACCOUNT_TYPE } from "../../../../types"
+import Proposal from "../../../../models/Proposal"
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const session = await getSession({ req })
@@ -30,7 +31,10 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     // Connect to DB
     await connectDB()
 
-    const job = await Job.findById(jobId)
+    const job = await Job.findById(jobId).populate({
+      path: "proposals",
+      model: Proposal,
+    })
 
     if (!job) {
       return res.status(400).json({ msg: "Job not found." })
@@ -43,12 +47,14 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (alreadySubmitted) {
       return res.status(400).json({ msg: "Proposal already exists!" })
     } else {
-      job.proposals.unshift({
-        user: id,
-        desc,
-        resume,
+      const proposal = await new Proposal({
+        ...req.body,
+        user: session.user.id,
       })
+      await proposal.save()
+      job.proposals.unshift(proposal)
       await job.save()
+
       return res.status(200).json({ msg: "Proposal submitted successfully!" })
     }
   }

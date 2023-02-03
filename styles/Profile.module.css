@@ -497,9 +497,15 @@
     border-bottom: 1px solid var(--clr-select-accent);
 }
 
+.p-relative {
+    position: relative;
+    min-height: 100px;
+}
+
 .proposal-item__header {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     gap: 1rem;
     width: 100%;
 }
@@ -555,4 +561,5 @@
         padding-left: 0.25rem;
         padding-top: 1rem;
     }
+
 }

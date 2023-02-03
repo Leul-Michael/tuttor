@@ -17,7 +17,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     //
 
     try {
-      const jobs: any = await Job.find()
+      const jobs: any = await Job.find().populate("proposals")
 
       const proposedJobs = jobs.filter((job: any) => {
         const isApplied = job?.proposals.some((proposal: any) => {
@@ -28,7 +28,11 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           return job
         }
       })
-      return res.status(200).json(proposedJobs)
+      return res
+        .status(200)
+        .json(
+          proposedJobs.sort((a: any, b: any) => b?.createdAt - a?.createdAt)
+        )
     } catch (e) {
       console.log(e)
       return res.status(500).json({ msg: "Job not found!" })

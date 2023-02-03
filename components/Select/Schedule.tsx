@@ -1,38 +1,42 @@
 import { MouseEvent, useState, Dispatch, SetStateAction } from "react"
+import { DaysProps } from "../../pages/jobs/create"
 import SelectStyles from "../../styles/Select.module.css"
 
 const DAYS = [
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-  "Sunday",
+  { i: 1, v: "Monday" },
+  { i: 2, v: "Tuesday" },
+  { i: 3, v: "Wednesday" },
+  { i: 4, v: "Thursday" },
+  { i: 5, v: "Friday" },
+  { i: 6, v: "Saturday" },
+  { i: 7, v: "Sunday" },
 ]
 
 interface ScheduleProps {
-  days: string[]
-  setDays: Dispatch<SetStateAction<string[]>>
+  days: DaysProps[]
+  setDays: Dispatch<SetStateAction<DaysProps[]>>
 }
 
 export default function Schedule({ days, setDays }: ScheduleProps) {
   const [isOpen, setIsOpen] = useState(false)
 
-  const isSelected = (val: string) => {
+  const isSelected = (val: DaysProps) => {
     return days.includes(val)
   }
 
-  const addValue = (d: string) => {
+  const addValue = (d: DaysProps) => {
     if (days.includes(d)) return
     setDays((prev) => [...prev, d])
   }
 
-  const removeValue = (e: MouseEvent<HTMLButtonElement>, passedVal: string) => {
+  const removeValue = (
+    e: MouseEvent<HTMLButtonElement>,
+    passedVal: DaysProps
+  ) => {
     e.preventDefault()
     e.stopPropagation()
     setDays((prev) => {
-      return prev.filter((val) => val !== passedVal)
+      return prev.filter((val) => val.i !== passedVal.i)
     })
   }
 
@@ -45,15 +49,17 @@ export default function Schedule({ days, setDays }: ScheduleProps) {
     >
       <div className={SelectStyles["schedule-display"]}>
         {days.length
-          ? days.map((v) => (
-              <button
-                onClick={(e) => removeValue(e, v)}
-                key={v}
-                className={SelectStyles.btn}
-              >
-                {v} <span>&#10006;</span>
-              </button>
-            ))
+          ? days
+              .sort((a: any, b: any) => a.i - b.i)
+              .map((v) => (
+                <button
+                  onClick={(e) => removeValue(e, v)}
+                  key={v.i}
+                  className={SelectStyles.btn}
+                >
+                  {v.v} <span>&#10006;</span>
+                </button>
+              ))
           : "Not selected"}
       </div>
       <div className={SelectStyles["arrow-down"]}></div>
@@ -63,10 +69,10 @@ export default function Schedule({ days, setDays }: ScheduleProps) {
         {DAYS.map((d) => (
           <li
             onClick={() => addValue(d)}
-            key={d}
+            key={d.i}
             className={isSelected(d) ? SelectStyles.selected : ""}
           >
-            {d}
+            {d.v}
           </li>
         ))}
       </ul>

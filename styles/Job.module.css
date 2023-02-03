@@ -273,13 +273,14 @@
 }
 
 .create-job__input-box,
-.create-job__input-box-flex {
+.create-job__input-box-flex,
+.create-job__input-box-lg {
     display: flex;
     flex-direction: column;
     gap: .25rem;
     box-shadow: 0px 3px 2px -2px var(--clr-accent);
     border-radius: 8px;
-    padding: 1rem 1rem 2rem;
+    padding: 1rem 0 2rem;
     margin-bottom: 1rem;
 }
 
@@ -300,18 +301,21 @@
 }
 
 .create-job__input-box label,
-.create-job__select label {
+.create-job__select label,
+.create-job__input-box-lg label {
     color: var(--clr-font-light);
     font-weight: 500;
 }
 
 .create-job__input-box label span,
-.create-job__select label span {
+.create-job__select label span,
+.create-job__input-box-lg label span {
     color: var(--clr-red);
 }
 
 .create-job__input-box>span,
-.create-job__select span {
+.create-job__select span,
+.create-job__input-box-lg>span {
     font-size: .85rem;
     color: var(--clr-font-light-secondary);
     font-weight: 500;
@@ -325,7 +329,8 @@
     font-size: 1rem;
 }
 
-.create-job__input-box textarea {
+.create-job__input-box textarea,
+.create-job__input-box-lg textarea {
     min-height: 150px;
     resize: vertical;
 }
@@ -519,7 +524,7 @@
 }
 
 .my-job {
-    border-bottom: 1px solid var(--clr-background-light);
+    border-bottom: 1px solid var(--clr-border-light);
     padding-bottom: 1rem;
     margin-bottom: 1rem;
     cursor: default;

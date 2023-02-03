@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next"
 import Job from "../../../models/Job"
 import connectDB from "../../../middleware/connectDB"
 import { getSession } from "next-auth/react"
+import Proposal from "../../../models/Proposal"
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "GET") {
@@ -10,7 +11,10 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     await connectDB()
 
     try {
-      const job = await Job.findById(jobId)
+      const job = await Job.findById(jobId).populate({
+        path: "proposals",
+        model: Proposal,
+      })
       return res.status(200).json(job)
     } catch {
       return res.status(500).json({ msg: "Job not found!" })
@@ -38,6 +42,10 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           .status(401)
           .json({ msg: "You're not allowed to perform this action." })
       }
+
+      job.proposals.map(
+        async (p: string) => await Proposal.findByIdAndRemove(p)
+      )
 
       await job.remove()
 

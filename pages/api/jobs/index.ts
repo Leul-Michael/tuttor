@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from "next"
-import User from "../../../models/User"
 import Job from "../../../models/Job"
 import connectDB from "../../../middleware/connectDB"
 import { getSession } from "next-auth/react"
@@ -22,11 +21,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       const jobs = await Job.find({ user: session.user.id })
         .sort({
           createdAt: -1,
-        })
-        .populate({
-          path: "proposals.user",
-          model: User,
-          select: "name location",
         })
         .sort({ createdAt: -1 })
         .skip(Number(pageParam) > 0 ? limit * (Number(pageParam) - 1) : 0)

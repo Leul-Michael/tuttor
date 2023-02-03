@@ -11,7 +11,7 @@ interface IJob {
   schedule: []
   requirements: []
   saves: []
-  proposals: []
+  proposals: (string | ObjectId)[]
 }
 
 const JobSchema = new Schema<IJob>(
@@ -52,22 +52,7 @@ const JobSchema = new Schema<IJob>(
         ref: "User",
       },
     ],
-    proposals: [
-      {
-        user: {
-          type: Schema.Types.ObjectId,
-          ref: "User",
-        },
-        desc: String,
-        resume: String,
-        proposedAt: { type: Date, default: Date.now },
-        status: {
-          type: String,
-          enum: ["Active", "Not Selected", "Selected"],
-          default: "Active",
-        },
-      },
-    ],
+    proposals: [{ type: Schema.Types.ObjectId, ref: "Proposal" }],
   },
   {
     timestamps: true,

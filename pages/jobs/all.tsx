@@ -1,8 +1,8 @@
+import Head from "next/head"
+import Link from "next/link"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import { GetServerSideProps } from "next"
 import { getSession } from "next-auth/react"
-import Head from "next/head"
-import Link from "next/link"
 import { FiPlusCircle } from "react-icons/fi"
 import axiosInstance from "../../axios/axios"
 import MyJobSkeleton from "../../components/Skeleton/MyJobSkeleton"
@@ -12,17 +12,24 @@ import Styles from "../../styles/Job.module.css"
 import { ACCOUNT_TYPE, JobType } from "../../types"
 
 export default function All() {
-  const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } =
-    useInfiniteQuery({
-      queryKey: ["MyJobs"],
-      queryFn: async ({ pageParam = 1 }) => {
-        const res = await axiosInstance.get("/jobs", { params: { pageParam } })
-        return res.data
-      },
-      getNextPageParam: (lastPage, allPages) => {
-        return lastPage?.hasMore ? parseInt(lastPage?.pageParam) + 1 : undefined
-      },
-    })
+  const {
+    data,
+    isLoading,
+    isFetchingNextPage,
+    fetchNextPage,
+    hasNextPage,
+    isError,
+    isRefetching,
+  } = useInfiniteQuery({
+    queryKey: ["MyJobs"],
+    queryFn: async ({ pageParam = 1 }) => {
+      const res = await axiosInstance.get("/jobs", { params: { pageParam } })
+      return res.data
+    },
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage?.hasMore ? parseInt(lastPage?.pageParam) + 1 : undefined
+    },
+  })
 
   const lastPostRef = useLastPostRef(
     isFetchingNextPage,
@@ -54,9 +61,11 @@ export default function All() {
           </div>
 
           <ul className={Styles["all-jobs__list"]}>
-            {isLoading ? (
+            {isLoading || isRefetching ? (
               [...Array(2).keys()].map((i) => <MyJobSkeleton key={i} />)
-            ) : data?.pages[0]?.jobs.length === 0 ? (
+            ) : isError ? (
+              <p className="text-light">Something went wrong</p>
+            ) : data?.pages[0]?.jobs.length <= 0 ? (
               <p className="text-light">No available jobs to show here!</p>
             ) : (
               data?.pages.map((pg) => {
