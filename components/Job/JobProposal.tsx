@@ -21,12 +21,7 @@ export default function JobProposal({
   const { createConversation } = useCreateConversation()
   const { setSelectedChatId } = useDm()
 
-  const {
-    data: proposal,
-    isLoading,
-    refetch,
-    isRefetching,
-  } = useQuery({
+  const { data, isLoading, refetch, isRefetching } = useQuery({
     queryKey: ["Proposal" + proposalId],
     queryFn: async () => {
       const res = await axiosInstance.get("/jobs/proposal", {
@@ -89,7 +84,14 @@ export default function JobProposal({
     )
   }
 
-  if (!proposal || !proposal.user?.name) {
+  if (!data) {
+    return (
+      <li className={ProfileStyles["proposals-item"]}>
+        <p className={ProfileStyles["prop-desc"]}>Proposal not found!</p>
+      </li>
+    )
+  }
+  if (!data.user?.name) {
     return (
       <li className={ProfileStyles["proposals-item"]}>
         <p className={ProfileStyles["prop-desc"]}>
@@ -104,29 +106,29 @@ export default function JobProposal({
       <div className={ProfileStyles["proposal-item__header"]}>
         <div
           onClick={() => {
-            router.push(`/users/${proposal?.user?._id}`)
+            router.push(`/users/${data?.user?._id}`)
           }}
           className="avatar pointer"
         >
-          {proposal?.user?.name.slice(0, 2)}
+          {data?.user?.name.slice(0, 2)}
         </div>
         <div>
-          <p>{proposal?.user?.name}</p>
-          <span>{proposal?.user?.location}</span>
+          <p>{data?.user?.name}</p>
+          <span>{data?.user?.location}</span>
         </div>
-        {proposal.status === "Active" ? (
+        {data.status === "Active" ? (
           <>
             {" "}
             <button
               disabled={loading}
-              onClick={(e) => handleConversation(e, proposal?.user)}
+              onClick={(e) => handleConversation(e, data?.user)}
               className={`${ProfileStyles.btn} ${ProfileStyles["proposal-btns"]}`}
             >
               Contact
             </button>
             <button
               disabled={loading}
-              onClick={(e) => updateStatus(e, "Not Selected", proposal._id)}
+              onClick={(e) => updateStatus(e, "Not Selected", data._id)}
               className={`${ProfileStyles.btn} ${ProfileStyles["proposal-btns"]} ${ProfileStyles["btn-danger-light"]}`}
             >
               Not Intersted
@@ -140,7 +142,7 @@ export default function JobProposal({
 
             <button
               disabled={loading}
-              onClick={(e) => updateStatus(e, "Active", proposal._id)}
+              onClick={(e) => updateStatus(e, "Active", data._id)}
               className={`${ProfileStyles.btn} ${ProfileStyles["proposal-btns"]} ${ProfileStyles["btn-danger-light"]}`}
             >
               Undo
@@ -148,8 +150,8 @@ export default function JobProposal({
           </>
         )}
       </div>
-      <p className={`${ProfileStyles["prop-desc"]}`}>{proposal?.desc}</p>
-      <TimeAgo timestamp={proposal?.createdAt} prefix="Proposed" />
+      <p className={`${ProfileStyles["prop-desc"]}`}>{data?.desc}</p>
+      <TimeAgo timestamp={data?.createdAt} prefix="Proposed" />
     </li>
   )
 }

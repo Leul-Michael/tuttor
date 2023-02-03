@@ -54,6 +54,14 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
       await Proposal.findByIdAndRemove(userProposal._id)
 
+      const newProposals = job?.proposals.filter((proposal: any) => {
+        return proposal.user.toString() !== session.user.id
+      })
+
+      job.proposals = newProposals
+
+      await job.save()
+
       return res.status(200).json({ msg: "Proposal withdrawn!" })
     } catch (e) {
       console.log(e)
