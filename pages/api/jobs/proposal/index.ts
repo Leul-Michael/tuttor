@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next"
 import connectDB from "../../../../middleware/connectDB"
 import { getSession } from "next-auth/react"
 import Proposal from "../../../../models/Proposal"
+import User from "../../../../models/User"
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const session = await getSession({ req })
@@ -24,12 +25,14 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       const proposal = await Proposal.findById(proposalId)
         .populate({
           path: "user",
+          model: User,
           select: "name location",
         })
         .sort({ createdAt: -1 })
 
       return res.status(200).json(proposal)
-    } catch {
+    } catch (e: any) {
+      console.log(e)
       return res.status(500).json({ msg: "Something went wrong!" })
     }
   }

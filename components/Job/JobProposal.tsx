@@ -20,6 +20,7 @@ export default function JobProposal({
   const router = useRouter()
   const { createConversation } = useCreateConversation()
   const { setSelectedChatId } = useDm()
+  const [loading, setLoading] = useState(false)
 
   const { data, isLoading, refetch, isRefetching } = useQuery({
     queryKey: ["Proposal" + proposalId],
@@ -32,8 +33,6 @@ export default function JobProposal({
       return res.data
     },
   })
-
-  const [loading, setLoading] = useState(false)
 
   const handleConversation = async (
     e: MouseEvent<HTMLButtonElement>,
