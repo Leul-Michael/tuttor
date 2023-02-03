@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next"
 import Job from "../../../models/Job"
 import connectDB from "../../../middleware/connectDB"
 import { getSession } from "next-auth/react"
+import Proposal from "../../../models/Proposal"
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const session = await getSession({ req })
@@ -45,15 +46,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     // Connect to DB
     await connectDB()
     try {
-      const job: any = await Job.findById(jobId)
+      const job: any = await Job.findById(jobId).populate("proposals")
 
-      const newProposals = job?.proposals.filter((proposal: any) => {
-        return proposal.user.toString() !== session.user.id
+      const userProposal = job?.proposals.find((proposal: any) => {
+        return proposal.user.toString() === session.user.id
       })
 
-      job.proposals = newProposals
-
-      await job.save()
+      await Proposal.findByIdAndRemove(userProposal._id)
 
       return res.status(200).json({ msg: "Proposal withdrawn!" })
     } catch (e) {
