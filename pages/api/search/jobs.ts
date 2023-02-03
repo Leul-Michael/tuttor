@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next"
 import Job from "../../../models/Job"
 import connectDB from "../../../middleware/connectDB"
+import Proposal from "../../../models/Proposal"
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "GET") {
@@ -17,6 +18,10 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       title: queryTitle,
       location: queryLocation,
     })
+      .populate({
+        path: "proposals",
+        model: Proposal,
+      })
       .sort({ createdAt: -1 })
       .skip(Number(pageParam) > 0 ? limit * (Number(pageParam) - 1) : 0)
       .limit(limit)
