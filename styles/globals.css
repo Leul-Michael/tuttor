@@ -302,6 +302,10 @@ button {
   margin: 0 .5rem;
 }
 
+.job-status.size-sm {
+  padding: .25rem .35rem;
+}
+
 .job-status-good {
   color: #1b6864;
   background-color: rgb(212, 255, 233);

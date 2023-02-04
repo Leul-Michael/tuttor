@@ -1,9 +1,17 @@
+import { useSession } from "next-auth/react"
 import Image from "next/image"
 import Link from "next/link"
+import { useMemo } from "react"
 import { IUser } from "../models/User"
 import TutorStyles from "../styles/Tutor.module.css"
 
 const TutorExcerpt = ({ user }: { user: IUser }) => {
+  const session = useSession()
+
+  const isAuthor = useMemo(() => {
+    return user._id === session.data?.user?.id
+  }, [user._id, session.data?.user?.id])
+
   return (
     <Link
       href={`/users/${user._id}`}
@@ -11,7 +19,12 @@ const TutorExcerpt = ({ user }: { user: IUser }) => {
       className={TutorStyles.tuttor}
     >
       <div className={TutorStyles.header}>
-        <h1 className="font-serif">{user?.name}</h1>
+        <h1 className="font-serif">
+          {user?.name}{" "}
+          {isAuthor && (
+            <span className="job-status job-status-good size-sm">You</span>
+          )}
+        </h1>
         <div className={TutorStyles.price}>{user?.price} / hr</div>
       </div>
       <p className={TutorStyles.location}>
