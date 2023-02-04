@@ -54,7 +54,10 @@ export default function UploadPdf({
 
     setIsUpload(true)
 
-    const storageRef = ref(storage, `resumes/${resume?.name}-${Date.now()}`)
+    const storageRef = ref(
+      storage,
+      `resumes/${resume?.name.toLowerCase() + Date.now()}`
+    )
 
     uploadTaskRef.current = uploadBytesResumable(storageRef, resume, {
       contentType: resume.type,
