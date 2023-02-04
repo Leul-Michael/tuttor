@@ -20,20 +20,19 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     try {
       const jobs: any = await Job.find().populate("proposals")
 
-      const proposedJobs = jobs.filter((job: any) => {
-        const isApplied = job?.proposals.some((proposal: any) => {
-          return proposal.user.toString() === session.user.id
-        })
+      const proposedJobs = jobs
+        .filter((job: any) => {
+          const isApplied = job?.proposals.some((proposal: any) => {
+            return proposal.user.toString() === session.user.id
+          })
 
-        if (isApplied) {
-          return job
-        }
-      })
-      return res
-        .status(200)
-        .json(
-          proposedJobs.sort((a: any, b: any) => b?.createdAt - a?.createdAt)
-        )
+          if (isApplied) {
+            return job
+          }
+        })
+        .sort((a: any, b: any) => a?.createdAt - b?.createdAt)
+
+      return res.status(200).json(proposedJobs)
     } catch (e) {
       console.log(e)
       return res.status(500).json({ msg: "Job not found!" })
@@ -51,6 +50,12 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       const userProposal = job?.proposals.find((proposal: any) => {
         return proposal.user.toString() === session.user.id
       })
+
+      if (userProposal.status === "Not Selected") {
+        return res
+          .status(400)
+          .json({ msg: "Only Active proposals are allowed for withdrawal!" })
+      }
 
       await Proposal.findByIdAndRemove(userProposal._id)
 
