@@ -1,14 +1,19 @@
 import { GetServerSideProps } from "next"
 import Image from "next/image"
-// import { AiFillContainer } from "react-icons/ai"
-import React from "react"
+import { useMemo } from "react"
 import { TbPoint } from "react-icons/tb"
 import axiosInstance from "../../../axios/axios"
 import { IUser } from "../../../models/User"
 import ViewJobStyles from "../../../styles/Job.module.css"
 import Head from "next/head"
+import { useSession } from "next-auth/react"
+import Link from "next/link"
 
 export default function User({ user }: { user: IUser }) {
+  const session = useSession()
+  const isAuthor = useMemo(() => {
+    return user._id === session.data?.user?.id
+  }, [user._id, session.data?.user?.id])
   return (
     <>
       <Head>
@@ -24,11 +29,20 @@ export default function User({ user }: { user: IUser }) {
                 {user.location ? user.location : "Location not specified"}
               </p>
               <div className={ViewJobStyles["flex-btns"]}>
-                <button
-                  className={`btn  ${ViewJobStyles.btn} ${ViewJobStyles["btn-primary"]}`}
-                >
-                  Invite
-                </button>
+                {isAuthor ? (
+                  <Link
+                    href={"/profile"}
+                    className={`btn  ${ViewJobStyles.btn} ${ViewJobStyles["btn-primary"]}`}
+                  >
+                    Profile
+                  </Link>
+                ) : (
+                  <button
+                    className={`btn  ${ViewJobStyles.btn} ${ViewJobStyles["btn-primary"]}`}
+                  >
+                    Invite
+                  </button>
+                )}
                 {user?.resume ? (
                   <a
                     target="_blank"
