@@ -44,6 +44,12 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       return proposal.user.toString() === id
     })
 
+    if (job?.proposals?.length >= 10) {
+      return res.status(400).json({
+        msg: "Maximum proposals sumbitted on this job, please try looking for aother job!",
+      })
+    }
+
     if (alreadySubmitted) {
       return res.status(400).json({ msg: "Proposal already exists!" })
     } else {

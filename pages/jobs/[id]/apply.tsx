@@ -46,7 +46,7 @@ export default function Apply({ resume }: { resume: string }) {
       setDesc("")
       router.push(`/jobs/${jobId}`)
     } catch (e: any) {
-      addMessage(e.response.data.msg || e.message)
+      addMessage(`Error: ${e.response.data.msg || e.message}`)
     }
   }
 

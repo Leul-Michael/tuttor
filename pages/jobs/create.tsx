@@ -123,7 +123,6 @@ export default function Create({ user }: { user: IUser }) {
       addMessage(res.data.msg, `/jobs/${res.data.id}`)
       resetFormValues()
     } catch (e: any) {
-      console.log(e)
       addMessage(`Error: ${e.response.data.msg || e.message}`)
     } finally {
       setLoading(false)

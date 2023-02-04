@@ -35,7 +35,7 @@ export default function AppliedJobExcerpt({ job }: { job: JobType }) {
       const res = await mutation.mutateAsync({ id: jobId })
       addMessage(res.data?.msg)
     } catch (e: any) {
-      addMessage(e.response.data.msg || e.message)
+      addMessage(`Error: ${e.response.data.msg || e.message}`)
     }
   }
 
@@ -54,7 +54,7 @@ export default function AppliedJobExcerpt({ job }: { job: JobType }) {
         <h2 className="font-serif">
           {job?.title}{" "}
           <span
-            className={`job-status  ${
+            className={`job-status ${
               proposalStatus === "Not Selected"
                 ? "job-status-fail"
                 : "job-status-good"

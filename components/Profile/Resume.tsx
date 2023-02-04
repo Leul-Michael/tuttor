@@ -46,7 +46,7 @@ export default function Resume() {
         refetch()
         return
       }
-      addMessage("Failed to remove pdf, try again!")
+      addMessage("Error: Failed to remove pdf, try again!")
     } finally {
       setLoading(false)
     }

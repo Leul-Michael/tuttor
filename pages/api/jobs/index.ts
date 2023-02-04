@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next"
 import Job from "../../../models/Job"
 import connectDB from "../../../middleware/connectDB"
 import { getSession } from "next-auth/react"
+import { ACCOUNT_TYPE } from "../../../types"
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const session = await getSession({ req })
@@ -44,6 +45,12 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {
     const { schedule, title, budget } = req.body
 
+    if (session?.user.role !== ACCOUNT_TYPE.EMPLOYER) {
+      return res
+        .status(401)
+        .json({ msg: "You need to be Employer to create Jobs!" })
+    }
+
     if (!schedule || !title || !budget) {
       return res.status(400).json({ msg: "Please, add all fields!" })
     }
@@ -51,6 +58,14 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     await connectDB()
 
     try {
+      const userJobs = await Job.find({ user: session.user.id })
+
+      if (userJobs.length >= 5) {
+        return res.status(400).json({
+          msg: "You have maximum active jobs, please close one before creating new!",
+        })
+      }
+
       const job = await new Job({ ...req.body, user: session.user.id })
       await job.save()
       return res

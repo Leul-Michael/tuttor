@@ -110,8 +110,7 @@ export default function UploadPdf({
               refetch()
               setOpenUpload(false)
             } catch (e) {
-              console.log(e)
-              addMessage("Resume update failed, try again!")
+              addMessage(`Error: Resume update failed, try again!`)
             }
           }
         )
@@ -127,7 +126,7 @@ export default function UploadPdf({
     if (e.target.files == null) return
 
     if (e.target.files[0]?.type !== "application/pdf")
-      return addMessage("Please select a pdf file!")
+      return addMessage("Error: Please select a pdf file!")
 
     const fileSizeInKb = Math.round(e.target.files[0].size / 1024)
 
@@ -136,7 +135,7 @@ export default function UploadPdf({
       if (pdfFileRef.current?.value != null) {
         pdfFileRef.current!.value = ""
       }
-      addMessage("PDF file too Big, Please select file less than 1MB!")
+      addMessage("Error: PDF file too Big, Please select file less than 1MB!")
     } else {
       setResume(e.target.files[0])
     }

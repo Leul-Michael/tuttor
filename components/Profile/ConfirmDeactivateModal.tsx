@@ -28,8 +28,7 @@ export default function ConfirmDeactivateModal({
         signOut()
       }
     } catch (e: any) {
-      console.log(e)
-      addMessage(e.response.data.msg || e.message)
+      addMessage(`Error: ${e.response.data.msg || e.message}`)
     } finally {
       setLoading(false)
     }

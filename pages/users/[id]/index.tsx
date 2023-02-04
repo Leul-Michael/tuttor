@@ -11,9 +11,11 @@ import Link from "next/link"
 
 export default function User({ user }: { user: IUser }) {
   const session = useSession()
+
   const isAuthor = useMemo(() => {
     return user._id === session.data?.user?.id
   }, [user._id, session.data?.user?.id])
+
   return (
     <>
       <Head>
