@@ -721,12 +721,6 @@
         border: 0;
     }
 
-    .create-job__input-box,
-    .create-job__input-box-flex {
-        padding: 1rem 0rem 2rem;
-        border-radius: 4px;
-    }
-
     .all-jobs__header,
     .my-job__header {
         flex-direction: column-reverse;

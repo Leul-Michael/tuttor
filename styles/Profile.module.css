@@ -542,12 +542,6 @@
         font-size: 1.75rem;
     }
 
-    .input-box,
-    .textarea-box {
-        padding: 1rem 0rem 2rem;
-        border-radius: 4px;
-    }
-
     .portion {
         padding: 1rem 2rem 2rem;
         border-radius: 2px;
