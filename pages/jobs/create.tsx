@@ -156,7 +156,9 @@ export default function Create({ user }: { user: IUser }) {
             </p>
           </div>
 
-          <div className={Styles["create-job__input-box"]}>
+          <div
+            className={`${Styles["create-job__input-box"]} ${Styles.border}`}
+          >
             <label htmlFor="title">
               Title <span>*</span>
             </label>
@@ -180,7 +182,9 @@ export default function Create({ user }: { user: IUser }) {
             <span>Select one or more days from the week.</span>
             <Schedule days={days} setDays={setDays} />
           </div>
-          <div className={Styles["create-job__input-box"]}>
+          <div
+            className={`${Styles["create-job__input-box"]} ${Styles.border}`}
+          >
             <label htmlFor="budget">
               Budget (per hour in Birr) <span>*</span>
             </label>
@@ -211,7 +215,9 @@ export default function Create({ user }: { user: IUser }) {
               />
             </div>
           </div>
-          <div className={Styles["create-job__input-box-flex"]}>
+          <div
+            className={`${Styles["create-job__input-box-flex"]} ${Styles.border}`}
+          >
             <div className={Styles["create-job__select"]}>
               <label htmlFor="numberOfStudents">
                 Number of Students <span>*</span>
@@ -235,7 +241,9 @@ export default function Create({ user }: { user: IUser }) {
               />
             </div>
           </div>
-          <div className={Styles["create-job__input-box"]}>
+          <div
+            className={`${Styles["create-job__input-box"]} ${Styles.border}`}
+          >
             <label htmlFor="location">
               Location <span>*</span>
             </label>
@@ -271,7 +279,7 @@ export default function Create({ user }: { user: IUser }) {
               maxLength={300}
               required
             ></textarea>
-            <div className={Styles["max-chars"]}>
+            <div className={Styles["max-chars-sm"]}>
               {formData.desc.length} / <span>250</span>
             </div>
           </div>

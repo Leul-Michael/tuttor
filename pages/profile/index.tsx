@@ -76,7 +76,9 @@ export default function Profile({ user }: { user: IUser }) {
               onSubmit={updateProfile}
               className={ProfileStyles["profile-from"]}
             >
-              <div className={ProfileStyles["input-box"]}>
+              <div
+                className={`${ProfileStyles["input-box"]} ${ProfileStyles.border}`}
+              >
                 <label htmlFor="name">
                   Full name <span>*</span>
                 </label>
@@ -93,7 +95,9 @@ export default function Profile({ user }: { user: IUser }) {
                   }
                 />
               </div>
-              <div className={ProfileStyles["input-box"]}>
+              <div
+                className={`${ProfileStyles["input-box"]} ${ProfileStyles.border}`}
+              >
                 <label htmlFor="email">
                   Email <span>*</span>
                 </label>
@@ -110,7 +114,7 @@ export default function Profile({ user }: { user: IUser }) {
                   }
                 />
               </div>
-              <div className={ProfileStyles["textarea-box"]}>
+              <div className={`${ProfileStyles["textarea-box"]}`}>
                 <label htmlFor="bio">Summary</label>
                 <textarea
                   name=""
@@ -129,7 +133,7 @@ export default function Profile({ user }: { user: IUser }) {
                     tip="Salary is the MINIMUM per hour price that you're willing to work for. If you haven't set a price, it will be set 50 Birr per hour by default."
                   />
                   <div
-                    className={`${ProfileStyles["input-box"]} ${ProfileStyles.price}`}
+                    className={`${ProfileStyles["input-box"]} ${ProfileStyles.border} ${ProfileStyles.price}`}
                   >
                     <label htmlFor="price">
                       Salary (per hour in Birr) <span>*</span>
@@ -157,7 +161,9 @@ export default function Profile({ user }: { user: IUser }) {
                   tip="You need to provide your location to appear on searches."
                 />
               )}
-              <div className={ProfileStyles["input-box"]}>
+              <div
+                className={`${ProfileStyles["input-box"]} ${ProfileStyles.border}`}
+              >
                 <label htmlFor="location">
                   Location <span>*</span>
                 </label>
