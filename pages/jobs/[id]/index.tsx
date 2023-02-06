@@ -1,7 +1,7 @@
 import { GetServerSideProps } from "next"
 import { useSession } from "next-auth/react"
 import Link from "next/link"
-import { useMemo, MouseEvent } from "react"
+import { useMemo, MouseEvent, useState } from "react"
 import { HiOutlineHeart } from "react-icons/hi"
 import { MdOutlineModeEdit } from "react-icons/md"
 import { IoMdCheckmarkCircleOutline } from "react-icons/io"
@@ -9,12 +9,14 @@ import { TbPoint } from "react-icons/tb"
 import axiosInstance from "../../../axios/axios"
 import TimeAgo from "../../../components/TimeAgo"
 import ViewJobStyles from "../../../styles/Job.module.css"
-import { ACCOUNT_TYPE, JobType } from "../../../types"
+import { ACCOUNT_TYPE, JobType, msgType } from "../../../types"
 import { useRouter } from "next/router"
+import MsgSm from "../../../components/Messages/MsgSm"
 
 export default function Index({ job }: { job: JobType }) {
   const session = useSession()
   const router = useRouter()
+  const [showErrMsg, setShowErrorMsg] = useState(false)
 
   const isApplied = useMemo(() => {
     if (!session.data?.user.id) return
@@ -53,6 +55,13 @@ export default function Index({ job }: { job: JobType }) {
                 ? "Both In Person and Online"
                 : job.tutorType}
             </p>
+            {showErrMsg && (
+              <MsgSm
+                msg="You need to login."
+                type={msgType.ERROR}
+                closeModal={setShowErrorMsg}
+              />
+            )}
             {session.data?.user.role !== ACCOUNT_TYPE.EMPLOYER ? (
               <div className={ViewJobStyles["flex-btns"]}>
                 <Link
@@ -62,8 +71,16 @@ export default function Index({ job }: { job: JobType }) {
                 >
                   Apply
                 </Link>
+
                 <HiOutlineHeart
-                  onClick={(e) => session.data?.user && addSavedJob(e)}
+                  onClick={(e) => {
+                    if (!session.data?.user) {
+                      setShowErrorMsg(true)
+                      return
+                    } else {
+                      addSavedJob(e)
+                    }
+                  }}
                   className={`${ViewJobStyles["save-icon"]} ${
                     isSaved ? ViewJobStyles.saved : ""
                   }`}
