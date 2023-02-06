@@ -1,15 +1,16 @@
 import Link from "next/link"
 import AuthStyles from "../../styles/Auth.module.css"
-import { useState, FormEvent } from "react"
+import { useState, FormEvent, useEffect } from "react"
 import { BiHide, BiShowAlt } from "react-icons/bi"
 import Spinner from "../../components/Spinner"
 import Message from "../../components/Messages/Message"
 import { msgType } from "../../types"
 import { useRouter } from "next/router"
-import { signIn } from "next-auth/react"
+import { signIn, useSession } from "next-auth/react"
 import Head from "next/head"
 
 const Login = () => {
+  const session = useSession()
   const router = useRouter()
   const from = router.query?.from?.toString() || "/"
 
@@ -47,6 +48,12 @@ const Login = () => {
       setIsLoading(false)
     }
   }
+
+  useEffect(() => {
+    if (session.data?.user) {
+      router.push(from)
+    }
+  }, [session.data?.user, from, router])
 
   return (
     <>

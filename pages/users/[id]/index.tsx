@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next"
 import Image from "next/image"
-import { useMemo } from "react"
+import { useMemo, useState } from "react"
 import { TbPoint } from "react-icons/tb"
 import axiosInstance from "../../../axios/axios"
 import { IUser } from "../../../models/User"
@@ -8,9 +8,14 @@ import ViewJobStyles from "../../../styles/Job.module.css"
 import Head from "next/head"
 import { useSession } from "next-auth/react"
 import Link from "next/link"
+import JobInviteModal from "../../../components/Job/JobInviteModal"
+import MsgSm from "../../../components/Messages/MsgSm"
+import { ACCOUNT_TYPE, msgType } from "../../../types"
 
 export default function User({ user }: { user: IUser }) {
   const session = useSession()
+  const [openInviteModal, setOpenInviteModal] = useState(false)
+  const [showErrMsg, setShowErrorMsg] = useState(false)
 
   const isAuthor = useMemo(() => {
     return user._id === session.data?.user?.id
@@ -23,6 +28,9 @@ export default function User({ user }: { user: IUser }) {
       </Head>
 
       <section className={ViewJobStyles["view-job"]}>
+        {openInviteModal && (
+          <JobInviteModal setOpenInviteModal={setOpenInviteModal} user={user} />
+        )}
         <div className="container-md">
           <article className={`${ViewJobStyles["no-p"]}`}>
             <div className={ViewJobStyles["job-details__header"]}>
@@ -39,11 +47,38 @@ export default function User({ user }: { user: IUser }) {
                     Profile
                   </Link>
                 ) : (
-                  <button
-                    className={`btn  ${ViewJobStyles.btn} ${ViewJobStyles["btn-primary"]}`}
-                  >
-                    Invite
-                  </button>
+                  <div style={{ display: "flex", flexDirection: "column" }}>
+                    {showErrMsg ? (
+                      session.data?.user.role === ACCOUNT_TYPE.TUTTOR ? (
+                        <MsgSm
+                          msg="You need to login as an Employer."
+                          type={msgType.INFO}
+                          closeModal={setShowErrorMsg}
+                        />
+                      ) : (
+                        <MsgSm
+                          msg="You need to login."
+                          type={msgType.ERROR}
+                          closeModal={setShowErrorMsg}
+                        />
+                      )
+                    ) : null}
+                    <button
+                      onClick={() => {
+                        if (
+                          !session.data?.user ||
+                          session.data.user.role === ACCOUNT_TYPE.TUTTOR
+                        ) {
+                          setShowErrorMsg(true)
+                        } else {
+                          setOpenInviteModal((prev) => !prev)
+                        }
+                      }}
+                      className={`btn  ${ViewJobStyles.btn} ${ViewJobStyles["btn-primary"]}`}
+                    >
+                      Invite
+                    </button>
+                  </div>
                 )}
                 {user?.resume ? (
                   <a

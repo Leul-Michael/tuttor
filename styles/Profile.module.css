@@ -532,6 +532,34 @@
     color: var(--clr-font-light);
 }
 
+.invite-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.invite-footer {
+    display: flex;
+    padding-top: 2rem;
+}
+
+.invite-user {
+    display: flex;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--clr-border-light);
+    gap: 1rem;
+}
+
+p.invite-title {
+    font-size: 1.5rem;
+    padding-top: 1rem;
+}
+
+p.invite-text {
+    font-size: 1.1rem;
+    padding: .5rem 0;
+}
+
 @media (max-width: 768px) {
     .main {
         padding: 2rem;

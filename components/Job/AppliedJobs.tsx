@@ -16,10 +16,7 @@ export default function AppliedJobs() {
   return (
     <div>
       {isLoading ? (
-        <>
-          <MyJobSkeleton />
-          <MyJobSkeleton />
-        </>
+        [...Array(2).keys()].map((i) => <MyJobSkeleton key={i} />)
       ) : data?.length ? (
         data?.map((job: JobType) => (
           <AppliedJobExcerpt key={job._id} job={job} />

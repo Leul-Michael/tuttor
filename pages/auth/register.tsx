@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { useState, ChangeEvent, FormEvent } from "react"
+import { useState, ChangeEvent, FormEvent, useEffect } from "react"
 import AuthStyles from "../../styles/Auth.module.css"
 import { BiHide, BiShowAlt } from "react-icons/bi"
 import Spinner from "../../components/Spinner"
@@ -10,6 +10,7 @@ import { useRouter } from "next/router"
 import useToast from "../../context/ToastContext"
 import AccoutType from "../../components/Register/AccoutType"
 import Head from "next/head"
+import { useSession } from "next-auth/react"
 
 export const validateEmail = (inputEmail: string) => {
   if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,5})+$/.test(inputEmail)) {
@@ -19,6 +20,7 @@ export const validateEmail = (inputEmail: string) => {
 }
 
 export default function Register() {
+  const session = useSession()
   const router = useRouter()
   const [accountType, setAccountType] = useState<ACCOUNT_TYPE>()
   const { addMessage } = useToast()
@@ -84,6 +86,12 @@ export default function Register() {
       setErrorMsg({ type: msgType.ERROR, msg: e.message })
     }
   }
+
+  useEffect(() => {
+    if (session.data?.user) {
+      router.push("/")
+    }
+  }, [session.data?.user, router])
 
   return (
     <>

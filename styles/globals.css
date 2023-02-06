@@ -232,6 +232,7 @@ button {
 
 .ld-center .loadingSpinner {
   transform: translateX(-50%);
+  left: 45%;
 }
 
 .n-left .loadingSpinner {

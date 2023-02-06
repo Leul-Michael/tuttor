@@ -70,6 +70,12 @@
     border-radius: 2px;
 }
 
+li.loading {
+    height: 40px;
+    padding: 0 1rem;
+    background-color: var(--clr-select-accent);
+}
+
 .options li input,
 .options li label {
     pointer-events: none;
@@ -98,9 +104,17 @@
     min-width: max-content;
 }
 
-.dropdown-options li span {
+.dropdown-options li span:not(.tip) {
     display: inline-block;
     width: 100%;
+}
+
+.dropdown-options li span.tip {
+    display: inline;
+    float: right;
+    padding-left: 1rem;
+    color: var(--clr-caution);
+    font-size: .8rem;
 }
 
 .dropdown-options li:focus,

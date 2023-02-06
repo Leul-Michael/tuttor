@@ -20,9 +20,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
     try {
       const jobs = await Job.find({ user: session.user.id })
-        .sort({
-          createdAt: -1,
-        })
         .sort({ createdAt: -1 })
         .skip(Number(pageParam) > 0 ? limit * (Number(pageParam) - 1) : 0)
         .limit(limit)

@@ -8,8 +8,12 @@
     border-radius: 4px;
     margin: .5rem 0;
     background-color: var(--clr-icon);
-    color: #000;
+    color: var(--clr-black);
     transition: all .2s ease-out;
+}
+
+.msg-sm {
+    width: 350px;
 }
 
 .error {
@@ -27,7 +31,29 @@
     align-items: center;
 }
 
-.toast-msg {
+.toast-msg,
+.msg-txt {
     font-weight: 600;
     font-size: .8rem;
+}
+
+.msg-txt {
+    flex-grow: 1;
+}
+
+.close {
+    display: flex;
+    align-items: center;
+    padding: .35rem;
+    border-radius: 50%;
+    border: 1px solid transparent;
+    cursor: pointer;
+}
+
+.close:hover {
+    border-color: var(--clr-black);
+}
+
+.error .close:hover {
+    border-color: var(--clr-white);
 }

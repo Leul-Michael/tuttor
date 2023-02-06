@@ -8,9 +8,17 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import axiosInstance from "../../axios/axios"
 import { TbPoint } from "react-icons/tb"
 import TimeAgo from "../TimeAgo"
+import { useRouter } from "next/router"
 
-export default function AppliedJobExcerpt({ job }: { job: JobType }) {
+export default function AppliedJobExcerpt({
+  job,
+  invite,
+}: {
+  job: JobType
+  invite?: boolean
+}) {
   const session = useSession()
+  const router = useRouter()
   const { addMessage } = useToast()
   const queryClient = useQueryClient()
 
@@ -49,56 +57,75 @@ export default function AppliedJobExcerpt({ job }: { job: JobType }) {
   }, [job?.proposals, session.data?.user.id])
 
   return (
-    <div key={job._id} className={Styles["my-job"]}>
+    <div
+      onClick={(e) => {
+        if (!invite) return
+
+        e.preventDefault()
+        router.push(`/jobs/${job._id}`)
+      }}
+      key={job._id}
+      className={Styles["my-job"]}
+    >
       <div className={`${Styles["my-job__header"]} ${Styles["n-flex-row"]}`}>
         <h2 className="font-serif">
           {job?.title}{" "}
-          <span
-            className={`job-status ${
-              proposalStatus === "Not Selected"
-                ? "job-status-fail"
-                : "job-status-good"
-            }`}
-          >
-            {proposalStatus}
-          </span>
+          {!invite ? (
+            <span
+              className={`job-status ${
+                proposalStatus === "Not Selected"
+                  ? "job-status-fail"
+                  : "job-status-good"
+              }`}
+            >
+              {proposalStatus}
+            </span>
+          ) : null}
         </h2>
-        {proposalStatus === "Not Selected" ? null : (
-          <div className={Styles["flex-buttons"]}>
-            <div className={Styles["icon-buttons"]}>
-              <button
-                title="Withdraw your proposal"
-                disabled={mutation?.isLoading}
-                onClick={(e) => {
-                  e.stopPropagation()
-                  e.preventDefault()
-                  removeSelected(e, job._id)
-                }}
-                className={`${Styles.btn} ${Styles["icon-btn"]} ${Styles.delete}`}
-              >
-                <BiCommentMinus />
-              </button>
+        {!invite ? (
+          proposalStatus === "Not Selected" ? null : (
+            <div className={Styles["flex-buttons"]}>
+              <div className={Styles["icon-buttons"]}>
+                <button
+                  title="Withdraw your proposal"
+                  disabled={mutation?.isLoading}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    e.preventDefault()
+                    removeSelected(e, job._id)
+                  }}
+                  className={`${Styles.btn} ${Styles["icon-btn"]} ${Styles.delete}`}
+                >
+                  <BiCommentMinus />
+                </button>
+              </div>
             </div>
-          </div>
-        )}
+          )
+        ) : null}
       </div>
       <p className={Styles.location}>{job?.location}</p>
       <p className={Styles.type}>{job?.tutorType}</p>
-      {job.proposals.map((prop: any) => {
-        if (prop?.user === session.data?.user.id) {
-          return (
-            <div key={prop?._id} className={Styles.price}>
-              <div className={Styles.header}>
-                <TbPoint className={Styles.icon} />
-                <p className={Styles.type}>Your Proposal</p>
+      {invite ? (
+        <div className={Styles.price}>
+          <p className={Styles.desc}>{job.desc}</p>
+        </div>
+      ) : (
+        job.proposals.map((prop: any) => {
+          if (prop?.user === session.data?.user.id) {
+            return (
+              <div key={prop?._id} className={Styles.price}>
+                <div className={Styles.header}>
+                  <TbPoint className={Styles.icon} />
+                  <p className={Styles.type}>Your Proposal</p>
+                </div>
+                <p className={`${Styles["price-tag"]} ${Styles["edu-tag"]}`}>
+                  {prop?.desc}
+                </p>
               </div>
-              <p className={`${Styles["price-tag"]} ${Styles["edu-tag"]}`}>
-                {prop?.desc}
-              </p>
-            </div>
-          )
-        }
-      })}
+            )
+          }
+        })
+      )}
       <TimeAgo timestamp={job?.createdAt} />
     </div>
   )

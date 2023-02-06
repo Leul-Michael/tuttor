@@ -11,6 +11,7 @@ interface IJob {
   schedule: []
   requirements: []
   saves: []
+  invites: []
   proposals: (string | ObjectId)[]
 }
 
@@ -47,6 +48,12 @@ const JobSchema = new Schema<IJob>(
     requirements: [String],
     schedule: [String],
     saves: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    invites: [
       {
         type: Schema.Types.ObjectId,
         ref: "User",
