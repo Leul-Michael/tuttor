@@ -36,6 +36,8 @@ export default function JobInviteModal({
       })
       addMessage(res.data?.msg)
       setOpenInviteModal(false)
+    } catch {
+      addMessage("Something went wrong, try again.")
     } finally {
       setLoading(false)
     }

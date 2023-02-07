@@ -113,8 +113,9 @@ li.loading {
     display: inline;
     float: right;
     padding-left: 1rem;
-    color: var(--clr-caution);
+    color: var(--clr-red);
     font-size: .8rem;
+    font-weight: bold;
 }
 
 .dropdown-options li:focus,
