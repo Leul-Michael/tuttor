@@ -12,6 +12,7 @@
   --clr-font: #fff;
   --clr-font-light: #e8eaed;
   --clr-font-light-secondary: #9aa0a6;
+  --clr-select: rgb(32, 43, 57);
   --clr-select-accent: #3f465d;
   --clr-caution: #f1b1b1;
 
@@ -46,6 +47,7 @@
   /* --clr-font-light: #282828; */
   --clr-font-light-secondary: rgb(113 117 132);
   /* --clr-font-light-secondary: #5f6368; */
+  --clr-select: #bbb;
   --clr-select-accent: #b7c7fe;
   --clr-caution: #feeeef;
 }

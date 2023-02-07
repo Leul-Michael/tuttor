@@ -1,8 +1,8 @@
 .container {
     position: relative;
     width: fit-content;
-    padding: .5rem .75rem;
-    border: 1px solid var(--clr-background-light);
+    padding: .6rem .75rem;
+    border: 1px solid var(--clr-select);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -166,8 +166,8 @@ li.loading {
     border-color: rgba(242, 32, 32, 0.4);
 }
 
-.schedule-display button:hover span,
-.schedule-display button:focus span {
+.schedule-display button span,
+.schedule-display button span {
     color: rgba(242, 32, 32, 0.4);
 }
 
