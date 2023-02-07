@@ -550,12 +550,12 @@
     gap: 1rem;
 }
 
-p.invite-title {
+.proposals .invite-title {
     font-size: 1.5rem;
     padding-top: 1rem;
 }
 
-p.invite-text {
+.proposals .invite-text {
     font-size: 1.1rem;
     padding: .5rem 0;
 }
@@ -578,23 +578,12 @@ p.invite-text {
     .add-form__flex {
         grid-template-columns: 1fr;
     }
-
-    p.invite-title {
-        font-size: 1.5rem;
-        padding-top: 1rem;
-    }
-
 }
 
 
 @media (max-width: 500px) {
     .prop-desc {
         padding-left: 0.25rem;
-        padding-top: 1rem;
-    }
-
-    p.invite-title {
-        font-size: 1.5rem;
         padding-top: 1rem;
     }
 }

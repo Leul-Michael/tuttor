@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next"
 import { getSession } from "next-auth/react"
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import ConversationStyles from "../../../styles/Conversation.module.css"
 import { CgSearchLoading } from "react-icons/cg"
 import { BsFilterRight } from "react-icons/bs"
@@ -22,6 +22,10 @@ export default function Conversation({ user }: { user: IUser }) {
   const [width] = useWindowsWidth()
   const [showChat, setShowChat] = useState(false)
   const [orderdChats, _, loading] = useConversation()
+
+  // const orderdChats = useMemo(() => {
+  //   return chats.sort((a, b) => b?.updatedAt - a?.updatedAt)
+  // }, [chats])
 
   return (
     <>

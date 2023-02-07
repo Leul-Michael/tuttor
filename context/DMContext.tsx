@@ -1,4 +1,4 @@
-import { doc, onSnapshot } from "firebase/firestore"
+import { doc, FieldValue, onSnapshot } from "firebase/firestore"
 import {
   createContext,
   ReactElement,
@@ -26,6 +26,8 @@ type DMContextProps = {
   selectedChatId: string
   isDrafted: boolean
   members: MembersType[]
+  updatedAt: FieldValue | null
+  createdAt: FieldValue | null
 }
 
 const DMContext = createContext({} as DMContextProps)
@@ -38,6 +40,8 @@ export function DMContextProvider({ children }: { children: ReactElement }) {
   const [members, setMembers] = useState<MembersType[]>([])
   const [selectedChatId, setSelectedChatId] = useState("")
   const [isDrafted, setisDrafted] = useState(false)
+  const [updatedAt, setUpdatedAt] = useState<FieldValue | null>(null)
+  const [createdAt, setCreatedAt] = useState<FieldValue | null>(null)
 
   useEffect(() => {
     if (selectedChatId) {
@@ -45,6 +49,8 @@ export function DMContextProvider({ children }: { children: ReactElement }) {
         if (!doc?.exists()) return
         setisDrafted(doc.data()?.drafted)
         setMembers(doc.data()?.members)
+        setUpdatedAt(doc.data()?.updatedAt)
+        setCreatedAt(doc.data()?.createdAt)
       })
 
       return () => {
@@ -60,6 +66,8 @@ export function DMContextProvider({ children }: { children: ReactElement }) {
         selectedChatId,
         isDrafted,
         members,
+        updatedAt,
+        createdAt,
       }}
     >
       {children}

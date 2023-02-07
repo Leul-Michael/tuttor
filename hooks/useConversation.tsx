@@ -35,30 +35,13 @@ export default function useConversation(): [
   })
 
   const orderdChats = useMemo(() => {
-    return chats.sort((a, b) => b?.updatedAt - a?.updatedAt)
+    return chats.sort((a, b) => b?.updatedAt?.seconds - a?.updatedAt?.seconds)
   }, [chats])
 
   useEffect(() => {
-    setChats([])
-    data?.chats.map((chat: string) => {
-      onSnapshot(doc(db, CHATS, chat), (doc) => {
-        if (doc?.exists()) {
-          setChats((prev) => {
-            if (prev.find((v) => v?.id === doc.id)) {
-              return prev
-            } else {
-              return [...prev, { id: doc.id, ...doc.data() }]
-            }
-          })
-        }
-      })
-    })
-    // const convRef = collection(db, CHATS)
-    // const q = query(convRef, orderBy("updatedAt"))
-    // const unsub = onSnapshot(q, (snapshot) => {
-    //   if (snapshot.empty) return
-    //   snapshot.docs.map((doc) => {
-    //     if (doc.exists() && data?.chats.includes(doc.id)) {
+    // data?.chats.map((chat: string) => {
+    //   onSnapshot(doc(db, CHATS, chat), (doc) => {
+    //     if (doc?.exists()) {
     //       setChats((prev) => {
     //         if (prev.find((v) => v?.id === doc.id)) {
     //           return prev
@@ -69,10 +52,27 @@ export default function useConversation(): [
     //     }
     //   })
     // })
+    const unsub = onSnapshot(collection(db, CHATS), (snapshot) => {
+      setChats([])
 
-    // return () => {
-    //   unsub()
-    // }
+      snapshot.docs.map((doc) => {
+        if (doc.exists() && data?.chats.includes(doc.id)) {
+          setChats((prev) => {
+            if (prev.find((v) => v?.id === doc.id)) {
+              return prev
+            } else {
+              return [...prev, { id: doc.id, ...doc.data() }]
+            }
+          })
+        } else {
+          return
+        }
+      })
+    })
+
+    return () => {
+      unsub()
+    }
   }, [data?.chats])
 
   return [orderdChats, refetch, isLoading]

@@ -26,7 +26,7 @@ export default function TextSelect({
   >
 }) {
   const { addMessage } = useToast()
-  const { selectedChatId } = useDm()
+  const { selectedChatId, updatedAt, createdAt } = useDm()
   const selectMsgRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -56,6 +56,10 @@ export default function TextSelect({
           messages[messages.length - 1]?.id === deleteId
             ? messages[messages.length - 2]?.text || ""
             : messages[messages.length - 1]?.text || "",
+        updatedAt:
+          messages[messages.length - 1]?.id === deleteId
+            ? createdAt
+            : updatedAt,
       })
     } catch (e) {
       addMessage(`Something went wrong, please refresh the page!`)

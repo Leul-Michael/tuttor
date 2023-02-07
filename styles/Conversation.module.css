@@ -219,27 +219,6 @@
     cursor: default;
 }
 
-.drafted,
-.new-msg {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    right: 2.5rem;
-}
-
-.drafted {
-    padding: .25rem .5rem;
-    border-radius: 100vw;
-    background-color: var(--clr-caution);
-}
-
-.new-msg {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background-color: rgb(108, 169, 255);
-}
-
 .users-list__user:hover,
 .active {
     background-color: var(--clr-background-light);
@@ -292,7 +271,7 @@
     padding: .5rem 1.25rem;
     font-size: .75rem;
     border-radius: inherit;
-    border: 1px solid var(--clr-border-light);
+    border: 1px solid var(--clr-border);
 }
 
 .msg__options span svg {
@@ -301,6 +280,28 @@
 
 .msg__options span:hover {
     background-color: var(--clr-btn-hover);
+}
+
+.drafted,
+.new-msg {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 2.5rem;
+}
+
+.users-list__user .drafted {
+    padding: .25rem .5rem;
+    border-radius: 100vw;
+    background-color: var(--clr-caution);
+    color: var(--clr-black);
+}
+
+.new-msg {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: rgb(108, 169, 255);
 }
 
 .user-messages__header {
