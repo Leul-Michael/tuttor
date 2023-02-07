@@ -25,9 +25,9 @@ export default function Toast() {
       resetToastState()
     }
 
-    router.events.on("routeChangeComplete", handleChange)
+    router.events.on("routeChangeStart", handleChange)
     return () => {
-      router.events.off("routeChangeComplete", handleChange)
+      router.events.off("routeChangeStart", handleChange)
     }
   }, [router.events, resetToastState])
 
