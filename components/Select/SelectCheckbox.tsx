@@ -4,6 +4,7 @@ import SelectStyles from "../../styles/Select.module.css"
 export type Option = {
   key: number
   value: string
+  actualV?: string
 }
 
 export type SelectProps = {

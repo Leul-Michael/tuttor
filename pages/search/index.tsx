@@ -12,9 +12,9 @@ import useRecentSearch from "../../context/RecentSearchContext"
 import Head from "next/head"
 
 const CategoriyOptions = [
-  { key: 1, value: "Home" },
-  { key: 2, value: "Online" },
-  { key: 3, value: "Both" },
+  { key: 1, value: "Home", actualV: "In Person" },
+  { key: 2, value: "Online", actualV: "Online" },
+  { key: 3, value: "Both", actualV: "Both" },
 ]
 // const LevelOptions = [
 //   { key: 1, value: "KG" },
@@ -23,16 +23,16 @@ const CategoriyOptions = [
 //   { key: 4, value: "University" },
 // ]
 const PriceOptions = [
-  { key: 1, value: "150+/hr" },
-  { key: 2, value: "300+/hr" },
-  { key: 3, value: "500+/hr" },
+  { key: 1, value: "150+/hr", actualV: "150" },
+  { key: 2, value: "300+/hr", actualV: "300" },
+  { key: 3, value: "500+/hr", actualV: "500" },
 ]
 
 export default function Search() {
   const router = useRouter()
   const { addRecentSearch } = useRecentSearch()
 
-  const [values, setValues] = useState<Option[]>(CategoriyOptions)
+  const [categories, setCategories] = useState<Option[]>(CategoriyOptions)
   //   const [levels, setLevels] = useState<Option[]>(LevelOptions)
   const [price, setPrice] = useState<Option[]>(PriceOptions)
 
@@ -40,12 +40,12 @@ export default function Search() {
   const locationRef = useRef<HTMLInputElement>(null)
 
   const onValuesChange = (value: Option) => {
-    if (values.includes(value)) {
-      setValues((prev) => {
+    if (categories.includes(value)) {
+      setCategories((prev) => {
         return prev.filter((v) => v !== value)
       })
     } else {
-      setValues((prev) => [...prev, value])
+      setCategories((prev) => [...prev, value])
     }
   }
 
@@ -78,13 +78,14 @@ export default function Search() {
     fetchNextPage,
     hasNextPage,
   } = useInfiniteQuery({
-    queryKey: ["jobs"],
+    queryKey: ["searchJobs"],
     queryFn: async ({ pageParam = 1 }) => {
       const res = await axiosInstance.get("/search/jobs", {
         params: {
           pageParam,
           title: titleRef.current?.value,
           location: locationRef.current?.value,
+          categories: categories.map((c) => c.actualV).join(","),
         },
       })
       return res.data
@@ -158,7 +159,7 @@ export default function Search() {
         <div className={`${SearchStyles.filters} container`}>
           <SelectCheckbox
             options={CategoriyOptions}
-            values={values}
+            values={categories}
             onChange={onValuesChange}
             name="Categories"
           />

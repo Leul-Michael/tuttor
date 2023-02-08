@@ -5,18 +5,22 @@ import Proposal from "../../../models/Proposal"
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "GET") {
-    const { title, location, pageParam } = req.query
-
     let limit = 10
+
+    const { title, location, pageParam, categories } = req.query
+
+    let jobtype = [(categories as string).split(",") || []].flat()
 
     let queryTitle = { $regex: title, $options: "i" }
     let queryLocation = { $regex: location, $options: "i" }
+    let queryType = { $in: jobtype }
     // Connect to DB
     await connectDB()
 
     const jobs = await Job.find({
       title: queryTitle,
       location: queryLocation,
+      tutorType: queryType,
     })
       .populate({
         path: "proposals",
@@ -29,6 +33,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     const total = await Job.countDocuments({
       title: queryTitle,
       location: queryLocation,
+      tutorType: queryType,
     }).exec()
 
     const response = {

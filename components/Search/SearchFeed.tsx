@@ -1,5 +1,4 @@
 import FeedStyles from "../../styles/Feed.module.css"
-// import { useRef, useState } from "react"
 import JobExcerpt from "../JobExcerpt"
 import JobDetails from "../JobDetails"
 import { JobType } from "../../types"
@@ -22,26 +21,16 @@ export default function SearchFeed({
 }: SearchFeedProps) {
   const [width] = useWindowsWidth()
 
-  const Loading = () => {
-    return (
-      <>
-        <JobExcerptSkeleton />
-        <JobExcerptSkeleton />
-        <JobExcerptSkeleton />
-      </>
-    )
-  }
-
   let content
   if (isLoading) {
     content = (
       <div className={FeedStyles["job-feed__list"]}>
-        <Loading />
+        {[...Array(5).keys()].map((i) => (
+          <JobExcerptSkeleton key={i} />
+        ))}
       </div>
     )
-  }
-
-  if (data?.pages?.length > 0) {
+  } else if (data?.pages?.length > 0) {
     content = (
       <>
         <div className={FeedStyles["job-feed__list"]}>
@@ -57,7 +46,8 @@ export default function SearchFeed({
               return <JobExcerpt key={job._id} job={job} />
             })
           })}
-          {isFetchingNextPage && <Loading />}
+          {isFetchingNextPage &&
+            [...Array(2).keys()].map((i) => <JobExcerptSkeleton key={i} />)}
         </div>
         {width >= 1000 ? (
           <div className={FeedStyles["job-feed__description"]}>
@@ -65,6 +55,12 @@ export default function SearchFeed({
           </div>
         ) : null}
       </>
+    )
+  } else {
+    content = (
+      <div className={FeedStyles["job-feed__list"]}>
+        <p>No results found!!!</p>
+      </div>
     )
   }
 
