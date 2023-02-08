@@ -1,8 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next"
 import bcrypt from "bcryptjs"
 import User from "../../models/User"
-import jwt from "jsonwebtoken"
-import cookie from "cookie"
 import connectDB from "../../middleware/connectDB"
 
 export default async function handler(

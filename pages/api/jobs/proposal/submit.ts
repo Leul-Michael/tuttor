@@ -61,6 +61,12 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       job.proposals.unshift(proposal)
       await job.save()
 
+      if (job?.invites.includes(session.user.id)) {
+        const likeIndex = job?.invites.indexOf(session.user.id)
+        job?.invites.splice(likeIndex, 1)
+        await job.save()
+      }
+
       return res.status(200).json({ msg: "Proposal submitted successfully!" })
     }
   }

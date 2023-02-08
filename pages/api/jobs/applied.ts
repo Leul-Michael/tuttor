@@ -30,7 +30,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
             return job
           }
         })
-        .sort((a: any, b: any) => a?.createdAt - b?.createdAt)
+        .sort((a: any, b: any) => b?.createdAt - a?.createdAt)
 
       return res.status(200).json(proposedJobs)
     } catch (e) {

@@ -4,14 +4,7 @@ import {
   RefetchQueryFilters,
   useQuery,
 } from "@tanstack/react-query"
-import {
-  collection,
-  doc,
-  DocumentData,
-  onSnapshot,
-  orderBy,
-  query,
-} from "firebase/firestore"
+import { collection, DocumentData, onSnapshot } from "firebase/firestore"
 import { useEffect, useMemo, useState } from "react"
 import axiosInstance from "../axios/axios"
 import { db } from "../configs/firebase"

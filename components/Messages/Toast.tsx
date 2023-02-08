@@ -20,16 +20,30 @@ export default function Toast() {
     }
   }, [message])
 
+  // useEffect(() => {
+  //   const handleChange = () => {
+  //     resetToastState()
+  //   }
+
+  //   router.events.on("routeChangeStart", handleChange)
+  //   return () => {
+  //     router.events.off("routeChangeStart", handleChange)
+  //   }
+  // }, [router.events, resetToastState])
+
   useEffect(() => {
-    const handleChange = () => {
-      resetToastState()
+    const hideTostContainer = () => {
+      const msgPreviewTimer = setTimeout(() => {
+        resetToastState()
+      }, 7000)
+
+      return () => {
+        clearTimeout(msgPreviewTimer)
+      }
     }
 
-    router.events.on("routeChangeStart", handleChange)
-    return () => {
-      router.events.off("routeChangeStart", handleChange)
-    }
-  }, [router.events, resetToastState])
+    isOpen && hideTostContainer()
+  }, [resetToastState, isOpen])
 
   const onRedirect = () => {
     if (redirectLink) router.push(redirectLink)

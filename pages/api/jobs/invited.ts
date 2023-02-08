@@ -23,7 +23,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         .filter((job: any) => {
           return job?.invites.includes(session.user.id)
         })
-        .sort((a: any, b: any) => a?.createdAt - b?.createdAt)
+        .sort((a: any, b: any) => b?.createdAt - a?.createdAt)
 
       return res.status(200).json(invitedJobs)
     } catch (e) {
