@@ -61,7 +61,10 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     await connectDB()
 
     try {
-      const userJobs = await Job.find({ user: session.user.id })
+      const userJobs = await Job.find({
+        user: session.user.id,
+        status: "Active",
+      })
 
       if (userJobs.length >= 5) {
         return res.status(400).json({
@@ -94,6 +97,17 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     await connectDB()
 
     try {
+      const userJobs = await Job.find({
+        user: session.user.id,
+        status: "Active",
+      })
+
+      if (status === "Active" && userJobs.length >= 5) {
+        return res.status(400).json({
+          msg: "You have reached maximum active jobs allowed per user, please close one before updating!",
+        })
+      }
+
       const job = await Job.findById(jobId)
 
       if (!job) {
