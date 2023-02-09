@@ -11,7 +11,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     // Connect to DB
     await connectDB()
 
-    const jobs = await Job.find({})
+    const jobs = await Job.find({ status: "Active" })
       .populate({
         path: "proposals",
         model: Proposal,

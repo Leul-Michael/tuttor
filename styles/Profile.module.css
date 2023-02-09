@@ -505,6 +505,24 @@
     border-bottom: 1px solid var(--clr-select-accent);
 }
 
+.status-item {
+    display: block;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--clr-border-light);
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.status-item:hover,
+.status-item.active {
+    background-color: var(--clr-background-light);
+}
+
+.status-item p {
+    font-size: 1.1rem;
+    padding: 0 .5rem;
+}
+
 .p-relative {
     position: relative;
     min-height: 100px;

@@ -11,6 +11,7 @@ import TimeAgo from "./TimeAgo"
 import Styles from "../styles/Job.module.css"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import axiosInstance from "../axios/axios"
+import JobStatus from "./Job/JobStatus"
 
 export default function UserJobExcerpt({ job }: { job: JobType }) {
   const queryClient = useQueryClient()
@@ -18,6 +19,7 @@ export default function UserJobExcerpt({ job }: { job: JobType }) {
 
   const [confirmDelete, setConfirmDelete] = useState(false)
   const [jobProposalsModal, setJobProposalsModal] = useState(false)
+  const [jobStatusModal, setJobStatusModal] = useState(false)
   const [jobProposals, setJobProposals] = useState<string[]>([])
   const [deleteJobId, setDeleteJobId] = useState("")
 
@@ -66,6 +68,13 @@ export default function UserJobExcerpt({ job }: { job: JobType }) {
           jobId={job?._id}
         />
       )}
+      {jobStatusModal && (
+        <JobStatus
+          setOpenModal={setJobStatusModal}
+          status={job.status}
+          jobId={job?._id}
+        />
+      )}
       <div className={Styles["my-job__header"]}>
         <h2 className="font-serif">
           {job.title}{" "}
@@ -106,6 +115,7 @@ export default function UserJobExcerpt({ job }: { job: JobType }) {
                 e.stopPropagation()
                 e.preventDefault()
                 setDeleteJobId(job._id)
+                setJobStatusModal(false)
                 setConfirmDelete(true)
               }}
               className={`${Styles.btn} ${Styles["icon-btn"]} ${Styles.delete}`}
@@ -117,6 +127,8 @@ export default function UserJobExcerpt({ job }: { job: JobType }) {
               onClick={(e) => {
                 e.stopPropagation()
                 e.preventDefault()
+                setConfirmDelete(false)
+                setJobStatusModal(true)
               }}
               className={`${Styles.btn} ${Styles["icon-btn"]}`}
             >

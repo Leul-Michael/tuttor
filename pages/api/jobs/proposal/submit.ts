@@ -53,6 +53,12 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (alreadySubmitted) {
       return res.status(400).json({ msg: "Proposal already exists!" })
     } else {
+      if (job.status !== "Active") {
+        return res.status(400).json({
+          msg: `This job is ${job.status}. Try applying for another job.`,
+        })
+      }
+
       const proposal = await new Proposal({
         ...req.body,
         user: session.user.id,

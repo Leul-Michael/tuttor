@@ -73,12 +73,14 @@ export default function AppliedJobExcerpt({
           {!invite ? (
             <span
               className={`job-status ${
-                proposalStatus === "Not Selected"
+                proposalStatus === "Not Selected" || job.status !== "Active"
                   ? "job-status-fail"
                   : "job-status-good"
               }`}
             >
-              {proposalStatus}
+              {job.status === "Active"
+                ? proposalStatus
+                : `This Job is ${job.status}`}
             </span>
           ) : null}
         </h2>

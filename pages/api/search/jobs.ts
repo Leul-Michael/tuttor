@@ -19,6 +19,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     await connectDB()
 
     const jobs = await Job.find({
+      status: "Active",
       title: queryTitle,
       location: queryLocation,
       tutorType: queryType,
@@ -33,6 +34,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       .limit(limit)
 
     const total = await Job.countDocuments({
+      status: "Active",
       title: queryTitle,
       location: queryLocation,
       tutorType: queryType,

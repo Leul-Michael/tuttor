@@ -82,6 +82,40 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         .json({ msg: "Error creating job, Something went wrong." })
     }
   }
+
+  if (req.method === "PATCH") {
+    const { status, jobId } = req.body
+
+    if (!status || !jobId) {
+      return res.status(400).json({ msg: "Required fields are missing!" })
+    }
+
+    // Connect to DB
+    await connectDB()
+
+    try {
+      const job = await Job.findById(jobId)
+
+      if (!job) {
+        return res.status(400).json({ msg: "Job not found!" })
+      }
+
+      if (job.user.toString() !== session.user.id) {
+        return res.status(401).json({ msg: "Unauthorized!" })
+      }
+
+      job.status = status
+      await job.save()
+
+      return res.status(200).json({ msg: "Job status updated!" })
+    } catch (e) {
+      console.log(e)
+
+      return res
+        .status(500)
+        .json({ msg: "Error creating job, Something went wrong." })
+    }
+  }
 }
 
 export default handler
