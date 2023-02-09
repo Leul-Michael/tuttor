@@ -18,7 +18,7 @@ export default function JobProposals({
         e.preventDefault()
         e.stopPropagation()
       }}
-      className={`${ProfileStyles.resume} ${ProfileStyles.proposals}`}
+      className={`${ProfileStyles.resume} ${ProfileStyles.proposals} ${ProfileStyles.lg}`}
     >
       <div className={ProfileStyles["resume-header"]}>
         <h1 className="font-serif">Proposals</h1>

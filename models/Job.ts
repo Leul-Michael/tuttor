@@ -14,6 +14,7 @@ interface IJob {
   saves: []
   invites: []
   proposals: (string | ObjectId)[]
+  status: string
 }
 
 const JobSchema = new Schema<IJob>(
@@ -64,6 +65,11 @@ const JobSchema = new Schema<IJob>(
       },
     ],
     proposals: [{ type: Schema.Types.ObjectId, ref: "Proposal" }],
+    status: {
+      type: String,
+      enum: ["Active", "Closed", "Hired"],
+      default: "Active",
+    },
   },
   {
     timestamps: true,

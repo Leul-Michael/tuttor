@@ -35,4 +35,5 @@ export interface JobType {
   proposals: string[]
   saves: string[]
   schedule: string[]
+  status: string
 }

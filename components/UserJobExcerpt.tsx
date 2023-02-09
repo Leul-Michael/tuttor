@@ -68,7 +68,14 @@ export default function UserJobExcerpt({ job }: { job: JobType }) {
       )}
       <div className={Styles["my-job__header"]}>
         <h2 className="font-serif">
-          {job.title} <span className="job-status job-status-good">Active</span>
+          {job.title}{" "}
+          <span
+            className={`job-status ${
+              job.status === "Active" ? "job-status-good" : "job-status-fail"
+            } `}
+          >
+            {job.status}
+          </span>
         </h2>
         <div className={Styles["flex-buttons"]}>
           <button
