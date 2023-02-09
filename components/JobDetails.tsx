@@ -64,7 +64,8 @@ export default function JobDetails() {
             <p className={JobDetailStyles.type}>Salary</p>
           </div>
           <div className={JobDetailStyles["price-tag"]}>
-            {data?.budget} / hr
+            {data?.budgetMin}
+            {data?.budgetMax ? " - " + data?.budgetMax : null} / hr
           </div>
         </div>
         <div className={JobDetailStyles.price}>

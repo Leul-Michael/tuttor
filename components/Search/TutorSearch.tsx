@@ -2,24 +2,24 @@ import { useState, Dispatch, SetStateAction, FormEventHandler } from "react"
 import { AiOutlineSearch } from "react-icons/ai"
 import { MdLocationOn } from "react-icons/md"
 import SearchStyles from "../../styles/Search.module.css"
-import SelectCheckbox, { Option } from "../Select/SelectCheckbox"
+// import SelectCheckbox, { Option } from "../Select/SelectCheckbox"
 
-const CategoriyOptions = [
-  { key: 1, value: "Home" },
-  { key: 2, value: "Online" },
-  { key: 3, value: "Remote" },
-]
-const LevelOptions = [
-  { key: 1, value: "KG" },
-  { key: 2, value: "Elemntary" },
-  { key: 3, value: "Preparatory" },
-  { key: 4, value: "University" },
-]
-const PriceOptions = [
-  { key: 1, value: "150+/hr" },
-  { key: 2, value: "300+/hr" },
-  { key: 3, value: "500+/hr" },
-]
+// const CategoriyOptions = [
+//   { key: 1, value: "Home" },
+//   { key: 2, value: "Online" },
+//   { key: 3, value: "Remote" },
+// ]
+// const LevelOptions = [
+//   { key: 1, value: "KG" },
+//   { key: 2, value: "Elemntary" },
+//   { key: 3, value: "Preparatory" },
+//   { key: 4, value: "University" },
+// ]
+// const PriceOptions = [
+//   { key: 1, value: "150+/hr" },
+//   { key: 2, value: "300+/hr" },
+//   { key: 3, value: "500+/hr" },
+// ]
 
 type searchDataProp = {
   name: string
@@ -37,40 +37,40 @@ export default function TutorSearch({
   setSearchData,
   findTutor,
 }: TutorProps) {
-  const [values, setValues] = useState<Option[]>(CategoriyOptions)
-  const [levels, setLevels] = useState<Option[]>(LevelOptions)
-  const [price, setPrice] = useState<Option[]>(PriceOptions)
+  // const [values, setValues] = useState<Option[]>(CategoriyOptions)
+  // const [levels, setLevels] = useState<Option[]>(LevelOptions)
+  // const [price, setPrice] = useState<Option[]>(PriceOptions)
 
-  const onValuesChange = (value: Option) => {
-    if (values.includes(value)) {
-      setValues((prev) => {
-        return prev.filter((v) => v !== value)
-      })
-    } else {
-      setValues((prev) => [...prev, value])
-    }
-  }
+  // const onValuesChange = (value: Option) => {
+  //   if (values.includes(value)) {
+  //     setValues((prev) => {
+  //       return prev.filter((v) => v !== value)
+  //     })
+  //   } else {
+  //     setValues((prev) => [...prev, value])
+  //   }
+  // }
 
-  const onPriceChange = (value: Option) => {
-    if (price.includes(value)) {
-      setPrice((prev) => {
-        return prev.filter((v) => v !== value)
-      })
-    } else {
-      setPrice((prev) => [...prev, value])
-    }
-  }
+  // const onPriceChange = (value: Option) => {
+  //   if (price.includes(value)) {
+  //     setPrice((prev) => {
+  //       return prev.filter((v) => v !== value)
+  //     })
+  //   } else {
+  //     setPrice((prev) => [...prev, value])
+  //   }
+  // }
 
-  // DRY
-  const onLevelsChange = (value: Option) => {
-    if (levels.includes(value)) {
-      setLevels((prev) => {
-        return prev.filter((v) => v !== value)
-      })
-    } else {
-      setLevels((prev) => [...prev, value])
-    }
-  }
+  // // DRY
+  // const onLevelsChange = (value: Option) => {
+  //   if (levels.includes(value)) {
+  //     setLevels((prev) => {
+  //       return prev.filter((v) => v !== value)
+  //     })
+  //   } else {
+  //     setLevels((prev) => [...prev, value])
+  //   }
+  // }
 
   return (
     <section className={SearchStyles.container}>
@@ -109,7 +109,7 @@ export default function TutorSearch({
           <button className={`btn btn-primary`}>Find</button>
         </form>
       </div>
-      <div className={`${SearchStyles.filters} container`}>
+      {/* <div className={`${SearchStyles.filters} container`}>
         <SelectCheckbox
           options={CategoriyOptions}
           values={values}
@@ -128,7 +128,7 @@ export default function TutorSearch({
           onChange={onPriceChange}
           name="Price"
         />
-      </div>
+      </div> */}
     </section>
   )
 }

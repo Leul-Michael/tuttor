@@ -35,7 +35,7 @@ export default function Toast() {
     const hideTostContainer = () => {
       const msgPreviewTimer = setTimeout(() => {
         resetToastState()
-      }, 7000)
+      }, 10000)
 
       return () => {
         clearTimeout(msgPreviewTimer)

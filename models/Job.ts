@@ -3,7 +3,8 @@ import { models, Schema, model, ObjectId } from "mongoose"
 interface IJob {
   user: string | ObjectId
   title: string
-  budget: string
+  budgetMin: number
+  budgetMax?: number
   numberOfStudents: string
   tutorType: string
   location: string
@@ -25,9 +26,12 @@ const JobSchema = new Schema<IJob>(
       type: String,
       required: true,
     },
-    budget: {
-      type: String,
+    budgetMin: {
+      type: Number,
       required: true,
+    },
+    budgetMax: {
+      type: Number,
     },
     numberOfStudents: {
       type: String,

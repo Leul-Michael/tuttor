@@ -95,7 +95,11 @@ export default function SavedJobs() {
                 <TbPoint className={Styles.icon} />
                 <p className={Styles.type}>Salary</p>
               </div>
-              <div className={Styles["price-tag"]}>{job?.budget} / hr</div>
+              <div className={Styles["price-tag"]}>
+                {" "}
+                {job?.budgetMin}
+                {job?.budgetMax ? " - " + job?.budgetMax : null} / hr
+              </div>
             </div>
             <TimeAgo timestamp={job?.createdAt} />
           </div>

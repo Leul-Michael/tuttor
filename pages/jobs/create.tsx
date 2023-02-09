@@ -1,12 +1,7 @@
 import { GetServerSideProps } from "next"
 import { getSession } from "next-auth/react"
 import Head from "next/head"
-import {
-  useState,
-  FormEventHandler,
-  ChangeEventHandler,
-  useEffect,
-} from "react"
+import { useState, FormEventHandler, ChangeEventHandler } from "react"
 import axiosInstance from "../../axios/axios"
 import Requirement from "../../components/Job/Requirement"
 import Schedule from "../../components/Select/Schedule"
@@ -49,19 +44,18 @@ export default function Create({ user }: { user: IUser }) {
   }
   const [days, setDays] = useState<DaysProps[]>([])
 
-  const [startingPrice, setStartingPrice] = useState<string>("50")
-  const [maxPrice, setMaxPrice] = useState<string>("")
   const [requirements, setRequirements] = useState<string[]>([])
   const [formData, setFormData] = useState({
     title: "",
-    budget: `${startingPrice} ${maxPrice ? maxPrice : ""}`,
+    budgetMin: "50",
+    budgetMax: "",
     location: "",
     desc: "",
   })
 
   const canSave = [
     formData.title,
-    formData.budget,
+    formData.budgetMin,
     formData.location,
     formData.desc,
   ].every(Boolean)
@@ -75,29 +69,16 @@ export default function Create({ user }: { user: IUser }) {
   const resetFormValues = () => {
     setFormData({
       title: "",
-      budget: "",
+      budgetMin: "50",
+      budgetMax: "",
       location: "",
       desc: "",
     })
     setRequirements([])
     setNumberOfStudents(NUMBER_OF_STUDENTS[0])
     setTuttorType(TUTTOR_TYPE[0])
-    setStartingPrice("50")
-    setMaxPrice("")
     setDays([])
   }
-
-  useEffect(() => {
-    if (maxPrice) {
-      setFormData((prev) => {
-        return { ...prev, budget: `${startingPrice} - ${maxPrice}` }
-      })
-    } else {
-      setFormData((prev) => {
-        return { ...prev, budget: startingPrice }
-      })
-    }
-  }, [startingPrice, maxPrice])
 
   const addNewJob: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
@@ -185,7 +166,7 @@ export default function Create({ user }: { user: IUser }) {
           <div
             className={`${Styles["create-job__input-box"]} ${Styles.border}`}
           >
-            <label htmlFor="budget">
+            <label htmlFor="budgetMin">
               Budget (per hour in Birr) <span>*</span>
             </label>
             <span>
@@ -195,23 +176,23 @@ export default function Create({ user }: { user: IUser }) {
             <div className={Styles["price-range"]}>
               <input
                 type="number"
-                name="budget"
-                id="budget"
+                name="budgetMin"
+                id="budgetMin"
                 min={50}
                 max={10000}
-                value={startingPrice || 50}
-                onChange={(e) => setStartingPrice(e.target.value)}
+                value={formData.budgetMin || 50}
+                onChange={updateFormFields}
                 required
               />
               <span>-</span>
               <input
                 type="number"
-                name="budget"
-                id="budget"
-                min={startingPrice}
+                name="budgetMax"
+                id="budgetMax"
+                min={Number(formData.budgetMin) + 49 || 50}
                 max={10000}
-                value={maxPrice}
-                onChange={(e) => setMaxPrice(e.target.value)}
+                value={formData.budgetMax}
+                onChange={updateFormFields}
               />
             </div>
           </div>

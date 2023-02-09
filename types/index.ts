@@ -25,7 +25,8 @@ export interface JobType {
   user: string
   title: string
   location: string
-  budget: string
+  budgetMin: number
+  budgetMax?: number
   tutorType: string
   numberOfStudents: string
   desc: string

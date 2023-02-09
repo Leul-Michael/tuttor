@@ -47,7 +47,11 @@ export default function JobExcerpt({ job }: { job: JobType }) {
           <TbPoint className={styles.icon} />
           <p className={styles.type}>Salary</p>
         </div>
-        <div className={styles["price-tag"]}>{job.budget} / hr</div>
+        <div className={styles["price-tag"]}>
+          {" "}
+          {job?.budgetMin}
+          {job?.budgetMax ? " - " + job?.budgetMax : null} / hr
+        </div>
       </div>
       {job.requirements?.length ? (
         <div className={styles.requirements}>

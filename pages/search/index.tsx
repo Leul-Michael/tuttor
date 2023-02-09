@@ -1,3 +1,4 @@
+import Head from "next/head"
 import { useState, useRef, FormEvent } from "react"
 import { AiOutlineSearch } from "react-icons/ai"
 import { MdLocationOn } from "react-icons/md"
@@ -9,23 +10,19 @@ import axiosInstance from "../../axios/axios"
 import SearchFeed from "../../components/Search/SearchFeed"
 import useLastPostRef from "../../hooks/useLastPostRef"
 import useRecentSearch from "../../context/RecentSearchContext"
-import Head from "next/head"
+import SelectSingleCheckbox from "../../components/Select/SelectSingleCheckbox"
 
 const CategoriyOptions = [
   { key: 1, value: "Home", actualV: "In Person" },
   { key: 2, value: "Online", actualV: "Online" },
   { key: 3, value: "Both", actualV: "Both" },
 ]
-// const LevelOptions = [
-//   { key: 1, value: "KG" },
-//   { key: 2, value: "Elemntary" },
-//   { key: 3, value: "Preparatory" },
-//   { key: 4, value: "University" },
-// ]
+
 const PriceOptions = [
-  { key: 1, value: "150+/hr", actualV: "150" },
-  { key: 2, value: "300+/hr", actualV: "300" },
-  { key: 3, value: "500+/hr", actualV: "500" },
+  { key: 1, value: "all", actualV: "0" },
+  { key: 2, value: "150+/hr", actualV: "150" },
+  { key: 3, value: "300+/hr", actualV: "300" },
+  { key: 4, value: "500+/hr", actualV: "500" },
 ]
 
 export default function Search() {
@@ -33,8 +30,7 @@ export default function Search() {
   const { addRecentSearch } = useRecentSearch()
 
   const [categories, setCategories] = useState<Option[]>(CategoriyOptions)
-  //   const [levels, setLevels] = useState<Option[]>(LevelOptions)
-  const [price, setPrice] = useState<Option[]>(PriceOptions)
+  const [price, setPrice] = useState<Option>(PriceOptions[0])
 
   const titleRef = useRef<HTMLInputElement>(null)
   const locationRef = useRef<HTMLInputElement>(null)
@@ -50,25 +46,9 @@ export default function Search() {
   }
 
   const onPriceChange = (value: Option) => {
-    if (price.includes(value)) {
-      setPrice((prev) => {
-        return prev.filter((v) => v !== value)
-      })
-    } else {
-      setPrice((prev) => [...prev, value])
-    }
+    if (price === value) return
+    setPrice(value)
   }
-
-  // DRY
-  //   const onLevelsChange = (value: Option) => {
-  //     if (levels.includes(value)) {
-  //       setLevels((prev) => {
-  //         return prev.filter((v) => v !== value)
-  //       })
-  //     } else {
-  //       setLevels((prev) => [...prev, value])
-  //     }
-  //   }
 
   const {
     data,
@@ -77,6 +57,7 @@ export default function Search() {
     isLoading,
     fetchNextPage,
     hasNextPage,
+    isRefetching,
   } = useInfiniteQuery({
     queryKey: ["searchJobs"],
     queryFn: async ({ pageParam = 1 }) => {
@@ -86,6 +67,7 @@ export default function Search() {
           title: titleRef.current?.value,
           location: locationRef.current?.value,
           categories: categories.map((c) => c.actualV).join(","),
+          price: price.actualV,
         },
       })
       return res.data
@@ -163,15 +145,9 @@ export default function Search() {
             onChange={onValuesChange}
             name="Categories"
           />
-          {/* <SelectCheckbox
-          options={LevelOptions}
-          values={levels}
-          onChange={onLevelsChange}
-          name="Levels"
-        /> */}
-          <SelectCheckbox
+          <SelectSingleCheckbox
             options={PriceOptions}
-            values={price}
+            value={price}
             onChange={onPriceChange}
             name="Price"
           />
@@ -179,7 +155,7 @@ export default function Search() {
       </section>
       <SearchFeed
         data={data}
-        isLoading={isLoading}
+        isLoading={isLoading || isRefetching}
         isFetchingNextPage={isFetchingNextPage}
         lastPostRef={lastPostRef}
       />

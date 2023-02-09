@@ -95,7 +95,8 @@ export default function Index({ job }: { job: JobType }) {
                 <p className={ViewJobStyles.type}>Salary</p>
               </div>
               <div className={ViewJobStyles["price-tag"]}>
-                {job.budget} / hr
+                {job?.budgetMin}
+                {job?.budgetMax ? " - " + job?.budgetMax : null} / hr
               </div>
             </div>
             <div className={ViewJobStyles.price}>

@@ -7,13 +7,14 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "GET") {
     let limit = 10
 
-    const { title, location, pageParam, categories } = req.query
+    const { title, location, pageParam, categories, price } = req.query
 
     let jobtype = [(categories as string).split(",") || []].flat()
 
     let queryTitle = { $regex: title, $options: "i" }
     let queryLocation = { $regex: location, $options: "i" }
     let queryType = { $in: jobtype }
+    let queryPrice = { $gte: Number(price) }
     // Connect to DB
     await connectDB()
 
@@ -21,6 +22,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       title: queryTitle,
       location: queryLocation,
       tutorType: queryType,
+      budgetMin: queryPrice,
     })
       .populate({
         path: "proposals",
@@ -34,6 +36,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       title: queryTitle,
       location: queryLocation,
       tutorType: queryType,
+      budgetMin: queryPrice,
     }).exec()
 
     const response = {

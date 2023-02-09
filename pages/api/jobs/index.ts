@@ -40,7 +40,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 
   if (req.method === "POST") {
-    const { schedule, title, budget } = req.body
+    const { schedule, title, budgetMin } = req.body
 
     if (session?.user.role !== ACCOUNT_TYPE.EMPLOYER) {
       return res
@@ -48,8 +48,14 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         .json({ msg: "You need to be Employer to create Jobs!" })
     }
 
-    if (!schedule || !title || !budget) {
+    if (!schedule || !title || !budgetMin) {
       return res.status(400).json({ msg: "Please, add all fields!" })
+    }
+
+    if (budgetMin < 50) {
+      return res
+        .status(400)
+        .json({ msg: "Budget must be greater or equal to 50 birr!" })
     }
     // Connect to DB
     await connectDB()
