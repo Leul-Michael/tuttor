@@ -19,7 +19,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 
   if (req.method === "POST") {
-    const { jobId, desc, resume } = req.body
+    const { jobId, resume } = req.body
     const id = session?.user.id
 
     if (!resume) {
@@ -31,49 +31,55 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     // Connect to DB
     await connectDB()
 
-    const job = await Job.findById(jobId).populate({
-      path: "proposals",
-      model: Proposal,
-    })
+    let job
 
-    if (!job) {
-      return res.status(400).json({ msg: "Job not found." })
-    }
-
-    const alreadySubmitted = job.proposals.some((proposal: any) => {
-      return proposal.user.toString() === id
-    })
-
-    if (job?.proposals?.length >= 10) {
-      return res.status(400).json({
-        msg: "Maximum proposals sumbitted on this job, please try looking for aother job!",
+    try {
+      job = await Job.findById(jobId).populate({
+        path: "proposals",
+        model: Proposal,
       })
-    }
 
-    if (alreadySubmitted) {
-      return res.status(400).json({ msg: "Proposal already exists!" })
-    } else {
-      if (job.status !== "Active") {
+      const alreadySubmitted = job.proposals.some((proposal: any) => {
+        return proposal.user.toString() === id
+      })
+
+      if (job?.proposals?.length >= 10) {
         return res.status(400).json({
-          msg: `This job is ${job.status}. Try applying for another job.`,
+          msg: "Maximum proposals sumbitted on this job, please try looking for aother job!",
         })
       }
 
-      const proposal = await new Proposal({
-        ...req.body,
-        user: session.user.id,
-      })
-      await proposal.save()
-      job.proposals.unshift(proposal)
-      await job.save()
+      if (alreadySubmitted) {
+        return res.status(400).json({ msg: "Proposal already exists!" })
+      } else {
+        if (job.status !== "Active") {
+          return res.status(400).json({
+            msg: `This job is ${job.status}. Try applying for another job.`,
+          })
+        }
 
-      if (job?.invites.includes(session.user.id)) {
-        const likeIndex = job?.invites.indexOf(session.user.id)
-        job?.invites.splice(likeIndex, 1)
+        const proposal = await new Proposal({
+          ...req.body,
+          user: session.user.id,
+        })
+        await proposal.save()
+        job.proposals.unshift(proposal)
         await job.save()
+
+        if (job?.invites.includes(session.user.id)) {
+          const likeIndex = job?.invites.indexOf(session.user.id)
+          job?.invites.splice(likeIndex, 1)
+          await job.save()
+        }
+
+        return res.status(200).json({ msg: "Proposal submitted successfully!" })
+      }
+    } catch (e) {
+      if (!job) {
+        return res.status(400).json({ msg: "Job not found." })
       }
 
-      return res.status(200).json({ msg: "Proposal submitted successfully!" })
+      return res.status(500).json({ msg: "Something went wrong, try again!" })
     }
   }
 }

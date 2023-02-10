@@ -275,9 +275,9 @@ export default function Create({ user }: { user: IUser }) {
           <button
             disabled={loading}
             type="submit"
-            className={`p-relative ${loading ? Styles["loading-btn"] : ""} ${
-              Styles.btn
-            } ${Styles["btn-primary"]}`}
+            className={`p-relative .ld-center ${
+              loading ? Styles["loading-btn"] : ""
+            } ${Styles.btn} ${Styles["btn-primary"]}`}
           >
             {loading ? <Spinner /> : "Create Job"}
           </button>

@@ -80,12 +80,15 @@ export default function AppliedJobExcerpt({
             >
               {job.status === "Active"
                 ? proposalStatus
+                  ? proposalStatus
+                  : "Active"
                 : `This Job is ${job.status}`}
             </span>
           ) : null}
         </h2>
         {!invite ? (
-          proposalStatus === "Not Selected" ? null : (
+          proposalStatus === "Not Selected" &&
+          job.status === "Active" ? null : (
             <div className={Styles["flex-buttons"]}>
               <div className={Styles["icon-buttons"]}>
                 <button

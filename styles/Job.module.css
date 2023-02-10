@@ -84,7 +84,6 @@
 
 .save-icon:hover,
 .resume-icon:hover {
-    color: var(--clr-border);
     fill: var(--clr-border);
     background-color: var(--clr-background-light);
 }
@@ -415,7 +414,7 @@
 
 .apply-btn {
     min-width: 150px;
-    min-height: 45px;
+    min-height: 40px;
 }
 
 .btn-profile:not(:disabled):hover,

@@ -1,13 +1,12 @@
 import { GetServerSideProps } from "next"
-import Image from "next/image"
+import Head from "next/head"
+import Link from "next/link"
 import { useMemo, useState } from "react"
-import { TbPoint } from "react-icons/tb"
+import { TbPoint, TbNotebook } from "react-icons/tb"
 import axiosInstance from "../../../axios/axios"
 import { IUser } from "../../../models/User"
 import ViewJobStyles from "../../../styles/Job.module.css"
-import Head from "next/head"
 import { useSession } from "next-auth/react"
-import Link from "next/link"
 import JobInviteModal from "../../../components/Job/JobInviteModal"
 import MsgSm from "../../../components/Messages/MsgSm"
 import { ACCOUNT_TYPE, msgType } from "../../../types"
@@ -87,14 +86,7 @@ export default function User({ user }: { user: IUser }) {
                     href={user?.resume}
                     rel="noopener noreferrer"
                   >
-                    <Image
-                      className={ViewJobStyles["resume-icon"]}
-                      src="/resume.png"
-                      alt="resume icon"
-                      width={25}
-                      height={25}
-                    />
-                    {/* <AiFillContainer className={ViewJobStyles["save-icon"]} /> */}
+                    <TbNotebook className={ViewJobStyles["resume-icon"]} />
                   </a>
                 ) : null}
               </div>

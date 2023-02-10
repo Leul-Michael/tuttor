@@ -153,9 +153,11 @@
 }
 
 .my-job {
+    position: relative;
     border-bottom: 1px solid var(--clr-background-light);
     padding-bottom: 1rem;
     margin-bottom: 1rem;
+    z-index: -1;
 }
 
 .my-job__header {

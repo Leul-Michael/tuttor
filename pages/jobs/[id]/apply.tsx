@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { FormEvent, useState, ChangeEventHandler } from "react"
+import { FormEvent, useState } from "react"
 import Spinner from "../../../components/Spinner"
 import Tip from "../../../components/Messages/Tip"
 import ApplyJobStyles from "../../../styles/Job.module.css"
@@ -54,34 +54,28 @@ export default function Apply({ resume }: { resume: string }) {
 
   if (!session.data?.user) {
     content = (
-      <>
-        <Caution
-          inside
-          caution="You need to Sign in to apply for Jobs!"
-          link={{ path: "/auth/login", to: "Sign in", from: asPath }}
-        />
-      </>
+      <Caution
+        inside
+        caution="You need to Sign in to apply for Jobs!"
+        link={{ path: "/auth/login", to: "Sign in", from: asPath }}
+      />
     )
   } else if (session.data?.user.role === ACCOUNT_TYPE.EMPLOYER) {
     content = (
-      <>
-        <Caution
-          inside
-          caution="You need to be a Tutor to apply for Jobs!"
-          link={{ path: "/", to: "home" }}
-        />
-      </>
+      <Caution
+        inside
+        caution="You need to be a Tutor to apply for Jobs!"
+        link={{ path: "/", to: "home" }}
+      />
     )
   } else if (session.data?.user.role === ACCOUNT_TYPE.TUTTOR) {
     if (!resume) {
       content = (
-        <>
-          <Caution
-            inside
-            caution="You need to attach your resume before applying for Jobs!"
-            link={{ path: "/profile", to: "profile" }}
-          />
-        </>
+        <Tip
+          inside
+          tip="You need to attach your resume before applying for Jobs!"
+          link={{ path: "/profile", to: "profile" }}
+        />
       )
     } else {
       content = (
@@ -118,10 +112,8 @@ export default function Apply({ resume }: { resume: string }) {
           <button
             disabled={mutation.isLoading}
             type="submit"
-            className={`p-relative ${
-              mutation.isLoading
-                ? `${ApplyJobStyles["loading-btn"]} ${ApplyJobStyles["apply-btn"]}`
-                : ""
+            className={`p-relative ld-center ${
+              mutation.isLoading ? `${ApplyJobStyles["apply-btn"]}` : ""
             } ${ApplyJobStyles.btn} ${ApplyJobStyles["btn-primary"]}`}
           >
             {mutation.isLoading ? <Spinner /> : "Submit Proposal"}
