@@ -1,4 +1,3 @@
-import { GetServerSideProps } from "next"
 import { useSession } from "next-auth/react"
 import Link from "next/link"
 import { useMemo, MouseEvent, useState } from "react"
@@ -12,11 +11,26 @@ import ViewJobStyles from "../../../styles/Job.module.css"
 import { ACCOUNT_TYPE, JobType, msgType } from "../../../types"
 import { useRouter } from "next/router"
 import MsgSm from "../../../components/Messages/MsgSm"
+import { useQuery } from "@tanstack/react-query"
+import JobPageSkeleton from "../../../components/Skeleton/JobPageSkeleton"
 
-export default function Index({ job }: { job: JobType }) {
+export default function Index() {
   const session = useSession()
   const router = useRouter()
   const [showErrMsg, setShowErrorMsg] = useState(false)
+
+  const {
+    data: job,
+    isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ["job"],
+    queryFn: async () => {
+      const res = await axiosInstance.get(`/jobs/${router.query.id}`)
+      return res.data as JobType
+    },
+    enabled: router.query.id !== undefined,
+  })
 
   const isApplied = useMemo(() => {
     if (!session.data?.user.id) return
@@ -27,14 +41,29 @@ export default function Index({ job }: { job: JobType }) {
 
   const addSavedJob = async (e: MouseEvent<SVGElement>) => {
     e.preventDefault()
+    if (!job) return
     await axiosInstance.post(`/jobs/saved`, { jobId: job._id })
-    router.replace(router.asPath)
+    refetch()
   }
 
   const isSaved = useMemo(() => {
     if (!session.data?.user.id) return false
     return job?.saves.includes(session?.data?.user.id)
   }, [job?.saves, session?.data?.user.id])
+
+  if (isLoading) {
+    return <JobPageSkeleton />
+  } else if (!job) {
+    return (
+      <section className={ViewJobStyles["view-job"]}>
+        <div className="container-md">
+          <article className={`p-relative ${ViewJobStyles["no-p"]}`}>
+            <h1 className="font-serif">Job not found!!</h1>
+          </article>
+        </div>
+      </section>
+    )
+  }
 
   return (
     <section className={ViewJobStyles["view-job"]}>
@@ -152,37 +181,4 @@ export default function Index({ job }: { job: JobType }) {
       </div>
     </section>
   )
-}
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { id } = context.query
-
-  try {
-    const res = await axiosInstance.get(`/jobs/${id}`, {
-      headers: {
-        cookie: context.req.headers.cookie || "",
-      },
-    })
-
-    if (!res.data) {
-      return {
-        redirect: {
-          destination: "/",
-          permanent: false,
-        },
-      }
-    }
-    return {
-      props: {
-        job: res.data,
-      },
-    }
-  } catch {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    }
-  }
 }

@@ -569,6 +569,7 @@
 .view-job {
     padding: 4rem;
     width: 100%;
+    min-height: var(--section-height);
 }
 
 .view-job .no-p {
@@ -581,11 +582,11 @@
     top: 0%;
     background-color: var(--clr-background);
     padding-bottom: 2rem;
-    padding-top: 5vh;
+    padding-top: 2rem;
 }
 
 .user-jobs .job-details__header {
-    padding-top: 7vh;
+    padding-top: 3rem;
 }
 
 .view-job h1 {
