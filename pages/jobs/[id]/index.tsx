@@ -13,6 +13,7 @@ import { useRouter } from "next/router"
 import MsgSm from "../../../components/Messages/MsgSm"
 import { useQuery } from "@tanstack/react-query"
 import JobPageSkeleton from "../../../components/Skeleton/JobPageSkeleton"
+import Head from "next/head"
 
 export default function Index() {
   const session = useSession()
@@ -66,119 +67,127 @@ export default function Index() {
   }
 
   return (
-    <section className={ViewJobStyles["view-job"]}>
-      <div className="container-md">
-        <article className={`${ViewJobStyles["no-p"]}`}>
-          <div className={ViewJobStyles["job-details__header"]}>
-            <h1 className="font-serif">
-              {job.title}
-              {isApplied ? (
-                <span className="job-status job-status-good">Applied</span>
-              ) : session.data?.user.id === job.user ? (
-                <span className="job-status job-status-good">Author</span>
-              ) : null}
-            </h1>
-            <p className={ViewJobStyles.location}>{job.location}</p>
-            <p className={ViewJobStyles.type}>
-              {job.tutorType === "Both"
-                ? "Both In Person and Online"
-                : job.tutorType}
-            </p>
-            {showErrMsg && (
-              <MsgSm
-                msg="You need to login."
-                type={msgType.ERROR}
-                closeModal={setShowErrorMsg}
-              />
-            )}
-            {session.data?.user.role !== ACCOUNT_TYPE.EMPLOYER ? (
-              <div className={ViewJobStyles["flex-btns"]}>
-                <Link
-                  href={`/jobs/[id]/apply`}
-                  as={`/jobs/${job._id}/apply`}
-                  className={`btn  ${ViewJobStyles.btn} ${ViewJobStyles["btn-primary"]}`}
-                >
-                  Apply
-                </Link>
-
-                <HiOutlineHeart
-                  onClick={(e) => {
-                    if (!session.data?.user) {
-                      setShowErrorMsg(true)
-                      return
-                    } else {
-                      addSavedJob(e)
-                    }
-                  }}
-                  className={`${ViewJobStyles["save-icon"]} ${
-                    isSaved ? ViewJobStyles.saved : ""
-                  }`}
-                />
-              </div>
-            ) : null}
-          </div>
-          <div className={ViewJobStyles["job-details__body"]}>
-            <div className={ViewJobStyles.price}>
-              <div className={ViewJobStyles.header}>
-                <TbPoint className={ViewJobStyles.icon} />
-                <p className={ViewJobStyles.type}>Salary</p>
-              </div>
-              <div className={ViewJobStyles["price-tag"]}>
-                {job?.budgetMin}
-                {job?.budgetMax ? " - " + job?.budgetMax : null} / hr
-              </div>
-            </div>
-            <div className={ViewJobStyles.price}>
-              <div className={ViewJobStyles.header}>
-                <TbPoint className={ViewJobStyles.icon} />
-                <p className={ViewJobStyles.type}>Schedule</p>
-              </div>
-              <div className={ViewJobStyles["schedule-btns"]}>
-                {job.schedule.map((d) => (
-                  <div key={d} className={ViewJobStyles["price-tag"]}>
-                    {d}
-                  </div>
-                ))}
-              </div>
-            </div>
-            <p className={`j-desc ${ViewJobStyles.type}`}>
-              <MdOutlineModeEdit className="desc-icon" /> Description
-            </p>
-            <p className={ViewJobStyles.desc}>{job.desc}</p>
-            <div className={ViewJobStyles.price}>
-              <div className={ViewJobStyles.requirement}>
-                <TbPoint className={ViewJobStyles.icon} />
-                <p className={ViewJobStyles.type}>
-                  Number of Students
-                  <span className={ViewJobStyles.ptxt}>
-                    {job.numberOfStudents}
-                  </span>
-                </p>
-              </div>
-            </div>
-            <div className={ViewJobStyles.requirements}>
-              <p className={`j-desc ${ViewJobStyles.type}`}>
-                <IoMdCheckmarkCircleOutline className="desc-icon" />{" "}
-                Requirements
+    <>
+      <Head>
+        <title>View Job {job.title}</title>
+        <meta name="description" content="View single job" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <section className={ViewJobStyles["view-job"]}>
+        <div className="container-md">
+          <article className={`${ViewJobStyles["no-p"]}`}>
+            <div className={ViewJobStyles["job-details__header"]}>
+              <h1 className="font-serif">
+                {job.title}
+                {isApplied ? (
+                  <span className="job-status job-status-good">Applied</span>
+                ) : session.data?.user.id === job.user ? (
+                  <span className="job-status job-status-good">Author</span>
+                ) : null}
+              </h1>
+              <p className={ViewJobStyles.location}>{job.location}</p>
+              <p className={ViewJobStyles.type}>
+                {job.tutorType === "Both"
+                  ? "Both In Person and Online"
+                  : job.tutorType}
               </p>
-              {job.requirements?.length ? (
-                job.requirements.map((req, idx) => (
-                  <div key={idx} className={ViewJobStyles.requirement}>
-                    <TbPoint className={ViewJobStyles.icon} />
-                    <p>{req}</p>
-                  </div>
-                ))
-              ) : (
+              {showErrMsg && (
+                <MsgSm
+                  msg="You need to login."
+                  type={msgType.ERROR}
+                  closeModal={setShowErrorMsg}
+                />
+              )}
+              {session.data?.user.role !== ACCOUNT_TYPE.EMPLOYER ? (
+                <div className={ViewJobStyles["flex-btns"]}>
+                  <Link
+                    href={`/jobs/[id]/apply`}
+                    as={`/jobs/${job._id}/apply`}
+                    className={`btn  ${ViewJobStyles.btn} ${ViewJobStyles["btn-primary"]}`}
+                  >
+                    Apply
+                  </Link>
+
+                  <HiOutlineHeart
+                    onClick={(e) => {
+                      if (!session.data?.user) {
+                        setShowErrorMsg(true)
+                        return
+                      } else {
+                        addSavedJob(e)
+                      }
+                    }}
+                    className={`${ViewJobStyles["save-icon"]} ${
+                      isSaved ? ViewJobStyles.saved : ""
+                    }`}
+                  />
+                </div>
+              ) : null}
+            </div>
+            <div className={ViewJobStyles["job-details__body"]}>
+              <div className={ViewJobStyles.price}>
+                <div className={ViewJobStyles.header}>
+                  <TbPoint className={ViewJobStyles.icon} />
+                  <p className={ViewJobStyles.type}>Salary</p>
+                </div>
+                <div className={ViewJobStyles["price-tag"]}>
+                  {job?.budgetMin}
+                  {job?.budgetMax ? " - " + job?.budgetMax : null} / hr
+                </div>
+              </div>
+              <div className={ViewJobStyles.price}>
+                <div className={ViewJobStyles.header}>
+                  <TbPoint className={ViewJobStyles.icon} />
+                  <p className={ViewJobStyles.type}>Schedule</p>
+                </div>
+                <div className={ViewJobStyles["schedule-btns"]}>
+                  {job.schedule.map((d) => (
+                    <div key={d} className={ViewJobStyles["price-tag"]}>
+                      {d}
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <p className={`j-desc ${ViewJobStyles.type}`}>
+                <MdOutlineModeEdit className="desc-icon" /> Description
+              </p>
+              <p className={ViewJobStyles.desc}>{job.desc}</p>
+              <div className={ViewJobStyles.price}>
                 <div className={ViewJobStyles.requirement}>
                   <TbPoint className={ViewJobStyles.icon} />
-                  <p>No requirement</p>
+                  <p className={ViewJobStyles.type}>
+                    Number of Students
+                    <span className={ViewJobStyles.ptxt}>
+                      {job.numberOfStudents}
+                    </span>
+                  </p>
                 </div>
-              )}
+              </div>
+              <div className={ViewJobStyles.requirements}>
+                <p className={`j-desc ${ViewJobStyles.type}`}>
+                  <IoMdCheckmarkCircleOutline className="desc-icon" />{" "}
+                  Requirements
+                </p>
+                {job.requirements?.length ? (
+                  job.requirements.map((req, idx) => (
+                    <div key={idx} className={ViewJobStyles.requirement}>
+                      <TbPoint className={ViewJobStyles.icon} />
+                      <p>{req}</p>
+                    </div>
+                  ))
+                ) : (
+                  <div className={ViewJobStyles.requirement}>
+                    <TbPoint className={ViewJobStyles.icon} />
+                    <p>No requirement</p>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-          <TimeAgo timestamp={job.createdAt} />
-        </article>
-      </div>
-    </section>
+            <TimeAgo timestamp={job.createdAt} />
+          </article>
+        </div>
+      </section>
+    </>
   )
 }
