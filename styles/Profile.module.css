@@ -502,7 +502,7 @@
     flex-direction: column;
     margin-bottom: 1.5rem;
     padding-bottom: 1rem;
-    border-bottom: 1px solid var(--clr-select-accent);
+    border-bottom: 1px solid var(--clr-border-light);
 }
 
 .status-item {

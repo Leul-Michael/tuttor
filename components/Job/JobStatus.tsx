@@ -40,7 +40,7 @@ export default function JobStatus({
         e.preventDefault()
         e.stopPropagation()
       }}
-      className={`${ProfileStyles.resume} ${ProfileStyles.proposals}`}
+      className={`${ProfileStyles.resume}`}
     >
       <div className={ProfileStyles["resume-header"]}>
         <h1 className="font-serif">Update your job status</h1>

@@ -37,3 +37,16 @@ export interface JobType {
   schedule: string[]
   status: string
 }
+
+export interface JobProposalType {
+  _id: string
+  user: {
+    _id: string
+    name: string
+    location: string
+  }
+  desc: string
+  resume: string
+  status: string
+  createdAt: string
+}

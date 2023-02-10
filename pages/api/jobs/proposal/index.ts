@@ -12,17 +12,19 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 
   if (req.method === "GET") {
-    const { proposalId } = req.query
+    const { proposalIds } = req.query
 
-    if (!proposalId) {
-      return res.status(400).json({ msg: "Proposal id is required!" })
+    if (!proposalIds?.length) {
+      return res.status(200).json([])
     }
+
+    let jobproposals = [(proposalIds as string).split(",") || []].flat()
 
     // Connect to DB
     await connectDB()
 
     try {
-      const proposal = await Proposal.findById(proposalId)
+      const proposals = await Proposal.find({ _id: { $in: jobproposals } })
         .populate({
           path: "user",
           model: User,
@@ -30,9 +32,9 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         })
         .sort({ createdAt: -1 })
 
-      return res.status(200).json(proposal)
+      return res.status(200).json(proposals)
     } catch (e: any) {
-      console.log(e)
+      console.log(e.message)
       return res.status(500).json({ msg: "Something went wrong!" })
     }
   }
