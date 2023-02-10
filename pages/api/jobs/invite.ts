@@ -17,7 +17,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     await connectDB()
 
     try {
-      const jobs = await Job.find({ user: session.user.id })
+      const jobs = await Job.find({ user: session.user.id, status: "Active" })
         .select("title invites")
         .sort({ createdAt: -1 })
 
