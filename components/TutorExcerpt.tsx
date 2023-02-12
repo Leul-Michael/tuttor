@@ -38,7 +38,7 @@ const TutorExcerpt = ({ user }: { user: IUser }) => {
           width={16}
           height={14}
         />{" "}
-        N/A
+        n/a
       </p>
       <p className={TutorStyles.type}>
         {user?.bio ? user.bio : "No description"}

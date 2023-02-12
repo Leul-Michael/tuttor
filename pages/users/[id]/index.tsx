@@ -37,6 +37,21 @@ export default function User({ user }: { user: IUser }) {
               <p className={ViewJobStyles.location}>
                 {user.location ? user.location : "Location not specified"}
               </p>
+              {showErrMsg ? (
+                session.data?.user.role === ACCOUNT_TYPE.TUTTOR ? (
+                  <MsgSm
+                    msg="You need to login as an Employer."
+                    type={msgType.INFO}
+                    closeModal={setShowErrorMsg}
+                  />
+                ) : (
+                  <MsgSm
+                    msg="You need to login."
+                    type={msgType.ERROR}
+                    closeModal={setShowErrorMsg}
+                  />
+                )
+              ) : null}
               <div className={ViewJobStyles["flex-btns"]}>
                 {isAuthor ? (
                   <Link
@@ -46,38 +61,21 @@ export default function User({ user }: { user: IUser }) {
                     Profile
                   </Link>
                 ) : (
-                  <div style={{ display: "flex", flexDirection: "column" }}>
-                    {showErrMsg ? (
-                      session.data?.user.role === ACCOUNT_TYPE.TUTTOR ? (
-                        <MsgSm
-                          msg="You need to login as an Employer."
-                          type={msgType.INFO}
-                          closeModal={setShowErrorMsg}
-                        />
-                      ) : (
-                        <MsgSm
-                          msg="You need to login."
-                          type={msgType.ERROR}
-                          closeModal={setShowErrorMsg}
-                        />
-                      )
-                    ) : null}
-                    <button
-                      onClick={() => {
-                        if (
-                          !session.data?.user ||
-                          session.data.user.role === ACCOUNT_TYPE.TUTTOR
-                        ) {
-                          setShowErrorMsg(true)
-                        } else {
-                          setOpenInviteModal((prev) => !prev)
-                        }
-                      }}
-                      className={`btn  ${ViewJobStyles.btn} ${ViewJobStyles["btn-primary"]}`}
-                    >
-                      Invite
-                    </button>
-                  </div>
+                  <button
+                    onClick={() => {
+                      if (
+                        !session.data?.user ||
+                        session.data.user.role === ACCOUNT_TYPE.TUTTOR
+                      ) {
+                        setShowErrorMsg(true)
+                      } else {
+                        setOpenInviteModal((prev) => !prev)
+                      }
+                    }}
+                    className={`btn  ${ViewJobStyles.btn} ${ViewJobStyles["btn-primary"]}`}
+                  >
+                    Invite
+                  </button>
                 )}
                 {user?.resume ? (
                   <a

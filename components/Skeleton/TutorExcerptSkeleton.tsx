@@ -17,7 +17,7 @@ export default function TutorExcerptSkeleton() {
           width={16}
           height={14}
         />{" "}
-        N/A
+        n/a
       </p>
       <div className={Styles.descs}>
         <p className={Styles.desc}></p>
